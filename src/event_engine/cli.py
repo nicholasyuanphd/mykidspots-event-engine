@@ -2,6 +2,7 @@
 
 import argparse
 import asyncio
+import logging
 import sys
 
 import structlog
@@ -40,7 +41,7 @@ def main() -> None:
     log_level = "DEBUG" if args.verbose else "INFO"
     structlog.configure(
         wrapper_class=structlog.make_filtering_bound_logger(
-            structlog.get_level_from_name(log_level)
+            logging.getLevelName(log_level)
         ),
         processors=[
             structlog.processors.add_log_level,
