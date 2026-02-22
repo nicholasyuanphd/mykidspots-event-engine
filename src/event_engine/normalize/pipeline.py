@@ -4,6 +4,7 @@ import re
 
 import structlog
 
+from event_engine.blocklist import is_blocked
 from event_engine.dedup.fingerprint import compute_fingerprint
 from event_engine.models import NormalizedEvent, RawEvent, SourceConfig
 from event_engine.normalize.age_parser import parse_age_range
@@ -93,6 +94,11 @@ def normalize(raw: RawEvent, source: SourceConfig) -> NormalizedEvent | None:
         NormalizedEvent ready for DB upsert, or None if rejected.
     """
     log = logger.bind(source_id=raw.source_id, external_id=raw.external_id, title=raw.title)
+
+    # --- Blocklist check (curator-rejected titles never re-import) ---
+    if is_blocked(raw.title):
+        log.debug("skipped_blocklist", title=raw.title)
+        return None
 
     # --- Timezone normalization ---
     start_dt = parse_datetime(raw.raw_start, source.timezone)
