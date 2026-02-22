@@ -3,6 +3,7 @@
 import asyncpg
 import structlog
 
+from event_engine.dedup.cross_origin import find_cross_origin_duplicate
 from event_engine.models import NormalizedEvent
 
 logger = structlog.get_logger()
@@ -87,6 +88,18 @@ async def upsert_event(pool: asyncpg.Pool, event: NormalizedEvent) -> str:
 
     Returns 'inserted', 'updated', or 'unchanged'.
     """
+    # Cross-origin dedup: skip if identical event exists from another source
+    if event.location_name and event.start_datetime and event.source:
+        duplicate = await find_cross_origin_duplicate(
+            pool=pool,
+            title=event.title,
+            start_date=event.start_datetime.strftime("%Y-%m-%d"),
+            location_name=event.location_name,
+            exclude_source=event.source,
+        )
+        if duplicate:
+            return "unchanged"  # Treat as no-op; existing event wins
+
     async with pool.acquire() as conn:
         result = await conn.execute(
             UPSERT_SQL,
