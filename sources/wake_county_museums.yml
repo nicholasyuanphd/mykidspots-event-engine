@@ -1,0 +1,63 @@
+# Wake County Museums & Major Venues
+# These sources use various platforms — check each source's platform field
+
+sources:
+  - id: "wake-marbles-kids-museum"
+    name: "Marbles Kids Museum"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "nonprofit"  # Private 501(c)(3) — drop copyrighted descriptions
+    enabled: false  # Enable after verifying iCal feed URL
+    timezone: "America/New_York"
+    base_url: "https://www.marblesmuseum.org/events.ics"
+    location:
+      name: "Marbles Kids Museum"
+      address: "201 E Hargett St, Raleigh, NC 27601"
+      city: "Raleigh"
+      latitude: 35.7775
+      longitude: -78.6376
+    request_delay_ms: 2000
+    default_cost_type: "varies"
+    category_overrides:
+      - "museum"
+      - "indoor-play"
+
+  - id: "wake-nc-museum-natural-sciences"
+    name: "NC Museum of Natural Sciences"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"  # State institution — public domain
+    enabled: false  # Enable after verifying iCal feed URL
+    timezone: "America/New_York"
+    base_url: "https://naturalsciences.org/events.ics"
+    location:
+      name: "NC Museum of Natural Sciences"
+      address: "11 W Jones St, Raleigh, NC 27601"
+      city: "Raleigh"
+      latitude: 35.7815
+      longitude: -78.6391
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    category_overrides:
+      - "museum"
+      - "science"
+
+  - id: "wake-nc-museum-art"
+    name: "NC Museum of Art"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"  # State institution — public domain
+    enabled: false  # Enable after verifying iCal feed URL
+    timezone: "America/New_York"
+    base_url: "https://ncartmuseum.org/events.ics"
+    location:
+      name: "NC Museum of Art"
+      address: "2110 Blue Ridge Rd, Raleigh, NC 27607"
+      city: "Raleigh"
+      latitude: 35.8095
+      longitude: -78.7023
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    category_overrides:
+      - "museum"
+      - "art"

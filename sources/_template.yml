@@ -1,0 +1,32 @@
+# Template for adding a new event source to the Event Engine.
+# Copy this file, rename it, and fill in the values.
+#
+# Required fields: id, name, platform, base_url, location (with name, city)
+# Optional fields: trust_level, enabled, timezone, location_id, request_delay_ms,
+#                  default_cost_type, category_overrides, selectors, content_policy
+#
+# content_policy controls copyright handling in the normalizer:
+#   "government"  — keep descriptions (public domain). Libraries, parks & rec, state museums.
+#   "nonprofit"   — drop descriptions (copyrighted). Private non-profits like Marbles, YMCA.
+#   "commercial"  — drop descriptions (copyrighted). For-profit retailers like B&N, Home Depot.
+
+sources:
+  - id: "example-source-id"          # Unique, kebab-case (e.g., 'durham-main-library')
+    name: "Example Library Name"       # Human-readable
+    platform: "wakegov"                # One of: wakegov, libcal, bibliocommons, ical, generic_html
+    trust_level: "new"                 # "verified" → auto-publish | "new" → review queue
+    content_policy: "government"        # "government" | "nonprofit" | "commercial" (default: "commercial")
+    enabled: true
+    timezone: "America/New_York"       # IANA timezone
+    base_url: "https://example.com/events"
+    location_id: ""                    # Platform-specific ID (e.g., LibCal calendar ID)
+    location:
+      name: "Example Library"
+      address: "123 Main St, City, NC 27600"
+      city: "City"
+      latitude: 35.7796
+      longitude: -78.6382
+    request_delay_ms: 1000             # Min delay between HTTP requests (ms)
+    default_cost_type: "free"
+    category_overrides:                # Always-applied categories
+      - "library"

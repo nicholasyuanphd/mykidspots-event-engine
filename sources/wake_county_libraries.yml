@@ -1,0 +1,445 @@
+# Wake County Public Library System — 23 branches + Virtual
+# Platform: wake.gov (Drupal-based event listings)
+# All events are free, kid/family focused
+# Location IDs from wake.gov event filter dropdown
+
+sources:
+  - id: "wake-athens-drive-library"
+    name: "Athens Drive Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "394"
+    location:
+      name: "Athens Drive Community Library"
+      address: "1420 Athens Dr, Raleigh, NC 27606"
+      city: "Raleigh"
+      latitude: 35.7720
+      longitude: -78.6810
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-cary-regional-library"
+    name: "Cary Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "397"
+    location:
+      name: "Cary Regional Library"
+      address: "310 S Academy St, Cary, NC 27511"
+      city: "Cary"
+      latitude: 35.7818
+      longitude: -78.7816
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-duraleigh-library"
+    name: "Duraleigh Road Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "398"
+    location:
+      name: "Duraleigh Road Community Library"
+      address: "5208 Duraleigh Rd, Raleigh, NC 27612"
+      city: "Raleigh"
+      latitude: 35.8268
+      longitude: -78.7070
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-east-regional-library"
+    name: "East Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "404"
+    location:
+      name: "East Regional Library"
+      address: "946 Steeple Square Ct, Knightdale, NC 27545"
+      city: "Knightdale"
+      latitude: 35.7878
+      longitude: -78.4942
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-eva-perry-regional-library"
+    name: "Eva Perry Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "406"
+    location:
+      name: "Eva Perry Regional Library"
+      address: "2100 Shepherd's Vineyard Dr, Apex, NC 27502"
+      city: "Apex"
+      latitude: 35.7203
+      longitude: -78.8373
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-fuquay-varina-library"
+    name: "Fuquay-Varina Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "437"
+    location:
+      name: "Fuquay-Varina Community Library"
+      address: "133 S Fuquay Ave, Fuquay-Varina, NC 27526"
+      city: "Fuquay-Varina"
+      latitude: 35.5881
+      longitude: -78.8001
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-green-road-library"
+    name: "Green Road Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "439"
+    location:
+      name: "Green Road Community Library"
+      address: "4101 Green Rd, Raleigh, NC 27604"
+      city: "Raleigh"
+      latitude: 35.8353
+      longitude: -78.5936
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-holly-springs-library"
+    name: "Holly Springs Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "446"
+    location:
+      name: "Holly Springs Community Library"
+      address: "300 W Ballentine St, Holly Springs, NC 27540"
+      city: "Holly Springs"
+      latitude: 35.6519
+      longitude: -78.8336
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-leesville-library"
+    name: "Leesville Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "460"
+    location:
+      name: "Leesville Community Library"
+      address: "5105 Country Trail, Raleigh, NC 27613"
+      city: "Raleigh"
+      latitude: 35.8818
+      longitude: -78.7169
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-middle-creek-library"
+    name: "Middle Creek Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "465"
+    location:
+      name: "Middle Creek Community Library"
+      address: "1820 Middle Creek Park Ave, Apex, NC 27539"
+      city: "Apex"
+      latitude: 35.6792
+      longitude: -78.7820
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-morrisville-library"
+    name: "Morrisville Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "671"
+    location:
+      name: "Morrisville Community Library"
+      address: "300 Compass Creek Dr, Morrisville, NC 27560"
+      city: "Morrisville"
+      latitude: 35.8235
+      longitude: -78.8253
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-north-regional-library"
+    name: "North Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "204"
+    location:
+      name: "North Regional Library"
+      address: "7009 Harps Mill Rd, Raleigh, NC 27615"
+      city: "Raleigh"
+      latitude: 35.8740
+      longitude: -78.6329
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-northeast-regional-library"
+    name: "Northeast Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "415"
+    location:
+      name: "Northeast Regional Library"
+      address: "1801 N New Hope Rd, Raleigh, NC 27604"
+      city: "Raleigh"
+      latitude: 35.8353
+      longitude: -78.5650
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-oberlin-regional-library"
+    name: "Oberlin Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "396"
+    location:
+      name: "Oberlin Regional Library"
+      address: "1101 Oberlin Rd, Raleigh, NC 27605"
+      city: "Raleigh"
+      latitude: 35.7897
+      longitude: -78.6568
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-olivia-raney-library"
+    name: "Olivia Raney Local History Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "447"
+    location:
+      name: "Olivia Raney Local History Library"
+      address: "4016 Carya Dr, Raleigh, NC 27610"
+      city: "Raleigh"
+      latitude: 35.8040
+      longitude: -78.5700
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-richard-b-harrison-library"
+    name: "Richard B. Harrison Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "436"
+    location:
+      name: "Richard B. Harrison Community Library"
+      address: "1313 New Bern Ave, Raleigh, NC 27610"
+      city: "Raleigh"
+      latitude: 35.7829
+      longitude: -78.6168
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-southeast-regional-library"
+    name: "Southeast Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "448"
+    location:
+      name: "Southeast Regional Library"
+      address: "908 7th Ave, Garner, NC 27529"
+      city: "Garner"
+      latitude: 35.7115
+      longitude: -78.6144
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-southgate-library"
+    name: "Southgate Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "449"
+    location:
+      name: "Southgate Community Library"
+      address: "4920 Fayetteville Rd, Raleigh, NC 27603"
+      city: "Raleigh"
+      latitude: 35.7328
+      longitude: -78.6407
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-west-regional-library"
+    name: "West Regional Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "435"
+    location:
+      name: "West Regional Library"
+      address: "4000 Louis Stephens Dr, Cary, NC 27519"
+      city: "Cary"
+      latitude: 35.8297
+      longitude: -78.8707
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-forest-library"
+    name: "Wake Forest Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "429"
+    location:
+      name: "Wake Forest Community Library"
+      address: "400 E Hold St, Wake Forest, NC 27587"
+      city: "Wake Forest"
+      latitude: 35.9794
+      longitude: -78.5098
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-wendell-library"
+    name: "Wendell Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "432"
+    location:
+      name: "Wendell Community Library"
+      address: "207 S Hollybrook Rd, Wendell, NC 27591"
+      city: "Wendell"
+      latitude: 35.7803
+      longitude: -78.3691
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "wake-zebulon-library"
+    name: "Zebulon Community Library"
+    platform: "wakegov"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: "438"
+    location:
+      name: "Zebulon Community Library"
+      address: "1000 Dogwood St, Zebulon, NC 27597"
+      city: "Zebulon"
+      latitude: 35.8238
+      longitude: -78.3147
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
