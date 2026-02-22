@@ -12,6 +12,7 @@ import structlog
 
 from event_engine.circuit_breaker import CircuitBreaker
 from event_engine.db.connection import create_pool
+from event_engine.db.hygiene import run_hygiene_scan
 from event_engine.db.import_log import write_import_log
 from event_engine.db.upsert import upsert_batch
 from event_engine.models import SourceConfig, load_sources
@@ -64,6 +65,7 @@ async def run(
     pool: asyncpg.Pool | None = None
     if not dry_run:
         pool = await create_pool(database_url)
+        await run_hygiene_scan(pool)
 
     # Set up concurrency control
     semaphore = asyncio.Semaphore(max_concurrency)
