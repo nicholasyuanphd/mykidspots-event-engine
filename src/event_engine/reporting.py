@@ -19,7 +19,7 @@ class SourceResult:
     events_unchanged: int = 0
     events_errors: int = 0
     duration_ms: int = 0
-    status: str = "success"
+    status: str = "completed"
     error_message: str | None = None
 
 
@@ -50,7 +50,7 @@ class RunReport:
 
     @property
     def sources_succeeded(self) -> int:
-        return sum(1 for s in self.sources if s.status == "success")
+        return sum(1 for s in self.sources if s.status == "completed")
 
     @property
     def sources_failed(self) -> int:
@@ -101,7 +101,7 @@ class RunReport:
         )
 
         for s in self.sources:
-            status_icon = "✅" if s.status == "success" else "❌"
+            status_icon = "✅" if s.status == "completed" else "❌"
             lines.append(
                 f"| {s.source_name} | {s.events_found} | {s.events_inserted} | "
                 f"{s.events_updated} | {s.events_errors} | {status_icon} {s.status} | "
