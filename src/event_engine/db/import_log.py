@@ -24,7 +24,7 @@ async def write_import_log(
     events_skipped: int,
     events_errors: int,
     duration_ms: int,
-    status: str = "success",
+    status: str = "completed",
     error_message: str | None = None,
 ) -> None:
     """Write a record to the import_logs table.
@@ -39,7 +39,7 @@ async def write_import_log(
         events_skipped: Events skipped by quality gates.
         events_errors: Events that failed to upsert.
         duration_ms: Total scrape duration in milliseconds.
-        status: 'success', 'partial', or 'failed'.
+        status: 'completed', 'partial', or 'failed'.
         error_message: Error details if status != 'success'.
     """
     try:

@@ -1,3 +1,4 @@
+from datetime import date
 """Database upsert operations for normalized events."""
 
 import asyncpg
@@ -93,7 +94,7 @@ async def upsert_event(pool: asyncpg.Pool, event: NormalizedEvent) -> str:
         duplicate = await find_cross_origin_duplicate(
             pool=pool,
             title=event.title,
-            start_date=event.start_datetime.strftime("%Y-%m-%d"),
+            start_date=event.start_datetime.date(),
             location_name=event.location_name,
             exclude_source=event.source,
         )
@@ -110,7 +111,7 @@ async def upsert_event(pool: asyncpg.Pool, event: NormalizedEvent) -> str:
             event.is_recurring,
             event.recurrence_pattern,
             event.recurrence_days_of_week,
-            event.recurrence_end_date,
+            date.fromisoformat(event.recurrence_end_date) if isinstance(event.recurrence_end_date, str) else event.recurrence_end_date,
             event.recurrence_interval,
             event.location_name,
             event.address,

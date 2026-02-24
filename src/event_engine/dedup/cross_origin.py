@@ -1,5 +1,7 @@
 """Cross-origin duplicate detection — checks ALL sources, not just pipeline."""
 
+from datetime import date
+
 import asyncpg
 import structlog
 
@@ -20,7 +22,7 @@ LIMIT 1
 async def find_cross_origin_duplicate(
     pool: asyncpg.Pool,
     title: str,
-    start_date: str,
+    start_date: date,
     location_name: str,
     exclude_source: str,
 ) -> dict | None:
