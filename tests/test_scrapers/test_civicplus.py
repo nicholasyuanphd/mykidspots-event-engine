@@ -58,7 +58,7 @@ class TestCivicPlusScraper:
         """Should return 3 unique events from fixture HTML across 3 deduplicated windows."""
         scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, FIXTURE_HTML)
         events = await scraper.scrape_all()
-        assert len(events) >= 2
+        assert len(events) == 3
 
     @pytest.mark.asyncio
     async def test_event_has_required_fields(self) -> None:
@@ -98,3 +98,22 @@ class TestCivicPlusScraper:
         scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, EMPTY_HTML)
         events = await scraper.scrape_all()
         assert events == []
+
+    @pytest.mark.asyncio
+    async def test_window_fetch_failure_is_isolated(self) -> None:
+        """One failing window should not abort the entire scrape."""
+        client = MagicMock(spec=httpx.AsyncClient)
+        scraper = CivicPlusScraper(HOLLY_SPRINGS_CONFIG, client)
+        good_response = MagicMock(text=FIXTURE_HTML, status_code=200)
+        # First window fails, second and third succeed
+        scraper.fetch = AsyncMock(  # type: ignore[method-assign]
+            side_effect=[
+                Exception("connection timeout"),
+                good_response,
+                good_response,
+            ]
+        )
+        events = await scraper.scrape_all()
+        # Should still get events from the 2 successful windows
+        # (dedup means same 3 events from fixture, not 6)
+        assert len(events) == 3

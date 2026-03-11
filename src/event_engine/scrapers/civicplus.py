@@ -38,17 +38,21 @@ class CivicPlusScraper(BaseScraper):
             url = self._build_url(start, end)
             self.log.info("fetching_window", url=url, window=window)
 
-            response = await self.fetch(url)
-            soup = BeautifulSoup(response.text, "lxml")
+            try:
+                response = await self.fetch(url)
+                soup = BeautifulSoup(response.text, "lxml")
 
-            for item in soup.select("ul.list-group li.list-group-item"):
-                event = self._parse_item(item)
-                if event is None:
-                    continue
-                if event.external_id in seen_eids:
-                    continue
-                seen_eids.add(event.external_id)
-                yield event
+                for item in soup.select("ul.list-group li.list-group-item"):
+                    event = self._parse_item(item)
+                    if event is None:
+                        continue
+                    if event.external_id in seen_eids:
+                        continue
+                    seen_eids.add(event.external_id)
+                    yield event
+            except Exception as exc:
+                self.log.warning("window_fetch_failed", window=window, url=url, error=str(exc))
+                continue
 
     def _build_url(self, start: date, end: date) -> str:
         """Build a CivicPlus list-view URL for the given date range."""
