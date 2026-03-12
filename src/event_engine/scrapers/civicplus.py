@@ -42,7 +42,7 @@ class CivicPlusScraper(BaseScraper):
                 response = await self.fetch(url)
                 soup = BeautifulSoup(response.text, "lxml")
 
-                for item in soup.select("ul.list-group li.list-group-item"):
+                for item in self._find_event_items(soup):
                     event = self._parse_item(item)
                     if event is None:
                         continue
@@ -65,44 +65,71 @@ class CivicPlusScraper(BaseScraper):
             f"&startdate={start_str}&enddate={end_str}&view=list"
         )
 
-    def _parse_item(self, item: Tag) -> RawEvent | None:
-        """Parse a single <li class="list-group-item"> into a RawEvent."""
-        # Title and href
-        link = item.select_one("h3.list-group-item-heading a")
-        if not link:
-            return None
+    def _find_event_items(self, soup: BeautifulSoup) -> list[Tag]:
+        """Find all event <li> elements regardless of CivicPlus template version.
 
-        title = link.get_text(strip=True)
-        if not title:
+        CivicPlus has two known HTML templates:
+          - v2 (newer): ul.list-group > li.list-group-item > h3.list-group-item-heading
+          - v1 (older): ol > li > h4  (used by Holly Springs, some older towns)
+        """
+        # v2: newer template
+        items = soup.select("ul.list-group li.list-group-item")
+        if items:
+            return items
+
+        # v1: older template — find <ol> containing <li> with <h4> and a Calendar EID link
+        for ol in soup.find_all("ol"):
+            lis = ol.find_all("li", recursive=False)
+            if lis and ol.find("a", href=lambda h: h and "EID=" in h):
+                return lis
+
+        return []
+
+    def _parse_item(self, item: Tag) -> RawEvent | None:
+        """Parse a CivicPlus event <li> into a RawEvent (handles both template versions)."""
+        # Find the link with an EID — works for both templates
+        link = item.find("a", href=lambda h: h and "EID=" in str(h))
+        if not link:
             return None
 
         raw_href = link.get("href", "") or ""
         href: str = raw_href[0] if isinstance(raw_href, list) else str(raw_href)
 
-        # Extract EID from href: /Calendar.aspx?EID=13717&...
-        external_id = self._extract_eid(str(href))
+        external_id = self._extract_eid(href)
         if not external_id:
             return None
 
-        # Build absolute source URL from origin of base_url
+        # Title: v2 uses h3, v1 uses h4
+        heading = item.find(["h3", "h4"])
+        title = heading.get_text(strip=True) if heading else link.get_text(strip=True)
+        if not title or title.lower() == "event details":
+            return None
+
         origin = self._get_origin()
-        source_url = f"{origin}{href}" if href.startswith("/") else str(href)
+        source_url = f"{origin}{href}" if href.startswith("/") else href
 
-        # All <p class="list-group-item-text"> paragraphs
-        paragraphs = item.select("p.list-group-item-text")
-
+        # Date/time: v2 uses <p class="list-group-item-text">, v1 uses <p> directly
         raw_start = ""
         raw_end = ""
         location_name = self.source.location.name
 
-        for p in paragraphs:
-            text = p.get_text(strip=True)
-            if text.startswith("@"):
-                # Location paragraph
-                location_name = text[1:].strip()
-            elif raw_start == "":
-                # First non-location paragraph is the date/time
-                raw_start, raw_end = self._split_datetime(text)
+        for p in item.find_all("p"):
+            # Split on <br> first (v1 template puts date + location in one <p>)
+            parts = [
+                seg.replace("\xa0", " ").strip()
+                for seg in p.get_text(separator="\n").splitlines()
+                if seg.strip()
+            ]
+            for text in parts:
+                if text.startswith("@"):
+                    location_name = text[1:].strip()
+                elif raw_start == "" and re.search(
+                    r"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d", text, re.I
+                ):
+                    raw_start, raw_end = self._split_datetime(text)
+                elif raw_start == "" and location_name == self.source.location.name:
+                    # v1: second line in the <p> is the location (no @ prefix)
+                    location_name = text
 
         return RawEvent(
             source_id=self.source.id,
