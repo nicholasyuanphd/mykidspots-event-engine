@@ -199,7 +199,7 @@ async def _scrape_source(
 
             # Normalize with AI verdicts
             normalized = []
-            for raw, verdict in zip(raw_events, ai_verdicts):
+            for raw, verdict in zip(raw_events, ai_verdicts, strict=True):
                 event = normalize(raw, source, ai_verdict=verdict)
                 if event:
                     normalized.append(event)

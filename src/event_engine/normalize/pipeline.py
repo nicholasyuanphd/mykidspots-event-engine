@@ -112,7 +112,8 @@ def normalize(
         return None
 
     # --- Civic noise filter (government admin events — meetings, hearings, etc.) ---
-    if is_civic_noise(raw.title):
+    # Only applied to town government sources (CivicPlus) that require AI classification
+    if source.ai_classification == "required" and is_civic_noise(raw.title):
         log.debug("skipped_civic_noise", title=raw.title, source_id=source.id)
         return None
 
