@@ -31,7 +31,7 @@ class WakeGovScraper(BaseScraper):
 
         while page < total_pages:
             params: dict[str, str | int] = {
-                "field_department_target_id": "25",  # Libraries department
+                "field_department_target_id": self.source.department_id,
                 "location": self.source.location_id,
                 "page": page,
             }

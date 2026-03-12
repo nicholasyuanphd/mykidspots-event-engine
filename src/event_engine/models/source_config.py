@@ -66,6 +66,10 @@ class SourceConfig(BaseModel):
     category_overrides: list[str] = Field(default_factory=list)
     """Categories to always apply to events from this source."""
 
+    department_id: str = "25"
+    """WakeGov department filter (field_department_target_id).
+    Default '25' = Libraries. Use '195' for Parks, Recreation and Open Space."""
+
     # CSS selectors for generic_html scraper
     selectors: dict[str, str] = Field(default_factory=dict)
     """CSS selectors for generic HTML scraping (event_list, title, date, etc.)."""

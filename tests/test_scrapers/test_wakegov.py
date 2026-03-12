@@ -100,3 +100,23 @@ class TestWakeGovScraper:
         # Teen Game Night has no location element in the fixture
         event = next(e for e in events if e.external_id == "teen-game-night-5")
         assert event.raw_location == ""  # Gracefully empty
+
+    @pytest.mark.asyncio
+    async def test_scraper_uses_department_id_from_config(self) -> None:
+        """WakeGovScraper uses department_id from SourceConfig when set."""
+        config = SourceConfig(
+            id="test-parks",
+            name="Test Parks",
+            platform="wakegov",
+            base_url="https://www.wake.gov/events",
+            location_id="",
+            department_id="195",
+            location=LocationConfig(name="Test", city="Raleigh"),
+            request_delay_ms=0,
+        )
+        scraper = _make_scraper(config)
+        # Trigger one scrape so fetch is called; capture the URL from the call args
+        await scraper.scrape_all()
+        called_url: str = scraper.fetch.call_args[0][0]  # type: ignore[union-attr]
+        assert "field_department_target_id=195" in called_url
+        assert "field_department_target_id=25" not in called_url
