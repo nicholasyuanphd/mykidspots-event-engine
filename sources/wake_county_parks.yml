@@ -1,0 +1,28 @@
+# Wake County Parks, Recreation and Open Space
+# Platform: wake.gov (same Drupal/WakeGovScraper as libraries)
+# department_id=195 filters to Parks, Recreation and Open Space department
+# All events are government-sourced (public domain)
+# trust_level "new" → events enter review queue (not auto-published)
+
+sources:
+  - id: "wake-county-parks-recreation"
+    name: "Wake County Parks, Recreation and Open Space"
+    platform: "wakegov"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wake.gov/events"
+    location_id: ""
+    department_id: "195"
+    location:
+      name: "Wake County Parks, Recreation and Open Space"
+      address: ""
+      city: "Wake County"
+      latitude: 35.7796
+      longitude: -78.6382
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "outdoor"
+      - "parks"
