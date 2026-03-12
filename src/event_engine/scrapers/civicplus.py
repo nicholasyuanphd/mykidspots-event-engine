@@ -68,26 +68,27 @@ class CivicPlusScraper(BaseScraper):
     def _find_event_items(self, soup: BeautifulSoup) -> list[Tag]:
         """Find all event <li> elements regardless of CivicPlus template version.
 
-        CivicPlus has two known HTML templates:
-          - v2 (newer): ul.list-group > li.list-group-item > h3.list-group-item-heading
-          - v1 (older): ol > li > h4  (used by Holly Springs, some older towns)
+        CivicPlus has three known HTML templates:
+          - v2 (newest): ul.list-group > li.list-group-item > h3.list-group-item-heading
+          - v3 (modern): ul/ol > li > h3 > a[EID] + div.subHeader > div.date
+          - v1 (older):  ol > li > h4 + p  (Holly Springs)
         """
-        # v2: newer template
+        # v2: newest template
         items = soup.select("ul.list-group li.list-group-item")
         if items:
             return items
 
-        # v1: older template — find <ol> containing <li> with <h4> and a Calendar EID link
-        for ol in soup.find_all("ol"):
-            lis = ol.find_all("li", recursive=False)
-            if lis and ol.find("a", href=lambda h: h and "EID=" in h):
+        # v3/v1: find any list containing EID links
+        for container in soup.find_all(["ul", "ol"]):
+            lis = container.find_all("li", recursive=False)
+            if lis and container.find("a", href=lambda h: h and "EID=" in str(h)):
                 return lis
 
         return []
 
     def _parse_item(self, item: Tag) -> RawEvent | None:
-        """Parse a CivicPlus event <li> into a RawEvent (handles both template versions)."""
-        # Find the link with an EID — works for both templates
+        """Parse a CivicPlus event <li> into a RawEvent (handles all template versions)."""
+        # Find the link with an EID — works for all templates
         link = item.find("a", href=lambda h: h and "EID=" in str(h))
         if not link:
             return None
@@ -99,7 +100,7 @@ class CivicPlusScraper(BaseScraper):
         if not external_id:
             return None
 
-        # Title: v2 uses h3, v1 uses h4
+        # Title: strip "Event Details" links, prefer heading text
         heading = item.find(["h3", "h4"])
         title = heading.get_text(strip=True) if heading else link.get_text(strip=True)
         if not title or title.lower() == "event details":
@@ -108,28 +109,38 @@ class CivicPlusScraper(BaseScraper):
         origin = self._get_origin()
         source_url = f"{origin}{href}" if href.startswith("/") else href
 
-        # Date/time: v2 uses <p class="list-group-item-text">, v1 uses <p> directly
         raw_start = ""
         raw_end = ""
         location_name = self.source.location.name
 
-        for p in item.find_all("p"):
-            # Split on <br> first (v1 template puts date + location in one <p>)
-            parts = [
-                seg.replace("\xa0", " ").strip()
-                for seg in p.get_text(separator="\n").splitlines()
-                if seg.strip()
-            ]
-            for text in parts:
-                if text.startswith("@"):
-                    location_name = text[1:].strip()
-                elif raw_start == "" and re.search(
-                    r"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d", text, re.I
-                ):
-                    raw_start, raw_end = self._split_datetime(text)
-                elif raw_start == "" and location_name == self.source.location.name:
-                    # v1: second line in the <p> is the location (no @ prefix)
-                    location_name = text
+        # v3 (Apex/modern): date in div.date, location in div.eventLocation
+        date_div = item.select_one("div.date, div.subHeader div.date")
+        if date_div:
+            raw_start, raw_end = self._split_datetime(
+                date_div.get_text(strip=True).replace("\xa0", " ")
+            )
+            loc_div = item.select_one("div.eventLocation div.name, div.eventLocation")
+            if loc_div:
+                loc_text = loc_div.get_text(strip=True).replace("\xa0", " ")
+                if loc_text and loc_text != "@":
+                    location_name = loc_text.lstrip("@ ").strip()
+        else:
+            # v1/v2: date in <p> tags
+            for p in item.find_all("p"):
+                parts = [
+                    seg.replace("\xa0", " ").strip()
+                    for seg in p.get_text(separator="\n").splitlines()
+                    if seg.strip()
+                ]
+                for text in parts:
+                    if text.startswith("@"):
+                        location_name = text[1:].strip()
+                    elif raw_start == "" and re.search(
+                        r"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+\d", text, re.I
+                    ):
+                        raw_start, raw_end = self._split_datetime(text)
+                    elif raw_start == "" and location_name == self.source.location.name:
+                        location_name = text
 
         return RawEvent(
             source_id=self.source.id,
