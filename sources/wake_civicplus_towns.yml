@@ -1,0 +1,146 @@
+# Wake County CivicPlus Towns
+# Platform: civicplus (HTML list-view scraper)
+# All are government sources (public domain descriptions)
+# CID=0 = all calendar categories
+# trust_level: "new" until category filtering is validated
+
+sources:
+  - id: "holly-springs-town-calendar"
+    name: "Town of Holly Springs"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.hollyspringsnc.gov/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Holly Springs"
+      address: "128 S Main St, Holly Springs, NC 27540"
+      city: "Holly Springs"
+      latitude: 35.6499
+      longitude: -78.8336
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "apex-town-calendar"
+    name: "Town of Apex"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.apexnc.org/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Apex"
+      address: "73 Hunter St, Apex, NC 27502"
+      city: "Apex"
+      latitude: 35.7323
+      longitude: -78.8503
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "fuquay-varina-town-calendar"
+    name: "Town of Fuquay-Varina"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.fuquay-varina.org/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Fuquay-Varina"
+      address: "401 Old Honeycutt Rd, Fuquay-Varina, NC 27526"
+      city: "Fuquay-Varina"
+      latitude: 35.5843
+      longitude: -78.7997
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "garner-town-calendar"
+    name: "Town of Garner"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.garnernc.gov/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Garner"
+      address: "900 7th Ave, Garner, NC 27529"
+      city: "Garner"
+      latitude: 35.7076
+      longitude: -78.6135
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "knightdale-town-calendar"
+    name: "Town of Knightdale"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.knightdalenc.gov/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Knightdale"
+      address: "950 Steeple Square Ct, Knightdale, NC 27545"
+      city: "Knightdale"
+      latitude: 35.7876
+      longitude: -78.4897
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "wake-forest-town-calendar"
+    name: "Town of Wake Forest"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wakeforestnc.gov/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Wake Forest"
+      address: "301 S Brooks St, Wake Forest, NC 27587"
+      city: "Wake Forest"
+      latitude: 35.9793
+      longitude: -78.5097
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
+
+  - id: "wendell-town-calendar"
+    name: "Town of Wendell"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.townofwendell.com/calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Town of Wendell"
+      address: "15 E Fourth St, Wendell, NC 27591"
+      city: "Wendell"
+      latitude: 35.7876
+      longitude: -78.3689
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "community"
