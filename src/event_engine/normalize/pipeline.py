@@ -20,6 +20,7 @@ PLATFORM_SOURCE_MAP: dict[str, str] = {
     "libcal": "pipeline_library",
     "bibliocommons": "pipeline_library",
     "ical": "pipeline_museum",
+    "civicplus": "pipeline_parks",
     "generic_html": "auto-imported",
 }
 

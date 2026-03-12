@@ -1,0 +1,15 @@
+{
+  "$schema": "./categories.schema.json",
+  "version": "1.0.0",
+  "description": "Canonical list of event categories shared between mykidspots and mykidspots-event-engine. The engine maps scraped tags to these values. The app filters and displays using these values.",
+  "categories": [
+    { "value": "outdoor", "label": "Outdoor", "emoji": "🌳" },
+    { "value": "arts", "label": "Arts & Crafts", "emoji": "🎨" },
+    { "value": "stem", "label": "STEM", "emoji": "🔬" },
+    { "value": "music", "label": "Music", "emoji": "🎵" },
+    { "value": "sports", "label": "Sports", "emoji": "⚽" },
+    { "value": "storytime", "label": "Storytime", "emoji": "📚" },
+    { "value": "social", "label": "Social", "emoji": "👥" },
+    { "value": "seasonal", "label": "Seasonal", "emoji": "🎉" }
+  ]
+}

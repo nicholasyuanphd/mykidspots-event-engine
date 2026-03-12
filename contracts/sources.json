@@ -1,0 +1,44 @@
+{
+  "$schema": "./sources.schema.json",
+  "version": "1.0.0",
+  "description": "Canonical list of event source identifiers shared between mykidspots and mykidspots-event-engine. Both repos MUST stay in sync with this file.",
+  "sources": [
+    {
+      "value": "pipeline_library",
+      "label": "Wake County Libraries",
+      "trust": "verified",
+      "active": true,
+      "tier": 1,
+      "phase": 1
+    },
+    {
+      "value": "pipeline_museum",
+      "label": "Museums & Major Venues",
+      "trust": "verified",
+      "active": true,
+      "tier": 1,
+      "phase": 1
+    },
+    {
+      "value": "pipeline_parks",
+      "label": "Parks & Recreation",
+      "trust": "verified",
+      "active": true,
+      "tier": 2,
+      "phase": 1
+    },
+    {
+      "value": "auto-imported",
+      "label": "Legacy Auto-Import (deprecated)",
+      "trust": "new",
+      "active": false,
+      "tier": 0,
+      "phase": 0,
+      "deprecated": true
+    }
+  ],
+  "phase6_placeholders": [
+    "pipeline_eventbrite",
+    "pipeline_meetup"
+  ]
+}
