@@ -76,6 +76,7 @@ def main() -> None:
             source_filter=args.source_filter,
             dry_run=args.dry_run,
             max_concurrency=settings.max_concurrency,
+            anthropic_api_key=settings.anthropic_api_key or None,
         )
     )
 

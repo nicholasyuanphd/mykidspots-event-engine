@@ -34,6 +34,7 @@ async def run(
     source_filter: str | None = None,
     dry_run: bool = False,
     max_concurrency: int = 5,
+    anthropic_api_key: str | None = None,
 ) -> RunReport:
     """Run the event engine — scrape all sources and upsert events.
 
@@ -70,8 +71,7 @@ async def run(
         await run_hygiene_scan(pool)
 
     # Set up AI classifier (if API key is available)
-    api_key = os.getenv("ANTHROPIC_API_KEY")
-    classifier: AIClassifier | None = AIClassifier(api_key=api_key) if api_key else None
+    classifier: AIClassifier | None = AIClassifier(api_key=anthropic_api_key) if anthropic_api_key else None
     if not classifier:
         logger.warning("no_anthropic_key_ai_classification_disabled")
 

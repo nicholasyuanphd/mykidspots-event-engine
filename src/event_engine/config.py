@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     """Settings loaded from environment variables and .env file."""
 
     database_url: str
+    anthropic_api_key: str = ""
     sentry_dsn: str = ""
     sources_dir: Path = Path("./sources")
     max_concurrency: int = 5
