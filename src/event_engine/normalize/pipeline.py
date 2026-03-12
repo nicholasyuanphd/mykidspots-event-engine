@@ -4,7 +4,7 @@ import re
 
 import structlog
 
-from event_engine.blocklist import is_blocked
+from event_engine.blocklist import is_blocked, is_civic_noise
 from event_engine.dedup.fingerprint import compute_fingerprint
 from event_engine.models import NormalizedEvent, RawEvent, SourceConfig
 from event_engine.normalize.age_parser import parse_age_range
@@ -98,6 +98,11 @@ def normalize(raw: RawEvent, source: SourceConfig) -> NormalizedEvent | None:
     # --- Blocklist check (curator-rejected titles never re-import) ---
     if is_blocked(raw.title):
         log.debug("skipped_blocklist", title=raw.title)
+        return None
+
+    # --- Civic noise filter (government admin events — meetings, hearings, etc.) ---
+    if is_civic_noise(raw.title):
+        log.debug("skipped_civic_noise", title=raw.title, source_id=source.id)
         return None
 
     # --- Timezone normalization ---

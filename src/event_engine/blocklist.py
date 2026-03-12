@@ -32,6 +32,21 @@ def is_blocked(title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH) -> boo
     return False
 
 
+def is_civic_noise(title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH) -> bool:
+    """Return True if the event title is a civic/government administrative event.
+
+    Used for town government sources (CivicPlus) to filter out board meetings,
+    hearings, and other non-family content before AI classification.
+    """
+    data = _load(blocklist_path)
+    title_lower = title.lower()
+    for pattern in data.get("civic_noise_patterns", []):
+        if pattern.lower() in title_lower:
+            log.debug("civic_noise_filtered", title=title, pattern=pattern)
+            return True
+    return False
+
+
 def add_to_blocklist(
     title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH
 ) -> None:

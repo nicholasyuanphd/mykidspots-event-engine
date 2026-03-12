@@ -2,7 +2,7 @@
 import json
 import pytest
 from pathlib import Path
-from event_engine.blocklist import is_blocked, add_to_blocklist
+from event_engine.blocklist import is_blocked, add_to_blocklist, is_civic_noise
 
 
 class TestBlocklist:
@@ -49,3 +49,23 @@ class TestBlocklist:
         add_to_blocklist("Adult Book Club", blocklist_path)
         data = json.loads(blocklist_path.read_text())
         assert data["blocked_titles"].count("Adult Book Club") == 1
+
+
+class TestIsCivicNoise:
+    def test_board_meeting_is_civic_noise(self):
+        assert is_civic_noise("Board of Adjustment Meeting") is True
+
+    def test_public_hearing_is_civic_noise(self):
+        assert is_civic_noise("Public Hearing on Zoning Ordinance 2026-01") is True
+
+    def test_storytime_is_not_civic_noise(self):
+        assert is_civic_noise("Saturday Family Storytime") is False
+
+    def test_kids_festival_is_not_civic_noise(self):
+        assert is_civic_noise("Holly Springs Kids Festival") is False
+
+    def test_town_council_is_civic_noise(self):
+        assert is_civic_noise("Town Council Regular Meeting") is True
+
+    def test_planning_board_is_civic_noise(self):
+        assert is_civic_noise("Planning Board Work Session") is True
