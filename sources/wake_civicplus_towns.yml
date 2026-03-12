@@ -22,6 +22,7 @@ sources:
       longitude: -78.8336
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -42,6 +43,7 @@ sources:
       longitude: -78.8503
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -62,6 +64,7 @@ sources:
       longitude: -78.7997
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -82,6 +85,7 @@ sources:
       longitude: -78.6135
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -102,6 +106,7 @@ sources:
       longitude: -78.4897
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -122,6 +127,7 @@ sources:
       longitude: -78.5097
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
@@ -142,5 +148,6 @@ sources:
       longitude: -78.3689
     request_delay_ms: 1500
     default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"

@@ -78,7 +78,11 @@ KID_FAMILY_KEYWORDS = [
 ]
 
 
-def normalize(raw: RawEvent, source: SourceConfig) -> NormalizedEvent | None:
+def normalize(
+    raw: RawEvent,
+    source: SourceConfig,
+    ai_verdict: str | None = None,  # "yes" | "no" | "maybe" | None
+) -> NormalizedEvent | None:
     """Transform a raw event into a normalized, DB-ready event.
 
     Returns None if the event fails any quality gate:
@@ -89,11 +93,18 @@ def normalize(raw: RawEvent, source: SourceConfig) -> NormalizedEvent | None:
     Args:
         raw: Raw event data from a scraper.
         source: Source configuration for context (timezone, location, etc.)
+        ai_verdict: Optional AI classification result ("yes", "no", "maybe", or None).
+            If "no", the event is immediately rejected.
 
     Returns:
         NormalizedEvent ready for DB upsert, or None if rejected.
     """
     log = logger.bind(source_id=raw.source_id, external_id=raw.external_id, title=raw.title)
+
+    # --- AI verdict check (skip if AI explicitly says not kid-relevant) ---
+    if ai_verdict == "no":
+        log.debug("skipping_ai_rejected", title=raw.title)
+        return None
 
     # --- Blocklist check (curator-rejected titles never re-import) ---
     if is_blocked(raw.title):

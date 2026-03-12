@@ -117,3 +117,64 @@ class TestCivicPlusScraper:
         # Should still get events from the 2 successful windows
         # (dedup means same 3 events from fixture, not 6)
         assert len(events) == 3
+
+    @pytest.mark.asyncio
+    async def test_fetch_description_returns_text_on_success(self) -> None:
+        """fetch_description extracts text from detail page using .fr-view selector."""
+        detail_html = """<html><body>
+            <div class="fr-view">Join us for a fun family event with games and activities!</div>
+        </body></html>"""
+        scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, detail_html)
+        result = await scraper.fetch_description(
+            "https://www.hollyspringsnc.gov/Calendar.aspx?EID=999"
+        )
+        assert result is not None
+        assert "family event" in result
+
+    @pytest.mark.asyncio
+    async def test_fetch_description_returns_text_from_field_items(self) -> None:
+        """fetch_description extracts text from .field-items selector."""
+        detail_html = """<html><body>
+            <div class="field-items">Pottery workshop for kids ages 5-12!</div>
+        </body></html>"""
+        scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, detail_html)
+        result = await scraper.fetch_description(
+            "https://www.hollyspringsnc.gov/Calendar.aspx?EID=100"
+        )
+        assert result is not None
+        assert "kids" in result
+
+    @pytest.mark.asyncio
+    async def test_fetch_description_returns_none_when_no_selector_matches(self) -> None:
+        """fetch_description returns None when no known selector is found."""
+        detail_html = """<html><body><p>Some generic text without known selectors.</p></body></html>"""
+        scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, detail_html)
+        result = await scraper.fetch_description(
+            "https://www.hollyspringsnc.gov/Calendar.aspx?EID=101"
+        )
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_fetch_description_returns_none_on_failure(self) -> None:
+        """fetch_description returns None when fetch raises an exception."""
+        client = MagicMock(spec=httpx.AsyncClient)
+        scraper = CivicPlusScraper(HOLLY_SPRINGS_CONFIG, client)
+        scraper.fetch = AsyncMock(side_effect=Exception("connection error"))  # type: ignore[method-assign]
+        result = await scraper.fetch_description(
+            "https://www.hollyspringsnc.gov/Calendar.aspx?EID=999"
+        )
+        assert result is None
+
+    @pytest.mark.asyncio
+    async def test_fetch_description_truncates_to_500_chars(self) -> None:
+        """fetch_description returns at most 500 characters."""
+        long_text = "x" * 1000
+        detail_html = f"""<html><body>
+            <div class="fr-view">{long_text}</div>
+        </body></html>"""
+        scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, detail_html)
+        result = await scraper.fetch_description(
+            "https://www.hollyspringsnc.gov/Calendar.aspx?EID=102"
+        )
+        assert result is not None
+        assert len(result) <= 500

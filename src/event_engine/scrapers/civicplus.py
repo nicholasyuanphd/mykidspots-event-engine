@@ -132,6 +132,25 @@ class CivicPlusScraper(BaseScraper):
         parsed = urlparse(self.source.base_url)
         return f"{parsed.scheme}://{parsed.netloc}"
 
+    async def fetch_description(self, detail_url: str) -> str | None:
+        """Fetch the event detail page and extract the description text.
+
+        Only called for events classified as 'maybe' to resolve ambiguity.
+        Returns None on fetch failure — caller should keep 'maybe' verdict.
+        """
+        try:
+            response = await self.fetch(detail_url)
+            soup = BeautifulSoup(response.text, "lxml")
+            # CivicPlus detail page description is in .field-items or .fr-view
+            for selector in (".field-items", ".fr-view", ".event-description", "article .body"):
+                el = soup.select_one(selector)
+                if el:
+                    return el.get_text(separator=" ", strip=True)[:500]
+            return None
+        except Exception:
+            self.log.warning("detail_fetch_failed", url=detail_url)
+            return None
+
     def _split_datetime(self, text: str) -> tuple[str, str]:
         """Split a CivicPlus datetime string into (raw_start, raw_end).
 

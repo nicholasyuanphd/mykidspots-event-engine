@@ -20,6 +20,7 @@ class LocationConfig(BaseModel):
 
 TrustLevel = Literal["verified", "new"]
 ContentPolicy = Literal["government", "nonprofit", "commercial"]
+AIClassificationMode = Literal["required", "optional", "skip"]
 
 
 class SourceConfig(BaseModel):
@@ -69,6 +70,13 @@ class SourceConfig(BaseModel):
     department_id: str = "25"
     """WakeGov department filter (field_department_target_id).
     Default '25' = Libraries. Use '195' for Parks, Recreation and Open Space."""
+
+    ai_classification: AIClassificationMode = "skip"
+    """AI classification mode:
+    'required' — classify all events; reject 'no', queue 'maybe', publish 'yes'
+    'optional' — classify if ANTHROPIC_API_KEY is set, otherwise skip
+    'skip'     — no AI classification (default; use for clean sources like libraries)
+    """
 
     # CSS selectors for generic_html scraper
     selectors: dict[str, str] = Field(default_factory=dict)

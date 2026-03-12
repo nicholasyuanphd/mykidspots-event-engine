@@ -199,3 +199,48 @@ class TestNormalize:
         result = normalize(sample_raw_event, sample_source)
         assert result is not None
         assert result.source == "auto-imported"
+
+    # --- AI verdict tests ---
+
+    def test_ai_verdict_no_causes_normalize_to_return_none(
+        self, sample_raw_event: RawEvent, sample_source: SourceConfig
+    ) -> None:
+        """normalize() returns None immediately when ai_verdict is 'no'."""
+        result = normalize(sample_raw_event, sample_source, ai_verdict="no")
+        assert result is None
+
+    def test_ai_verdict_yes_allows_event_through(
+        self, sample_raw_event: RawEvent, sample_source: SourceConfig
+    ) -> None:
+        """normalize() continues normally when ai_verdict is 'yes'."""
+        result = normalize(sample_raw_event, sample_source, ai_verdict="yes")
+        assert result is not None
+        assert result.title == "Baby Playdate"
+
+    def test_ai_verdict_maybe_allows_event_through(
+        self, sample_raw_event: RawEvent, sample_source: SourceConfig
+    ) -> None:
+        """normalize() continues normally when ai_verdict is 'maybe'."""
+        result = normalize(sample_raw_event, sample_source, ai_verdict="maybe")
+        assert result is not None
+
+    def test_ai_verdict_none_allows_event_through(
+        self, sample_raw_event: RawEvent, sample_source: SourceConfig
+    ) -> None:
+        """normalize() continues normally when ai_verdict is None (no classification)."""
+        result = normalize(sample_raw_event, sample_source, ai_verdict=None)
+        assert result is not None
+
+    def test_ai_verdict_no_takes_priority_over_kid_relevant_title(
+        self, sample_source: SourceConfig
+    ) -> None:
+        """ai_verdict='no' rejects event even if the title contains kid keywords."""
+        raw = RawEvent(
+            source_id="test",
+            external_id="kids-event-ai-rejected",
+            title="Kids Storytime",
+            raw_start="December 25, 2026 10:00 am",
+            raw_categories=["Kids & Families"],
+        )
+        result = normalize(raw, sample_source, ai_verdict="no")
+        assert result is None
