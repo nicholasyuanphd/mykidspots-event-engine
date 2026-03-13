@@ -1,8 +1,9 @@
 """Event title blocklist — prevents re-importing rejected events."""
 
 import json
-import structlog
 from pathlib import Path
+
+import structlog
 
 log = structlog.get_logger()
 

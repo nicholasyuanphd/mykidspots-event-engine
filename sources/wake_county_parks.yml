@@ -3,6 +3,10 @@
 # department_id=195 filters to Parks, Recreation and Open Space department
 # All events are government-sourced (public domain)
 # trust_level "new" → events enter review queue (not auto-published)
+#
+# DISABLED (2026-03-12): department_id=195 is invalid — wake.gov rejects it.
+# Parks events live on ActiveNet (anc.apm.activecommunities.com/wakeparks/),
+# not on wake.gov/events. Needs a dedicated ActiveNet scraper — deferred.
 
 sources:
   - id: "wake-county-parks-recreation"
@@ -10,7 +14,7 @@ sources:
     platform: "wakegov"
     trust_level: "new"
     content_policy: "government"
-    enabled: true
+    enabled: false
     timezone: "America/New_York"
     base_url: "https://www.wake.gov/events"
     location_id: ""

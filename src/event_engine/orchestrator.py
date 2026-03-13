@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import asyncio
-import os
 import time
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
@@ -71,7 +70,11 @@ async def run(
         await run_hygiene_scan(pool)
 
     # Set up AI classifier (if API key is available)
-    classifier: AIClassifier | None = AIClassifier(api_key=anthropic_api_key) if anthropic_api_key else None
+    classifier: AIClassifier | None = (
+        AIClassifier(api_key=anthropic_api_key)
+        if anthropic_api_key
+        else None
+    )
     if not classifier:
         logger.warning("no_anthropic_key_ai_classification_disabled")
 

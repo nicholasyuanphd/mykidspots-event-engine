@@ -39,9 +39,10 @@ class SourceConfig(BaseModel):
     """'verified' → auto-publish as active. 'new' → insert as pending for review."""
 
     content_policy: ContentPolicy = "commercial"
-    """Content copyright policy: 'government' keeps descriptions (public domain),
-    'nonprofit' and 'commercial' drop descriptions (copyrighted content).
-    Default is 'commercial' (deny-by-default) — explicitly set 'government' for public domain sources."""
+    """Content copyright policy: 'government' keeps descriptions
+    (public domain), 'nonprofit' and 'commercial' drop descriptions
+    (copyrighted content). Default is 'commercial' (deny-by-default)
+    — explicitly set 'government' for public domain sources."""
 
     enabled: bool = True
     """Whether this source should be scraped."""

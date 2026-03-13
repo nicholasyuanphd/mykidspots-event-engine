@@ -19,7 +19,9 @@ logger = structlog.get_logger()
 
 BATCH_SIZE = 20
 
-SYSTEM_PROMPT = """You are an event relevance classifier for MyKidSpots, a platform helping parents discover kid-friendly activities.
+SYSTEM_PROMPT = (
+    """You are an event relevance classifier for MyKidSpots, """
+    """a platform helping parents discover kid-friendly activities.
 
 Classify each event title as:
 - yes: clearly relevant for families with children (ages 0-18)
@@ -33,6 +35,7 @@ Rules:
 - Free public events with family potential → maybe (not yes)
 
 Output ONLY one word per line (yes/no/maybe), one per event title, in the same order as input."""
+)
 
 
 class ClassificationResult(StrEnum):

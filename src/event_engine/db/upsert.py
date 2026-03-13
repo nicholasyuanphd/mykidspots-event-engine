@@ -1,5 +1,6 @@
-from datetime import date
 """Database upsert operations for normalized events."""
+
+from datetime import date
 
 import asyncpg
 import structlog
@@ -111,7 +112,9 @@ async def upsert_event(pool: asyncpg.Pool, event: NormalizedEvent) -> str:
             event.is_recurring,
             event.recurrence_pattern,
             event.recurrence_days_of_week,
-            date.fromisoformat(event.recurrence_end_date) if isinstance(event.recurrence_end_date, str) else event.recurrence_end_date,
+            date.fromisoformat(event.recurrence_end_date)
+            if isinstance(event.recurrence_end_date, str)
+            else event.recurrence_end_date,
             event.recurrence_interval,
             event.location_name,
             event.address,
