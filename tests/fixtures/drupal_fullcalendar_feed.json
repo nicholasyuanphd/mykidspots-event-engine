@@ -1,0 +1,49 @@
+[
+  {
+    "id": "7700",
+    "title": "Farmers Market",
+    "url": "/event/farmers-market",
+    "allDay": false,
+    "start": "2026-03-14T09:00:00-0400",
+    "end": "2026-03-14T12:00:00-0400",
+    "backgroundColor": "#3a87ad",
+    "classNames": ["vc3-fullcalendar-term-86"]
+  },
+  {
+    "id": "7700",
+    "title": "Farmers Market",
+    "url": "/event/farmers-market",
+    "allDay": false,
+    "start": "2026-03-21T09:00:00-0400",
+    "end": "2026-03-21T12:00:00-0400",
+    "backgroundColor": "#3a87ad",
+    "classNames": ["vc3-fullcalendar-term-86"]
+  },
+  {
+    "id": "9190",
+    "title": "Coffee With a Cop",
+    "url": "/event/coffee-with-cop",
+    "allDay": false,
+    "start": "2026-03-15T10:00:00-0400",
+    "end": "2026-03-15T11:30:00-0400",
+    "backgroundColor": "#3a87ad"
+  },
+  {
+    "id": "8001",
+    "title": "Board of Commissioners Meeting",
+    "url": "/event/board-commissioners-meeting",
+    "allDay": false,
+    "start": "2026-03-17T18:00:00-0400",
+    "end": "2026-03-17T20:00:00-0400",
+    "backgroundColor": "#3a87ad",
+    "classNames": ["vc3-fullcalendar-term-89"]
+  },
+  {
+    "id": "",
+    "title": "Event With No ID",
+    "url": "/event/no-id",
+    "allDay": false,
+    "start": "2026-03-20T10:00:00-0400",
+    "end": "2026-03-20T11:00:00-0400"
+  }
+]

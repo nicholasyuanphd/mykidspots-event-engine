@@ -1,0 +1,49 @@
+[
+  {
+    "id": "101",
+    "title": "Town Board Meeting",
+    "start": "2026-03-10T18:00:00",
+    "end": "2026-03-10T20:00:00",
+    "url": "/government/agendas___minutes.php?id=101",
+    "allDay": false,
+    "className": "cat-meetings",
+    "description": "Regular monthly board meeting"
+  },
+  {
+    "id": "102",
+    "title": "Spring Festival",
+    "start": "2026-04-05T10:00:00",
+    "end": "2026-04-05T16:00:00",
+    "url": "/calendar/event.php?id=102",
+    "allDay": false,
+    "className": "cat-events"
+  },
+  {
+    "id": "103",
+    "title": "Youth Soccer Registration",
+    "start": "2026-03-15",
+    "end": "2026-03-16",
+    "allDay": true,
+    "className": "cat-recreation"
+  },
+  {
+    "id": "101",
+    "title": "Town Board Meeting",
+    "start": "2026-04-14T18:00:00",
+    "end": "2026-04-14T20:00:00",
+    "url": "/government/agendas___minutes.php?id=101",
+    "allDay": false,
+    "className": "cat-meetings",
+    "description": "Regular monthly board meeting"
+  },
+  {
+    "id": "",
+    "title": "Bad Event No ID",
+    "start": "2026-03-20T10:00:00"
+  },
+  {
+    "id": "105",
+    "title": "",
+    "start": "2026-03-21T10:00:00"
+  }
+]

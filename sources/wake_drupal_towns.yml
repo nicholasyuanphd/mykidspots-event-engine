@@ -1,0 +1,53 @@
+# Wake County Drupal Towns (FullCalendar-based)
+# Platform: drupal_fullcalendar
+# All are government sources (public domain descriptions)
+# trust_level: "new" until category filtering is validated
+
+sources:
+  - id: "knightdale-town-calendar"
+    name: "Town of Knightdale"
+    platform: "drupal_fullcalendar"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.knightdalenc.gov/calendar"
+    location_id: ""
+    location:
+      name: "Town of Knightdale"
+      address: "950 Steeple Square Ct, Knightdale, NC 27545"
+      city: "Knightdale"
+      latitude: 35.7874
+      longitude: -78.4906
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
+    selectors:
+      mode: "inline"
+
+  - id: "wake-forest-town-calendar"
+    name: "Town of Wake Forest"
+    platform: "drupal_fullcalendar"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wakeforestnc.gov"
+    location_id: ""
+    location:
+      name: "Town of Wake Forest"
+      address: "301 S Brooks St, Wake Forest, NC 27587"
+      city: "Wake Forest"
+      latitude: 35.9799
+      longitude: -78.5097
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
+    selectors:
+      mode: "feed"
+      feed_url: "/vc3-fullcalendar-events-feed"
+      feed_params: "id=events_calendar&display=all_events"

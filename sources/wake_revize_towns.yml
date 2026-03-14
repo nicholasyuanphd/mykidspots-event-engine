@@ -1,0 +1,30 @@
+# Wake County Revize Towns
+# Platform: revize (FullCalendar JSON via Revize CMS AJAX endpoint)
+# All are government sources (public domain descriptions)
+#
+# NOTE (2026-03-13): Wendell's Revize site is behind Cloudflare WAF which blocks
+# automated requests to the calendar AJAX endpoint. Set enabled=false until
+# a workaround is found (e.g., Cloudflare bypass, alternative data feed, or
+# partnership with the town for direct API access).
+
+sources:
+  - id: "wendell-town-calendar"
+    name: "Town of Wendell"
+    platform: "revize"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: false  # Blocked by Cloudflare WAF — cannot reach AJAX endpoint
+    timezone: "America/New_York"
+    base_url: "https://townofwendellnc.gov"
+    location_id: "1,2,3,6"
+    location:
+      name: "Town of Wendell"
+      address: "15 E Fourth St, Wendell, NC 27591"
+      city: "Wendell"
+      latitude: 35.7813
+      longitude: -78.3697
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
