@@ -1,15 +1,20 @@
 # Wake County Museums & Major Venues
 # These sources use various platforms — check each source's platform field
+#
+# Wave 1 iCal research (2026-03-13):
+# - NC Museum of Natural Sciences: confirmed iCal feed at /calendar/?ical=1
+# - Marbles Kids Museum: no discoverable iCal feed (site returns 403, uses custom ticketing platform)
+# - NC Museum of Art: uses Modern Events Calendar WordPress plugin, no public iCal export found
 
 sources:
   - id: "wake-marbles-kids-museum"
     name: "Marbles Kids Museum"
     platform: "ical"
-    trust_level: "verified"
+    trust_level: "new"
     content_policy: "nonprofit"  # Private 501(c)(3) — drop copyrighted descriptions
-    enabled: false  # Enable after verifying iCal feed URL
+    enabled: false  # No discoverable iCal feed; site uses custom ticketing at my.marbleskidsmuseum.org
     timezone: "America/New_York"
-    base_url: "https://www.marblesmuseum.org/events.ics"
+    base_url: ""  # TODO: no public .ics feed found — contact museum or scrape HTML calendar
     location:
       name: "Marbles Kids Museum"
       address: "201 E Hargett St, Raleigh, NC 27601"
@@ -25,11 +30,11 @@ sources:
   - id: "wake-nc-museum-natural-sciences"
     name: "NC Museum of Natural Sciences"
     platform: "ical"
-    trust_level: "verified"
+    trust_level: "new"
     content_policy: "government"  # State institution — public domain
-    enabled: false  # Enable after verifying iCal feed URL
+    enabled: true
     timezone: "America/New_York"
-    base_url: "https://naturalsciences.org/events.ics"
+    base_url: "https://naturalsciences.org/calendar/?ical=1"
     location:
       name: "NC Museum of Natural Sciences"
       address: "11 W Jones St, Raleigh, NC 27601"
@@ -45,11 +50,11 @@ sources:
   - id: "wake-nc-museum-art"
     name: "NC Museum of Art"
     platform: "ical"
-    trust_level: "verified"
+    trust_level: "new"
     content_policy: "government"  # State institution — public domain
-    enabled: false  # Enable after verifying iCal feed URL
+    enabled: false  # No public iCal feed found; uses Modern Events Calendar WP plugin without exposed .ics export
     timezone: "America/New_York"
-    base_url: "https://ncartmuseum.org/events.ics"
+    base_url: ""  # TODO: no public .ics feed found — try MEC API or scrape HTML calendar
     location:
       name: "NC Museum of Art"
       address: "2110 Blue Ridge Rd, Raleigh, NC 27607"
