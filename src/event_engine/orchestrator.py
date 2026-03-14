@@ -15,6 +15,7 @@ from event_engine.classify.ai_classifier import AIClassifier
 from event_engine.db.connection import create_pool
 from event_engine.db.hygiene import run_hygiene_scan
 from event_engine.db.import_log import write_import_log
+from event_engine.db.trust_overrides import fetch_trust_overrides
 from event_engine.db.upsert import upsert_batch
 from event_engine.models import SourceConfig, load_sources
 from event_engine.normalize.pipeline import normalize
@@ -68,6 +69,22 @@ async def run(
     if not dry_run:
         pool = await create_pool(database_url)
         await run_hygiene_scan(pool)
+
+    # Apply curator trust overrides from DB (gracefully degrades on failure)
+    if pool:
+        trust_overrides = await fetch_trust_overrides(pool)
+        if trust_overrides:
+            for source in sources:
+                if source.id in trust_overrides:
+                    old_level = source.trust_level
+                    source.trust_level = trust_overrides[source.id]
+                    if old_level != source.trust_level:
+                        logger.info(
+                            "trust_override_applied",
+                            source_id=source.id,
+                            yaml_trust_level=old_level,
+                            db_trust_level=source.trust_level,
+                        )
 
     # Set up AI classifier (if API key is available)
     classifier: AIClassifier | None = (
