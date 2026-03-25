@@ -6,6 +6,7 @@ import structlog
 
 from event_engine.blocklist import is_blocked, is_civic_noise
 from event_engine.dedup.fingerprint import compute_fingerprint
+from event_engine.dedup.series_key import compute_series_key
 from event_engine.models import NormalizedEvent, RawEvent, SourceConfig
 from event_engine.normalize.age_parser import parse_age_range
 from event_engine.normalize.category_mapper import map_categories
@@ -186,6 +187,14 @@ def normalize(
     # --- Source badge type (maps platform to frontend badge) ---
     source_type = PLATFORM_SOURCE_MAP.get(source.platform, "auto-imported")
 
+    # --- Series key (groups pre-expanded recurring events) ---
+    time_of_day = start_dt.strftime("%H:%M") if start_dt else None
+    series_key = compute_series_key(
+        title=raw.title.strip(),
+        location_name=location_name or "",
+        time_of_day=time_of_day,
+    )
+
     return NormalizedEvent(
         source_fingerprint=fingerprint,
         title=raw.title.strip(),
@@ -207,6 +216,7 @@ def normalize(
         age_max=age_max,
         cost_type=cost_type,
         cost_amount=cost_amount,
+        series_key=series_key,
         source=source_type,
         status=status,
         visibility="public",

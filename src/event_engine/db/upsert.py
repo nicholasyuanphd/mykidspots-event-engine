@@ -23,6 +23,7 @@ INSERT INTO events (
     cost_type, cost_amount, cost_details,
     image_urls, source, source_url, source_fingerprint,
     registration_url, status, visibility,
+    series_key,
     upvotes, downvotes, view_count, save_count, click_count,
     created_at, updated_at
 )
@@ -35,6 +36,7 @@ VALUES (
     $19, $20, $21,
     $22, $23, $24, $25,
     $26, $27, $28,
+    $29,
     0, 0, 0, 0, 0,
     NOW(), NOW()
 )
@@ -64,6 +66,7 @@ DO UPDATE SET
     source_url = EXCLUDED.source_url,
     registration_url = EXCLUDED.registration_url,
     status = EXCLUDED.status,
+    series_key = EXCLUDED.series_key,
     updated_at = NOW()
 WHERE events.title != EXCLUDED.title
    OR events.start_datetime != EXCLUDED.start_datetime
@@ -135,6 +138,7 @@ async def upsert_event(pool: asyncpg.Pool, event: NormalizedEvent) -> str:
             event.registration_url,
             event.status,
             event.visibility,
+            event.series_key,
         )
 
         # asyncpg returns "INSERT 0 1" for insert, "UPDATE 1" for update, "UPDATE 0" for no change

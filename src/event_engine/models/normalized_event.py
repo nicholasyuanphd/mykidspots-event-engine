@@ -89,6 +89,9 @@ class NormalizedEvent(BaseModel):
     cost_amount: Decimal | None = None
     cost_details: str | None = None
 
+    # Series grouping (pre-expanded recurring events)
+    series_key: str | None = None
+
     # Metadata
     source: str = "auto-imported"
     status: EventStatus = "active"
