@@ -1,0 +1,29 @@
+# New Bern Area CivicPlus Sources — Craven County
+# Platform: civicplus (CivicEngage — HTML list-view)
+# Craven County government site — CID=14 is Main Calendar (mostly meetings)
+# NOTE: City of New Bern uses Revize (JSP endpoint migrated to Cloudflare R2 — 404)
+# NOTE: Craven-Pamlico Regional Library uses Joomla (no compatible scraper)
+# CID=0 for all calendars to catch any community events
+# trust_level: "new" — requires AI classification + curator review
+
+sources:
+  - id: "craven-county-calendar"
+    name: "Craven County Government Calendar"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: false  # Only government meetings in calendar — no kid/family events. Re-enable if community calendars are added.
+    timezone: "America/New_York"
+    base_url: "https://www.cravencountync.gov/Calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Craven County Administration Building"
+      address: "406 Craven Street, New Bern, NC 28560"
+      city: "New Bern"
+      latitude: 35.1085
+      longitude: -77.0441
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"

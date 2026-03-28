@@ -1,0 +1,56 @@
+# Outer Banks CivicPlus Sources — Nags Head, Kill Devil Hills
+# Platform: civicplus (CivicEngage — HTML list-view)
+# All are government sources (public domain descriptions)
+# trust_level: "new" — requires AI classification + curator review
+#
+# Nags Head CID=29 (Events calendar) — strong summer programming:
+#   Family Fun Times, Summer Concert Series, Yoga on the Lawn, Farmers Markets
+# Kill Devil Hills CID=0 (all calendars) — includes KDH Events (CID=22) + Main Town Calendar (CID=14)
+#   KDH Events is seasonally empty (populates in summer with farmers markets, etc.)
+#   AI classifier filters out government meetings automatically
+#
+# NOTE: Dare County Library (darenc.gov) uses CivicEngage embedded calendar components,
+# NOT Calendar.aspx — incompatible with civicplus scraper. Needs a new scraper.
+
+sources:
+  - id: "nags-head-events-calendar"
+    name: "Town of Nags Head Events"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.nagsheadnc.gov/Calendar.aspx"
+    location_id: "29"
+    location:
+      name: "Dowdy Park"
+      address: "3005 S Croatan Highway, Nags Head, NC 27959"
+      city: "Nags Head"
+      latitude: 35.9382
+      longitude: -75.6249
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
+
+  - id: "kill-devil-hills-events-calendar"
+    name: "Town of Kill Devil Hills Events"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.kdhnc.com/Calendar.aspx"
+    location_id: "0"
+    location:
+      name: "Kill Devil Hills Town Hall"
+      address: "102 Town Hall Dr, Kill Devil Hills, NC 27948"
+      city: "Kill Devil Hills"
+      latitude: 36.0307
+      longitude: -75.6760
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
