@@ -1,0 +1,26 @@
+# Southern Pines / Pinehurst Area
+# Platform: civicplus (CivicEngage)
+# Government source — public domain descriptions
+# trust_level: "verified" — library events are pre-vetted kid content
+
+sources:
+  - id: "southern-pines-library-calendar"
+    name: "Southern Pines Public Library"
+    platform: "civicplus"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.southernpines.net/Calendar.aspx"
+    location_id: "39"
+    location:
+      name: "Southern Pines Public Library"
+      address: "170 W Connecticut Ave, Southern Pines, NC 28387"
+      city: "Southern Pines"
+      latitude: 35.1763
+      longitude: -79.3902
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "skip"
+    category_overrides:
+      - "library"

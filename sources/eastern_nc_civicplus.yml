@@ -1,0 +1,89 @@
+# Eastern NC CivicPlus Sources — Greenville, Jacksonville
+# Platform: civicplus (CivicEngage — same HTML list-view as Wake County towns)
+# All are government sources (public domain descriptions)
+# trust_level: "verified" — library events are pre-vetted kid content
+
+sources:
+  - id: "greenville-library-calendar"
+    name: "Sheppard Memorial Library (Greenville)"
+    platform: "civicplus"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.sheppardlibrary.org/calendar.aspx"
+    location_id: "26"
+    location:
+      name: "Sheppard Memorial Library"
+      address: "530 Evans Street, Greenville, NC 27858"
+      city: "Greenville"
+      latitude: 35.6096
+      longitude: -77.3735
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "skip"
+    category_overrides:
+      - "library"
+
+  - id: "jacksonville-main-library-calendar"
+    name: "Onslow County Library - Main Branch"
+    platform: "civicplus"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.onslowcountync.gov/calendar.aspx"
+    location_id: "58"
+    location:
+      name: "Onslow County Public Library - Main"
+      address: "58 Doris Avenue East, Jacksonville, NC 28540"
+      city: "Jacksonville"
+      latitude: 34.7776
+      longitude: -77.4198
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "skip"
+    category_overrides:
+      - "library"
+
+  - id: "jacksonville-sneads-ferry-library-calendar"
+    name: "Onslow County Library - Sneads Ferry"
+    platform: "civicplus"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.onslowcountync.gov/calendar.aspx"
+    location_id: "62"
+    location:
+      name: "Onslow County Public Library - Sneads Ferry"
+      address: "660 Marine Blvd, Sneads Ferry, NC 28460"
+      city: "Jacksonville"
+      latitude: 34.5834
+      longitude: -77.3980
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "skip"
+    category_overrides:
+      - "library"
+
+  - id: "jacksonville-swansboro-library-calendar"
+    name: "Onslow County Library - Swansboro"
+    platform: "civicplus"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.onslowcountync.gov/calendar.aspx"
+    location_id: "66"
+    location:
+      name: "Onslow County Public Library - Swansboro"
+      address: "1460 W Corbett Ave, Swansboro, NC 28584"
+      city: "Jacksonville"
+      latitude: 34.6879
+      longitude: -77.1194
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "skip"
+    category_overrides:
+      - "library"
