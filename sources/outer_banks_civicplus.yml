@@ -10,7 +10,7 @@
 #   AI classifier filters out government meetings automatically
 #
 # NOTE: Dare County Library (darenc.gov) uses CivicEngage embedded calendar components,
-# NOT Calendar.aspx — incompatible with civicplus scraper. Needs a new scraper.
+# NOT Calendar.aspx — now handled by the civicengage scraper (see Dare County Library entry below).
 
 sources:
   - id: "nags-head-events-calendar"
@@ -33,6 +33,30 @@ sources:
     ai_classification: "required"
     category_overrides:
       - "community"
+
+  # Dare County Library — CivicEngage embedded calendar (grid ID 1663)
+  # 3 branches: Kill Devil Hills, Manteo, Hatteras
+  # Rich storytime programming, book clubs, crafts, STEAM
+  # Calendar page: darenc.gov/departments/libraries/library-calendar
+  - id: "dare-county-library-calendar"
+    name: "Dare County Library"
+    platform: "civicengage"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.darenc.gov/departments/libraries/library-calendar"
+    location_id: "1663"  # Calendar grid ID for library events
+    location:
+      name: "Dare County Library - Kill Devil Hills"
+      address: "400 Mustian St, Kill Devil Hills, NC 27948"
+      city: "Kill Devil Hills"
+      latitude: 36.0285
+      longitude: -75.6760
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
 
   - id: "kill-devil-hills-events-calendar"
     name: "Town of Kill Devil Hills Events"

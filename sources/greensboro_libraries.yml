@@ -1,0 +1,33 @@
+# Greensboro Public Library — CivicEngage embedded calendar
+# Platform: civicengage (embedded calendar grid, NOT Calendar.aspx)
+# Government source (public domain descriptions)
+# trust_level: "verified" — library events, no AI classification needed
+#
+# Calendar page: library.greensboro-nc.gov/about-us/calendar-of-library-events
+# Grid ID: 839 — event URLs: /Home/Components/Calendar/Event/{id}/839
+# 8 branches: Benjamin, Central, Glenn McNairy, Glenwood, Hemphill,
+#              Kathleen Clay Edwards, McGirt-Horton, Vance Chavis
+# Categories: Story Times, Children's Events, Teen Events, Arts & Crafts,
+#             STEAM, LEGO, Book Clubs, Computer Classes, ESOL, etc.
+# Estimated: 100-150 events/month
+
+sources:
+  - id: "greensboro-public-library"
+    name: "Greensboro Public Library"
+    platform: "civicengage"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://library.greensboro-nc.gov/about-us/calendar-of-library-events"
+    location_id: "839"  # Calendar grid ID — filters out sidebar widget links (grid 5186)
+    location:
+      name: "Greensboro Public Library - Central"
+      address: "219 N Church St, Greensboro, NC 27401"
+      city: "Greensboro"
+      latitude: 36.0726
+      longitude: -79.7920
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
