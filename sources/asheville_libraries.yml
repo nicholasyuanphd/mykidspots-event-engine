@@ -1,0 +1,24 @@
+# Buncombe County Public Libraries (Asheville, NC area)
+# Platform: LibraryMarket (librarycalendar.com)
+# All events are free, library programs
+# 12 branches + Off Site locations
+
+sources:
+  - id: "asheville-buncombe-county-library"
+    name: "Buncombe County Public Libraries"
+    platform: "librarymarket"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://buncombe.librarycalendar.com"
+    location:
+      name: "Buncombe County Public Libraries"
+      address: "67 Haywood St, Asheville, NC 28801"
+      city: "Asheville"
+      latitude: 35.5951
+      longitude: -82.5515
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"

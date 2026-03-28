@@ -1,0 +1,24 @@
+# Cumberland County Public Library (Fayetteville, NC area)
+# Platform: LibraryMarket (librarycalendar.com)
+# All events are free, library programs
+# Multiple branches across Cumberland County
+
+sources:
+  - id: "fayetteville-cumberland-county-library"
+    name: "Cumberland County Public Library"
+    platform: "librarymarket"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://cumberland.librarycalendar.com"
+    location:
+      name: "Cumberland County Public Library"
+      address: "300 Maiden Ln, Fayetteville, NC 28301"
+      city: "Fayetteville"
+      latitude: 35.0527
+      longitude: -78.8784
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
