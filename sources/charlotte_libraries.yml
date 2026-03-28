@@ -1,0 +1,25 @@
+# Charlotte Mecklenburg Library — 20+ branches
+# Platform: BiblioCommons (RSS feed at /events/rss/all)
+# Source: https://cmlibrary.bibliocommons.com/v2/events
+# 7,300+ events — massive system, largest in NC
+# All events are free public library programs
+
+sources:
+  - id: "charlotte-mecklenburg-library"
+    name: "Charlotte Mecklenburg Library"
+    platform: "bibliocommons"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://cmlibrary.bibliocommons.com"
+    location:
+      name: "Charlotte Mecklenburg Main Library"
+      address: "310 N Tryon St, Charlotte, NC 28202"
+      city: "Charlotte"
+      latitude: 35.2271
+      longitude: -80.8431
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"

@@ -1,0 +1,63 @@
+# Appalachian Regional Library — Boone/Watauga County area
+# Platform: iCal (Google Calendar public feeds)
+# Source: https://www.arlibrary.org/calendar
+# 3 county calendars — Watauga (Boone), Ashe, Wilkes
+# All events are free, kid/family focused public library programs
+
+sources:
+  - id: "boone-watauga-county-library"
+    name: "Watauga County Library (Boone)"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://calendar.google.com/calendar/ical/wataguacountyarl%40gmail.com/public/basic.ics"
+    location:
+      name: "Watauga County Library"
+      address: "140 Queen St, Boone, NC 28607"
+      city: "Boone"
+      latitude: 36.2168
+      longitude: -81.6746
+    request_delay_ms: 1000
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "boone-ashe-county-library"
+    name: "Ashe County Library"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://calendar.google.com/calendar/ical/ashecountyarl%40gmail.com/public/basic.ics"
+    location:
+      name: "Ashe County Library"
+      address: "148 Library Dr, West Jefferson, NC 28694"
+      city: "West Jefferson"
+      latitude: 36.4035
+      longitude: -81.4929
+    request_delay_ms: 1000
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "boone-wilkes-county-library"
+    name: "Wilkes County Library"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://calendar.google.com/calendar/ical/wilkescountyarl%40gmail.com/public/basic.ics"
+    location:
+      name: "Wilkes County Library"
+      address: "215 10th St, North Wilkesboro, NC 28659"
+      city: "North Wilkesboro"
+      latitude: 36.1585
+      longitude: -81.1476
+    request_delay_ms: 1000
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
