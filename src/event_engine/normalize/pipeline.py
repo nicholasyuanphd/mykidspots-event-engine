@@ -158,12 +158,19 @@ def normalize(
         source.category_overrides,
     )
 
-    # --- Location (use source config defaults if not in raw event) ---
-    location_name = raw.raw_location or source.location.name
-    address = raw.raw_address or source.location.address
+    # --- Location (prefer per-event coordinates from scraper, fall back to source config) ---
+    location_name = " ".join((raw.raw_location or source.location.name).split())
+    address = " ".join((raw.raw_address or source.location.address).split())
     city = source.location.city
-    latitude = source.location.latitude
-    longitude = source.location.longitude
+    # Per-event coordinates (e.g., BiblioCommons bc:location, TEC venue data)
+    raw_lat = raw.raw_data.get("latitude") if raw.raw_data else None
+    raw_lng = raw.raw_data.get("longitude") if raw.raw_data else None
+    try:
+        latitude = float(raw_lat) if raw_lat else source.location.latitude
+        longitude = float(raw_lng) if raw_lng else source.location.longitude
+    except (ValueError, TypeError):
+        latitude = source.location.latitude
+        longitude = source.location.longitude
 
     # --- Fingerprint ---
     fingerprint = compute_fingerprint(raw.source_id, raw.external_id)
