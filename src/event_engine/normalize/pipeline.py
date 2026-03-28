@@ -20,8 +20,11 @@ PLATFORM_SOURCE_MAP: dict[str, str] = {
     "wakegov": "pipeline_library",
     "libcal": "pipeline_library",
     "bibliocommons": "pipeline_library",
+    "librarymarket": "pipeline_library",
     "ical": "pipeline_museum",
     "civicplus": "pipeline_parks",
+    "civicengage": "pipeline_library",
+    "the_events_calendar": "pipeline_parks",
     "generic_html": "auto-imported",
 }
 

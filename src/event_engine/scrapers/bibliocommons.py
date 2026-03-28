@@ -31,7 +31,11 @@ class BiblioCommonsScraper(BaseScraper):
         url = f"{base}/events/rss/all"
 
         self.log.info("fetching_bibliocommons_rss", url=url)
-        response = await self.fetch(url)
+        try:
+            response = await self.fetch(url)
+        except Exception as exc:
+            self.log.warning("bibliocommons_fetch_failed", url=url, error=str(exc))
+            return
         soup = BeautifulSoup(response.text, "lxml-xml")
 
         items = soup.find_all("item")
