@@ -1,0 +1,65 @@
+# Durham Parks & Recreation — iCal feeds from CivicEngage (dprplaymore.org)
+# Platform: ical (CivicEngage iCalendar.aspx export)
+# Government source — public domain descriptions
+# Three calendar categories: Parks & Rec (catID=22), Teen Zone (catID=35), Special Events (catID=28)
+
+sources:
+  - id: "durham-parks-recreation"
+    name: "Durham Parks & Recreation"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.dprplaymore.org/common/modules/iCalendar/iCalendar.aspx?catID=22&feed=calendar"
+    location:
+      name: "Durham Parks & Recreation"
+      address: "400 Cleveland St, Durham, NC 27702"
+      city: "Durham"
+      latitude: 35.9940
+      longitude: -78.8986
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "outdoor"
+
+  - id: "durham-teen-zone"
+    name: "My Durham Teen Zone"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.dprplaymore.org/common/modules/iCalendar/iCalendar.aspx?catID=35&feed=calendar"
+    location:
+      name: "Durham Teen Zone"
+      address: "Durham, NC"
+      city: "Durham"
+      latitude: 35.9940
+      longitude: -78.8986
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "social"
+
+  - id: "durham-special-events"
+    name: "Durham Special Events"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.dprplaymore.org/common/modules/iCalendar/iCalendar.aspx?catID=28&feed=calendar"
+    location:
+      name: "Durham Special Events"
+      address: "Durham, NC"
+      city: "Durham"
+      latitude: 35.9940
+      longitude: -78.8986
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
