@@ -1,0 +1,26 @@
+# NC Department of Natural & Cultural Resources — Localist API
+# Covers: State Parks (40+), Museums, Aquariums, NC Zoo, Historic Sites
+# API: events.dncr.nc.gov/api/2/events
+# State institution — government content policy (public domain)
+#
+# Note: The `location` block is a fallback — the Localist API provides
+# per-event geo coordinates which the pipeline uses via raw_data.latitude/longitude.
+
+sources:
+  - id: "nc-dncr-events"
+    name: "NC DNCR — State Parks, Museums & Historic Sites"
+    platform: "localist"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://events.dncr.nc.gov"
+    location:
+      name: "NC State Parks & Museums"
+      address: ""
+      city: "Raleigh"
+      latitude: 35.7796
+      longitude: -78.6382
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides: []

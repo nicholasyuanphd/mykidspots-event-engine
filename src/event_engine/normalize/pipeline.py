@@ -26,6 +26,7 @@ PLATFORM_SOURCE_MAP: dict[str, str] = {
     "civicengage": "pipeline_library",
     "the_events_calendar": "pipeline_parks",
     "generic_html": "auto-imported",
+    "localist": "pipeline_museum",
 }
 
 # Keywords that indicate an event is NOT for kids/families
@@ -161,7 +162,9 @@ def normalize(
     # --- Location (prefer per-event coordinates from scraper, fall back to source config) ---
     location_name = " ".join((raw.raw_location or source.location.name).split())
     address = " ".join((raw.raw_address or source.location.address).split())
-    city = source.location.city
+    # Per-event city (e.g., Localist geo.city) or source default
+    raw_city = raw.raw_data.get("geo_city") if raw.raw_data else None
+    city = raw_city or source.location.city
     # Per-event coordinates (e.g., BiblioCommons bc:location, TEC venue data)
     raw_lat = raw.raw_data.get("latitude") if raw.raw_data else None
     raw_lng = raw.raw_data.get("longitude") if raw.raw_data else None
