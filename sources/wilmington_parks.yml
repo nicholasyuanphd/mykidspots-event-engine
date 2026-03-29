@@ -1,0 +1,64 @@
+# New Hanover County Parks & Gardens + Senior Resource Center — iCal feeds
+# Platform: ical (CivicEngage iCalendar.aspx export)
+# Government source — public domain descriptions
+# Covers: Airlie Gardens, parks programs, SRC activities
+
+sources:
+  - id: "wilmington-parks-gardens"
+    name: "New Hanover County Parks & Gardens"
+    platform: "ical"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.nhcgov.com/common/modules/iCalendar/iCalendar.aspx?catID=24&feed=calendar"
+    location:
+      name: "New Hanover County Parks"
+      address: "Wilmington, NC"
+      city: "Wilmington"
+      latitude: 34.2358
+      longitude: -77.9470
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "outdoor"
+
+  - id: "wilmington-src-activities"
+    name: "New Hanover County SRC Activities"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.nhcgov.com/common/modules/iCalendar/iCalendar.aspx?catID=55&feed=calendar"
+    location:
+      name: "Senior Resource Center"
+      address: "Wilmington, NC"
+      city: "Wilmington"
+      latitude: 34.2358
+      longitude: -77.9470
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
+
+  - id: "wilmington-src-events"
+    name: "New Hanover County SRC Events"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.nhcgov.com/common/modules/iCalendar/iCalendar.aspx?catID=56&feed=calendar"
+    location:
+      name: "Senior Resource Center"
+      address: "Wilmington, NC"
+      city: "Wilmington"
+      latitude: 34.2358
+      longitude: -77.9470
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
