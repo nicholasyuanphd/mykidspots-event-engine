@@ -25,12 +25,17 @@ async def create_pool(database_url: str) -> asyncpg.Pool:
     ssl_ctx.check_hostname = False
     ssl_ctx.verify_mode = ssl.CERT_NONE
 
+    # Detect PgBouncer (pooler) URLs — disable prepared statement cache
+    # which is incompatible with PgBouncer's transaction mode
+    is_pooler = "pooler.supabase.com" in database_url
+
     pool = await asyncpg.create_pool(
         database_url,
         min_size=2,
         max_size=10,
         ssl=ssl_ctx,
         command_timeout=30,
+        **({"statement_cache_size": 0} if is_pooler else {}),
     )
 
     if pool is None:
