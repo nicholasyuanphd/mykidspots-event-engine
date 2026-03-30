@@ -1,0 +1,93 @@
+# Alamance County Public Libraries — 4 branches
+# Platform: LibCal (Springshare) — alamancelibraries.libcal.com
+# Each branch has its own calendar ID
+# Government source (public domain descriptions)
+# Audience categories: 0-5 (8304), 6-11 (8305), Young Adult (8306), Adult (8307), General Interest/Family (8308)
+#
+# Branches:
+#   May Memorial Library (HQ, Burlington)    — cal 5444,  campus 3048
+#   Graham Public Library (Graham)           — cal 11724, campus 6991
+#   Mebane Public Library (Mebane)           — cal 17574, campus 7509
+#   North Park Library (Burlington)          — cal 20202, campus 8783
+# Skipped: BookMARK (bookmobile, cal 20384), Mobile Library (cal 20391), Outreach (cal 21688)
+
+sources:
+  - id: "alamance-may-memorial-library"
+    name: "Alamance County Libraries - May Memorial"
+    platform: "libcal"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://alamancelibraries.libcal.com"
+    location_id: "5444"
+    location:
+      name: "May Memorial Library"
+      address: "342 South Spring Street, Burlington, NC 27215"
+      city: "Burlington"
+      latitude: 36.092555
+      longitude: -79.43668
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "alamance-graham-public-library"
+    name: "Alamance County Libraries - Graham Public Library"
+    platform: "libcal"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://alamancelibraries.libcal.com"
+    location_id: "11724"
+    location:
+      name: "Graham Public Library"
+      address: "211 South Main Street, Graham, NC 27253"
+      city: "Graham"
+      latitude: 36.0670796
+      longitude: -79.4004328
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "alamance-mebane-public-library"
+    name: "Alamance County Libraries - Mebane Public Library"
+    platform: "libcal"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://alamancelibraries.libcal.com"
+    location_id: "17574"
+    location:
+      name: "Mebane Public Library"
+      address: "101 South First Street, Mebane, NC 27302"
+      city: "Mebane"
+      latitude: 36.097126
+      longitude: -79.2724428
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  - id: "alamance-north-park-library"
+    name: "Alamance County Libraries - North Park Library"
+    platform: "libcal"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://alamancelibraries.libcal.com"
+    location_id: "20202"
+    location:
+      name: "North Park Library"
+      address: "849 Sharpe Road, Burlington, NC 27217"
+      city: "Burlington"
+      latitude: 36.112726
+      longitude: -79.4208956
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
