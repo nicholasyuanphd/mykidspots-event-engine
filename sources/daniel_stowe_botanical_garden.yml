@@ -1,0 +1,27 @@
+# Daniel Stowe Botanical Garden (Charlotte, NC)
+# Website: https://www.dsbg.org (redirects to danielstoweconservancy.org)
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — private 501(c)(3); drop descriptions, keep facts
+# AI classification required — mix of adult programs and family events
+
+sources:
+  - id: "daniel-stowe-botanical-garden"
+    name: "Daniel Stowe Botanical Garden"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult garden programs and family/kid events; filter to kid/family
+    enabled: false  # DISABLED: Mix of paid/free but TEC API returns no cost data; re-enable when cost scraping is implemented
+    timezone: "America/New_York"
+    base_url: "https://danielstoweconservancy.org"
+    location:
+      name: "Daniel Stowe Botanical Garden"
+      address: "6500 South New Hope Rd, Belmont, NC 28012"
+      city: "Charlotte"
+      latitude: 35.2271
+      longitude: -81.0598
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; AI classifier handles paid vs free filtering
+    category_overrides:
+      - "nature"
+      - "outdoor"

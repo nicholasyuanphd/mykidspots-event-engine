@@ -1,0 +1,27 @@
+# Morehead Planetarium & Science Center (Chapel Hill, NC)
+# Website: https://moreheadplanetarium.org
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — UNC-affiliated 501(c)(3); drop descriptions, keep facts
+# AI classification required — mix of adult astronomy programs and family/school events
+
+sources:
+  - id: "morehead-planetarium"
+    name: "Morehead Planetarium & Science Center"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult planetarium shows, school programs, and family events; filter to kid/family
+    enabled: false  # DISABLED: All shows require paid admission; TEC API returns no cost data so can't filter
+    timezone: "America/New_York"
+    base_url: "https://moreheadplanetarium.org"
+    location:
+      name: "Morehead Planetarium & Science Center"
+      address: "250 E Franklin St, Chapel Hill, NC 27514"
+      city: "Chapel Hill"
+      latitude: 35.9121
+      longitude: -79.0517
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; AI classifier handles paid vs free filtering
+    category_overrides:
+      - "science"
+      - "museum"

@@ -1,0 +1,27 @@
+# North Carolina Botanical Garden (Chapel Hill, NC)
+# Website: https://ncbg.unc.edu
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — UNC-affiliated 501(c)(3); drop descriptions, keep facts
+# AI classification required — mix of adult plant programs and family/kid events (camps, nature programs)
+
+sources:
+  - id: "nc-botanical-garden"
+    name: "North Carolina Botanical Garden"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult botany programs and family/kid events (nature camps, spring break camps); filter to kid/family
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://ncbg.unc.edu"
+    location:
+      name: "North Carolina Botanical Garden"
+      address: "100 Old Mason Farm Rd, Chapel Hill, NC 27517"
+      city: "Chapel Hill"
+      latitude: 35.8985
+      longitude: -79.0387
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; AI classifier handles paid vs free filtering
+    category_overrides:
+      - "nature"
+      - "outdoor"

@@ -1,0 +1,27 @@
+# Sarah P. Duke Gardens (Durham, NC)
+# Website: https://gardens.duke.edu
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — Duke University private institution; drop descriptions, keep facts
+# AI classification required — mix of adult botany programs, hikes, and family events
+
+sources:
+  - id: "duke-gardens"
+    name: "Sarah P. Duke Gardens"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult garden walks, lectures, and family/kid events; filter to kid/family
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://gardens.duke.edu"
+    location:
+      name: "Sarah P. Duke Gardens"
+      address: "426 Anderson St, Durham, NC 27708"
+      city: "Durham"
+      latitude: 36.0011
+      longitude: -78.9393
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; AI classifier handles paid vs free filtering
+    category_overrides:
+      - "nature"
+      - "outdoor"

@@ -1,0 +1,27 @@
+# Nasher Museum of Art at Duke University (Durham, NC)
+# Website: https://nasher.duke.edu
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — Duke University private institution; drop descriptions, keep facts
+# AI classification required — mix of adult art programs, lectures, and family/kid events
+
+sources:
+  - id: "nasher-museum"
+    name: "Nasher Museum of Art at Duke University"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult art openings, lectures, and family/kid events (e.g., bilingual story time); filter to kid/family
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://nasher.duke.edu"
+    location:
+      name: "Nasher Museum of Art"
+      address: "2001 Campus Dr, Durham, NC 27705"
+      city: "Durham"
+      latitude: 36.0012
+      longitude: -78.9378
+    request_delay_ms: 1500
+    default_cost_type: "free"  # Many Nasher events are free; admission-required events noted in AI filter
+    category_overrides:
+      - "museum"
+      - "art"

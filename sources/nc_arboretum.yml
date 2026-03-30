@@ -1,0 +1,27 @@
+# North Carolina Arboretum (Asheville, NC)
+# Website: https://www.ncarboretum.org
+# Platform: The Events Calendar (WordPress TEC REST API)
+# Content policy: nonprofit — private 501(c)(3); drop descriptions, keep facts
+# AI classification required — mix of adult garden programs, workshops, and family events
+
+sources:
+  - id: "nc-arboretum"
+    name: "North Carolina Arboretum"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "nonprofit"
+    ai_classification: "required"  # Mix of adult horticulture programs and family/kid events; filter to kid/family
+    enabled: false  # DISABLED: Programs are paid workshops (Eventbrite); TEC API returns no cost data so can't filter
+    timezone: "America/New_York"
+    base_url: "https://www.ncarboretum.org"
+    location:
+      name: "North Carolina Arboretum"
+      address: "100 Frederick Law Olmsted Way, Asheville, NC 28806"
+      city: "Asheville"
+      latitude: 35.5193
+      longitude: -82.6157
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; AI classifier handles paid vs free filtering
+    category_overrides:
+      - "nature"
+      - "outdoor"
