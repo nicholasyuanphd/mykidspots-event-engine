@@ -1,0 +1,28 @@
+# Forsyth County Public Library — 10 branches (Winston-Salem, NC area)
+# Platform: LibraryMarket (librarycalendar.com)
+# Calendar URL: https://forsythcounty.librarycalendar.com/events/upcoming
+# Branches: Central, Carver School Road, Clemmons, Lewisville, Malloy/Jordan,
+#            Paddison Memorial (Kernersville), Reynolda Manor, Rural Hall,
+#            Southside, Walkertown
+# Government source — public domain descriptions, free events
+# Estimated: 60-100 events/month
+
+sources:
+  - id: "forsyth-county-library"
+    name: "Forsyth County Public Library"
+    platform: "librarymarket"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://forsythcounty.librarycalendar.com"
+    location:
+      name: "Forsyth County Public Library - Central"
+      address: "660 W 5th St, Winston-Salem, NC 27101"
+      city: "Winston-Salem"
+      latitude: 36.0987
+      longitude: -80.2442
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
