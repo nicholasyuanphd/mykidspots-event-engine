@@ -1,0 +1,69 @@
+# Chapel Hill Public Library + Orange County Public Library
+# Platform: library_calendar_json (Drupal library_calendar module — JSON API)
+# Both library systems use the same Drupal module and expose /events/feed/json
+# All events are free library programs
+
+sources:
+  # Chapel Hill Public Library — single branch at 100 Library Drive
+  - id: "chapel-hill-public-library"
+    name: "Chapel Hill Public Library"
+    platform: "library_calendar_json"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.chapelhillpubliclibrary.org"
+    location:
+      name: "Chapel Hill Public Library"
+      address: "100 Library Drive, Chapel Hill, NC 27514"
+      city: "Chapel Hill"
+      latitude: 35.9319
+      longitude: -79.0351
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  # Orange County Public Library — Main Library in Hillsborough
+  - id: "orange-county-library-hillsborough"
+    name: "Orange County Public Library - Main Library"
+    platform: "library_calendar_json"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://orangecountync.librarycalendar.com"
+    location:
+      name: "Orange County Public Library - Main Library"
+      address: "137 W. Margaret Lane, Hillsborough, NC 27278"
+      city: "Hillsborough"
+      latitude: 36.0742
+      longitude: -79.1007
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+    selectors:
+      branch_filter: "hillsborough"
+
+  # Orange County Public Library — Southern Branch in Carrboro
+  - id: "orange-county-library-carrboro"
+    name: "Orange County Public Library - Southern Branch"
+    platform: "library_calendar_json"
+    trust_level: "verified"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://orangecountync.librarycalendar.com"
+    location:
+      name: "Orange County Public Library - Southern Branch"
+      address: "203 S. Greensboro St., Carrboro, NC 27510"
+      city: "Carrboro"
+      latitude: 35.9095
+      longitude: -79.0722
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+    selectors:
+      branch_filter: "carrboro"
