@@ -14,7 +14,7 @@ sources:
     platform: "activenet"
     trust_level: "new"
     content_policy: "government"
-    enabled: true
+    enabled: false  # DISABLED: Cost data unreliable — paid programs (swim lessons, fitness) tagged as free
     timezone: "America/New_York"
     base_url: "https://anc.apm.activecommunities.com/mecklenburgparks"
     location_id: ""

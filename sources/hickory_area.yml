@@ -1,0 +1,82 @@
+# Hickory / Catawba County Area — City of Hickory + Hickory Public Library
+#
+# City of Hickory: WordPress + The Events Calendar plugin
+#   REST API confirmed at /calendar/wp-json/tribe/events/v1/events
+#   946 total events as of 2026-03-27 (mostly recreation, some kid-relevant)
+#   AI classification required — many adult-only fitness/sports events
+#
+# Hickory Public Library: LibCal (Springshare) at hickory.librarycalendar.com
+#   2 branches: Patrick Beaver Memorial Library, Ridgeview Branch Library
+#   Good kid programming: story times, STEAM, crafts, family events
+#
+# Catawba County Library: ProcessWire CMS with custom MarkupRecurme calendar
+#   No public API or iCal feed discovered — calendar loads via client-side JS
+#   Deferred until a ProcessWire scraper is built or they adopt a standard platform
+
+sources:
+  # ── City of Hickory (The Events Calendar) ──────────────────────────────
+
+  - id: "hickory-city-events"
+    name: "City of Hickory Events"
+    platform: "the_events_calendar"
+    trust_level: "new"
+    content_policy: "government"
+    ai_classification: "required"  # Many adult-only rec events; filter to kid/family
+    enabled: false  # DISABLED: AI classifier not filtering adult fitness classes (Zumba, yoga, cycle, etc.)
+    timezone: "America/New_York"
+    base_url: "https://www.hickorync.gov/calendar"
+    location_id: ""  # All categories — AI classifier filters to kid-relevant
+    skip_ssl_verify: true  # hickorync.gov has a broken SSL certificate chain
+    location:
+      name: "City of Hickory"
+      address: "76 N Center St, Hickory, NC 28601"
+      city: "Hickory"
+      latitude: 35.7332
+      longitude: -81.3412
+    request_delay_ms: 1500
+    default_cost_type: "free"  # TEC API doesn't populate cost field; most city rec events are free
+    category_overrides: []
+
+  # ── Hickory Public Library (LibraryMarket / librarycalendar.com) ──────
+
+  - id: "hickory-public-library"
+    name: "Hickory Public Library"
+    platform: "librarymarket"
+    trust_level: "new"
+    content_policy: "government"
+    ai_classification: "skip"  # Library events are consistently kid/family friendly
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://hickory.librarycalendar.com"
+    skip_ssl_verify: true  # librarycalendar.com has SSL cert chain issues
+    location:
+      name: "Patrick Beaver Memorial Library"
+      address: "375 3rd St NE, Hickory, NC 28601"
+      city: "Hickory"
+      latitude: 35.7371
+      longitude: -81.3369
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
+
+  # ── Catawba County Library (DEFERRED) ───────────────────────────────────
+
+  - id: "catawba-county-library"
+    name: "Catawba County Library System"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: false  # ProcessWire CMS + MarkupRecurme — no public API/iCal feed found
+    timezone: "America/New_York"
+    base_url: ""  # TODO: catawbacountync.gov uses client-side JS calendar with no API
+    location:
+      name: "Main Library - Newton"
+      address: "115 W C St, Newton, NC 28658"
+      city: "Newton"
+      latitude: 35.6688
+      longitude: -81.2218
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    category_overrides:
+      - "library"
