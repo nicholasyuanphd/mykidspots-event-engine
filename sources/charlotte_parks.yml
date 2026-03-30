@@ -1,0 +1,32 @@
+# Charlotte/Mecklenburg County Parks & Recreation
+# Platform: ActiveNet (anc.apm.activecommunities.com)
+# Source: https://anc.apm.activecommunities.com/mecklenburgparks/activity/search
+# ~1,900+ activities across 60+ recreation centers and parks
+# Government-sourced (public domain); trust_level "new" → review queue
+#
+# The ActiveNet scraper fetches all activities (no server-side age filter)
+# and gets detail pages for center addresses and coordinates.
+# Age-based filtering (kid-friendly) happens in the normalizer via raw_age_text.
+
+sources:
+  - id: "charlotte-mecklenburg-parks"
+    name: "Mecklenburg County Park and Recreation"
+    platform: "activenet"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://anc.apm.activecommunities.com/mecklenburgparks"
+    location_id: ""
+    location:
+      name: "Mecklenburg County Park and Recreation"
+      address: ""
+      city: "Charlotte"
+      latitude: 35.2271
+      longitude: -80.8431
+    request_delay_ms: 500
+    default_cost_type: "paid"
+    ai_classification: "required"
+    category_overrides:
+      - "parks"
+      - "recreation"

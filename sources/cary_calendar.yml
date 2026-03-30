@@ -1,0 +1,41 @@
+# Town of Cary Events Calendar
+# Platform: civicengage (CivicEngage embedded calendar grid)
+# Government source (public domain descriptions)
+# trust_level: "new" — requires AI classification + curator review
+#
+# Cary's main events calendar at carync.gov uses CivicEngage with:
+#   Grid ID 1636 — main public events calendar
+#   ~98 events visible across 3 months
+#   Mix of community events, concerts, sports, recreation programs
+#   Akamai CDN — handled by civicengage scraper's curl bypass
+#
+# Note: Cary's parks & rec REGISTRATION system is RecTrac (Vermont Systems),
+# but the city WEBSITE calendar is CivicEngage — which is what we scrape.
+# RecTrac has no public API; the CivicEngage calendar is the public-facing listing.
+#
+# Also has an RSS feed at:
+#   /Home/Components/RssFeeds/RssFeed/View?ctID=6
+# but it only returns ~13 upcoming events (no pagination). The calendar grid
+# gives us 3 months of coverage with ~98 events.
+
+sources:
+  - id: "cary-town-calendar"
+    name: "Town of Cary Events"
+    platform: "civicengage"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.carync.gov/connect-engage/calendar"
+    location_id: "1636"
+    location:
+      name: "Town of Cary"
+      address: "316 N Academy St, Cary, NC 27513"
+      city: "Cary"
+      latitude: 35.7915
+      longitude: -78.7811
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"

@@ -1,0 +1,35 @@
+# Asheville Parks & Recreation
+# Platform: webtrac (Vermont Systems WebTrac on myvscloud.com)
+# Uses Playwright with headed Chromium to bypass Cloudflare protection.
+# All events are government-sourced (public domain).
+#
+# WebTrac URL: https://ncashevilleweb.myvscloud.com/webtrac/web/search.html
+# Categories (Asheville-specific): TODDLER, YOUTH, TEEN, FAMILY
+# Locations: Burton St. Center, Grant Center, Harvest House, Montford Complex,
+#            Murphy-Oakley, Shiloh Center, Grove Street Center, Stephens-Lee Center
+#
+# NOTE: This scraper requires Playwright with headed Chromium:
+#   uv pip install 'playwright>=1.49' && playwright install chromium
+
+sources:
+  - id: "asheville-parks-recreation"
+    name: "Asheville Parks & Recreation"
+    platform: "webtrac"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://ncashevilleweb.myvscloud.com/webtrac/web/search.html"
+    location_id: "TODDLER,YOUTH,TEEN,FAMILY"
+    location:
+      name: "Asheville Parks & Recreation"
+      address: ""
+      city: "Asheville"
+      latitude: 35.5951
+      longitude: -82.5515
+    request_delay_ms: 2000
+    default_cost_type: "paid"
+    ai_classification: "required"
+    category_overrides:
+      - "sports"
+      - "recreation"

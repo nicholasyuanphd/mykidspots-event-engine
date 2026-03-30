@@ -1,0 +1,33 @@
+# Raleigh Parks, Recreation and Cultural Resources
+# Platform: webtrac (Vermont Systems WebTrac on myvscloud.com)
+# Uses Playwright with headed Chromium to bypass Cloudflare protection.
+# All events are government-sourced (public domain).
+#
+# WebTrac URL: https://ncraleighweb.myvscloud.com/webtrac/web/search.html
+# Categories (Raleigh-specific): 1Preschool, 2Youth, 3Teen, 6Family
+#
+# NOTE: This scraper requires Playwright with headed Chromium:
+#   uv pip install 'playwright>=1.49' && playwright install chromium
+
+sources:
+  - id: "raleigh-parks-recreation"
+    name: "Raleigh Parks, Recreation and Cultural Resources"
+    platform: "webtrac"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://ncraleighweb.myvscloud.com/webtrac/web/search.html"
+    location_id: "1Preschool,2Youth,3Teen,6Family"
+    location:
+      name: "Raleigh Parks & Recreation"
+      address: ""
+      city: "Raleigh"
+      latitude: 35.7796
+      longitude: -78.6382
+    request_delay_ms: 2000
+    default_cost_type: "paid"
+    ai_classification: "required"
+    category_overrides:
+      - "sports"
+      - "recreation"
