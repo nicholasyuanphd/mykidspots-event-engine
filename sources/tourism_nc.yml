@@ -1,0 +1,98 @@
+# NC Tourism CVB Sources
+# Platform: simpleview_rest (VisitRaleigh, Wilmington) | meilisearch (Charlotte)
+# Content policy: commercial — descriptions always dropped (third-party copyright)
+# AI classification: required — CVB events are mixed family/adult; classifier filters
+# Trust level: new — events enter as pending for curator review until source is validated
+# Asheville: DEFERRED — Cloudflare bot protection blocks all automated access
+
+sources:
+  - id: "visitraleigh-events"
+    name: "Visit Raleigh Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.visitraleigh.com"
+    location_id: ""
+    location:
+      name: "Raleigh"
+      city: "Raleigh"
+      latitude: 35.7796
+      longitude: -78.6382
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
+
+  - id: "wilmington-beaches-events"
+    name: "Wilmington & Beaches Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.wilmingtonandbeaches.com"
+    location_id: ""
+    location:
+      name: "Wilmington"
+      city: "Wilmington"
+      latitude: 34.2257
+      longitude: -77.9447
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v2"
+    category_overrides:
+      - "community"
+
+  - id: "charlottesgotalot-events"
+    name: "Charlotte's Got A Lot Events"
+    platform: "meilisearch"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.charlottesgotalot.com"
+    location_id: ""
+    location:
+      name: "Charlotte"
+      city: "Charlotte"
+      latitude: 35.2271
+      longitude: -80.8431
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      search_url: "https://search.charlottesgotalot.com"
+      index: "cluster_events"
+      api_key: "GKEuAXwR4*em@MJ7"
+    category_overrides:
+      - "community"
+
+  - id: "exploreasheville-events"
+    name: "Explore Asheville Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: false  # DEFERRED: Cloudflare bot protection blocks all automated access.
+    # To enable: contact ExploreAsheville for API access, or wait for data partnership.
+    timezone: "America/New_York"
+    base_url: "https://www.exploreasheville.com"
+    location_id: ""
+    location:
+      name: "Asheville"
+      city: "Asheville"
+      latitude: 35.5951
+      longitude: -82.5515
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
