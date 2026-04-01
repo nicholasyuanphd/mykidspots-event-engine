@@ -11,7 +11,7 @@ import httpx
 import structlog
 
 from event_engine.circuit_breaker import CircuitBreaker
-from event_engine.classify.ai_classifier import AIClassifier
+from event_engine.classify.ai_classifier import TOURISM_SYSTEM_PROMPT, AIClassifier
 from event_engine.db.connection import create_pool
 from event_engine.db.hygiene import run_hygiene_scan
 from event_engine.db.import_log import write_import_log
@@ -185,9 +185,13 @@ async def _scrape_source(
 
             # AI classification step (for sources that need it)
             ai_verdicts: list[str | None] = [None] * len(raw_events)
+            TOURISM_PLATFORMS = {"simpleview_rest", "meilisearch"}
+            tourism_prompt = (
+                TOURISM_SYSTEM_PROMPT if source.platform in TOURISM_PLATFORMS else None
+            )
             if classifier and source.ai_classification in ("required", "optional"):
                 titles = [e.title for e in raw_events]
-                results_ai = await classifier.classify_all(titles)
+                results_ai = await classifier.classify_all(titles, system_prompt=tourism_prompt)
                 ai_verdicts = [r.value for r in results_ai]
                 log.info(
                     "ai_classification_complete",
@@ -211,7 +215,9 @@ async def _scrape_source(
                         combined = f"{event.title}. {desc}" if desc else event.title
                         enriched_titles.append(combined)
 
-                    refined = await classifier.classify_all(enriched_titles)
+                    refined = await classifier.classify_all(
+                        enriched_titles, system_prompt=tourism_prompt
+                    )
                     for list_idx, original_idx in enumerate(maybe_indices):
                         ai_verdicts[original_idx] = refined[list_idx].value
 
