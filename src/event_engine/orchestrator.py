@@ -27,6 +27,8 @@ if TYPE_CHECKING:
 
 logger = structlog.get_logger()
 
+TOURISM_PLATFORMS = {"simpleview_rest", "meilisearch"}
+
 
 async def run(
     database_url: str,
@@ -185,7 +187,6 @@ async def _scrape_source(
 
             # AI classification step (for sources that need it)
             ai_verdicts: list[str | None] = [None] * len(raw_events)
-            TOURISM_PLATFORMS = {"simpleview_rest", "meilisearch"}
             tourism_prompt = (
                 TOURISM_SYSTEM_PROMPT if source.platform in TOURISM_PLATFORMS else None
             )
