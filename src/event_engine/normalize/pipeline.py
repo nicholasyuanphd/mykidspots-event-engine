@@ -27,6 +27,8 @@ PLATFORM_SOURCE_MAP: dict[str, str] = {
     "the_events_calendar": "pipeline_parks",
     "generic_html": "auto-imported",
     "localist": "pipeline_museum",
+    "simpleview_rest": "pipeline_tourism",
+    "meilisearch": "pipeline_tourism",
 }
 
 # Keywords that indicate an event is NOT for kids/families

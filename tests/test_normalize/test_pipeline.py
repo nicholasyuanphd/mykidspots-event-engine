@@ -244,3 +244,15 @@ class TestNormalize:
         )
         result = normalize(raw, sample_source, ai_verdict="no")
         assert result is None
+
+
+def test_simpleview_rest_platform_maps_to_tourism_badge():
+    """simpleview_rest platform maps to pipeline_tourism source badge."""
+    from event_engine.normalize.pipeline import PLATFORM_SOURCE_MAP
+    assert PLATFORM_SOURCE_MAP["simpleview_rest"] == "pipeline_tourism"
+
+
+def test_meilisearch_platform_maps_to_tourism_badge():
+    """meilisearch platform maps to pipeline_tourism source badge."""
+    from event_engine.normalize.pipeline import PLATFORM_SOURCE_MAP
+    assert PLATFORM_SOURCE_MAP["meilisearch"] == "pipeline_tourism"
