@@ -4,7 +4,9 @@ from collections.abc import AsyncIterator
 from datetime import UTC, datetime
 from typing import Any
 
-from event_engine.models import RawEvent
+import httpx
+
+from event_engine.models import RawEvent, SourceConfig
 from event_engine.scrapers.base import BaseScraper
 from event_engine.scrapers.registry import register
 
@@ -28,9 +30,11 @@ class MeilisearchTourismScraper(BaseScraper):
 
     platform = "meilisearch"
 
-    # Mutable state for current POST request — set before each fetch_json call
-    _current_body: dict[str, Any] = {}
-    _current_headers: dict[str, str] = {}
+    def __init__(self, source: SourceConfig, client: httpx.AsyncClient) -> None:
+        super().__init__(source, client)
+        # Mutable state for current POST request — set before each fetch_json call
+        self._current_body: dict[str, Any] = {}
+        self._current_headers: dict[str, str] = {}
 
     async def fetch_json(self, url: str, **kwargs: object) -> "dict[str, Any] | list[Any]":
         """Override to perform a POST request with JSON body instead of GET.

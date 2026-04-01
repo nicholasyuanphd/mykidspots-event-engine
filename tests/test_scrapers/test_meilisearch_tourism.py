@@ -133,11 +133,28 @@ class TestMeilisearchTourismScraper:
 
     @pytest.mark.asyncio
     async def test_deduplicates_events_across_pages(self) -> None:
-        """Same event appearing in multiple paginated responses is deduplicated."""
-        scraper = _make_scraper(CHARLOTTE_CONFIG, [SAMPLE_RESPONSE, SAMPLE_RESPONSE])
+        """Same event appearing across paginated pages is deduplicated to one result."""
+        # First page: 50 hits (full page), estimatedTotalHits = 51 → pagination continues
+        first_hit = {**SAMPLE_HIT}  # contains id="charlotte-event-001"
+        first_page = {
+            "hits": [first_hit] * 50,  # 50 identical hits on page 1
+            "estimatedTotalHits": 51,
+            "limit": 50,
+            "offset": 0,
+        }
+        # Second page: same event again → should be deduped
+        second_page = {
+            "hits": [first_hit],  # same id appears again on page 2
+            "estimatedTotalHits": 51,
+            "limit": 50,
+            "offset": 50,
+        }
+        scraper = _make_scraper(CHARLOTTE_CONFIG, [first_page, second_page])
         events = await scraper.scrape_all()
+        # All 51 hits have the same id — dedup should yield exactly 1 unique event
         ids = [e.external_id for e in events]
-        assert len(ids) == len(set(ids))
+        assert len(ids) == 1
+        assert ids[0] == "charlotte-event-001"
 
     @pytest.mark.asyncio
     async def test_unix_timestamp_converted_to_iso(self) -> None:
