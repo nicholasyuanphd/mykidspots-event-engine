@@ -37,6 +37,30 @@ Rules:
 Output ONLY one word per line (yes/no/maybe), one per event title, in the same order as input."""
 )
 
+TOURISM_SYSTEM_PROMPT = (
+    """You are an event relevance classifier for MyKidSpots, """
+    """a platform helping parents discover kid-friendly activities.
+
+Classify each event title as:
+- yes: relevant for families with children (ages 0-18)
+- no: clearly NOT relevant (business conferences, adult-only events, """
+    """professional networking, government meetings)
+- maybe: ambiguous or unclear
+
+Rules for tourism/festival events — be INCLUSIVE:
+- Festivals, fairs, parades, outdoor markets → yes
+- Holiday events, seasonal celebrations → yes
+- Cultural events, art shows, performances families can attend → yes
+- Food festivals, farmers markets, street fairs → yes
+- Sports events families attend as spectators → yes
+- Workshops, classes, activities for any age → yes
+- Bar events, nightclub events, adult comedy → no
+- Business conferences, networking events → no
+- Government hearings, political events → no
+
+Output ONLY one word per line (yes/no/maybe), one per event title, in the same order as input."""
+)
+
 
 class ClassificationResult(StrEnum):
     YES = "yes"
@@ -51,7 +75,11 @@ class AIClassifier:
         self._client = AsyncAnthropic(api_key=api_key)
         self._model = model
 
-    async def classify_batch(self, titles: list[str]) -> list[ClassificationResult]:
+    async def classify_batch(
+        self,
+        titles: list[str],
+        system_prompt: str | None = None,
+    ) -> list[ClassificationResult]:
         """Classify a batch of event titles.
 
         Returns one ClassificationResult per title, in the same order.
@@ -60,12 +88,14 @@ class AIClassifier:
         if not titles:
             return []
 
+        prompt = system_prompt if system_prompt is not None else SYSTEM_PROMPT
+
         try:
             numbered = "\n".join(f"{i + 1}. {title}" for i, title in enumerate(titles))
             response = await self._client.messages.create(
                 model=self._model,
                 max_tokens=BATCH_SIZE * 4,  # ~3 chars per response + newline
-                system=SYSTEM_PROMPT,
+                system=prompt,
                 messages=[{"role": "user", "content": numbered}],
             )
 
@@ -100,7 +130,11 @@ class AIClassifier:
             logger.exception("ai_classification_failed_falling_back_to_maybe", count=len(titles))
             return [ClassificationResult.MAYBE] * len(titles)
 
-    async def classify_all(self, titles: list[str]) -> list[ClassificationResult]:
+    async def classify_all(
+        self,
+        titles: list[str],
+        system_prompt: str | None = None,
+    ) -> list[ClassificationResult]:
         """Classify any number of titles, batching in groups of BATCH_SIZE."""
         if not titles:
             return []
@@ -111,7 +145,7 @@ class AIClassifier:
 
         async def _classify_with_semaphore(batch: list[str]) -> list[ClassificationResult]:
             async with semaphore:
-                return await self.classify_batch(batch)
+                return await self.classify_batch(batch, system_prompt=system_prompt)
 
         batch_results = await asyncio.gather(*[_classify_with_semaphore(b) for b in batches])
 

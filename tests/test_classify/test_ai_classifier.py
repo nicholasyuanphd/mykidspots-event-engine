@@ -69,3 +69,41 @@ async def test_classify_batch_handles_empty_list():
         mock_create.assert_not_called()
 
     assert results == []
+
+
+@pytest.mark.asyncio
+async def test_classify_batch_accepts_custom_system_prompt():
+    """classify_batch uses custom system_prompt when provided."""
+    from event_engine.classify.ai_classifier import SYSTEM_PROMPT
+    classifier = AIClassifier(api_key="test-key")
+    titles = ["Holiday Festival Downtown"]
+    custom_prompt = "Custom prompt for testing."
+
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text="yes")]
+
+    with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
+        mock_create.return_value = mock_response
+        results = await classifier.classify_batch(titles, system_prompt=custom_prompt)
+
+    call_kwargs = mock_create.call_args.kwargs
+    assert call_kwargs["system"] == custom_prompt
+    assert results[0] == ClassificationResult.YES
+
+
+@pytest.mark.asyncio
+async def test_classify_batch_uses_default_prompt_when_none():
+    """classify_batch uses SYSTEM_PROMPT when system_prompt is None."""
+    from event_engine.classify.ai_classifier import SYSTEM_PROMPT
+    classifier = AIClassifier(api_key="test-key")
+    titles = ["Kids Storytime"]
+
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text="yes")]
+
+    with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
+        mock_create.return_value = mock_response
+        await classifier.classify_batch(titles)
+
+    call_kwargs = mock_create.call_args.kwargs
+    assert call_kwargs["system"] == SYSTEM_PROMPT
