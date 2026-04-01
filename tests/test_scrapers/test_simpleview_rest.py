@@ -167,12 +167,17 @@ class TestSimplyviewRestScraper:
 
     @pytest.mark.asyncio
     async def test_deduplicates_events_across_pages(self) -> None:
-        """Same event in two paginated responses is deduplicated."""
-        # Same response twice simulates an event appearing on two date windows
-        scraper = _make_scraper(RALEIGH_CONFIG, [SAMPLE_V1_RESPONSE, SAMPLE_V1_RESPONSE])
+        """Same event appearing in all 3 date windows is deduplicated to one result."""
+        # Supply the same event response for each of the 3 windows
+        scraper = _make_scraper(
+            RALEIGH_CONFIG,
+            [SAMPLE_V1_RESPONSE, SAMPLE_V1_RESPONSE, SAMPLE_V1_RESPONSE],
+        )
         events = await scraper.scrape_all()
+        # The same event (_id=abc123) appears in all 3 windows but should only appear once
         ids = [e.external_id for e in events]
-        assert len(ids) == len(set(ids))
+        assert len(ids) == 1
+        assert len(set(ids)) == 1
 
     @pytest.mark.asyncio
     async def test_raw_categories_populated(self) -> None:

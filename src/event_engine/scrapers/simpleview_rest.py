@@ -68,6 +68,9 @@ class SimplyviewRestScraper(BaseScraper):
                     yield self._parse_doc(doc)
 
                 skip += len(docs)
+                # Break when partial page (last page) OR skip has consumed all available docs.
+                # skip >= total (not >) because after incrementing by len(docs) == _LIMIT,
+                # skip lands exactly on total for a full last page.
                 if len(docs) < _LIMIT or skip >= total:
                     break
 
