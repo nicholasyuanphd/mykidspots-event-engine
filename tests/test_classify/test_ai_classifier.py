@@ -1,6 +1,7 @@
 """Tests for AI event classifier."""
+from unittest.mock import AsyncMock, MagicMock, patch
+
 import pytest
-from unittest.mock import AsyncMock, patch, MagicMock
 
 from event_engine.classify.ai_classifier import AIClassifier, ClassificationResult
 
@@ -74,7 +75,6 @@ async def test_classify_batch_handles_empty_list():
 @pytest.mark.asyncio
 async def test_classify_batch_accepts_custom_system_prompt():
     """classify_batch uses custom system_prompt when provided."""
-    from event_engine.classify.ai_classifier import SYSTEM_PROMPT
     classifier = AIClassifier(api_key="test-key")
     titles = ["Holiday Festival Downtown"]
     custom_prompt = "Custom prompt for testing."
@@ -107,3 +107,22 @@ async def test_classify_batch_uses_default_prompt_when_none():
 
     call_kwargs = mock_create.call_args.kwargs
     assert call_kwargs["system"] == SYSTEM_PROMPT
+
+
+@pytest.mark.asyncio
+async def test_classify_batch_uses_tourism_prompt_when_passed():
+    """classify_batch correctly forwards TOURISM_SYSTEM_PROMPT to the API."""
+    from event_engine.classify.ai_classifier import TOURISM_SYSTEM_PROMPT
+    classifier = AIClassifier(api_key="test-key")
+    titles = ["Spring Festival Downtown"]
+
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text="yes")]
+
+    with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
+        mock_create.return_value = mock_response
+        results = await classifier.classify_batch(titles, system_prompt=TOURISM_SYSTEM_PROMPT)
+
+    call_kwargs = mock_create.call_args.kwargs
+    assert call_kwargs["system"] == TOURISM_SYSTEM_PROMPT
+    assert results[0] == ClassificationResult.YES

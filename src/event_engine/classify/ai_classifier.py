@@ -37,6 +37,8 @@ Rules:
 Output ONLY one word per line (yes/no/maybe), one per event title, in the same order as input."""
 )
 
+# Used by simpleview_rest and meilisearch sources — passed as system_prompt=TOURISM_SYSTEM_PROMPT
+# in the orchestrator (see orchestrator.py _scrape_source — wired in Task 3).
 TOURISM_SYSTEM_PROMPT = (
     """You are an event relevance classifier for MyKidSpots, """
     """a platform helping parents discover kid-friendly activities.
