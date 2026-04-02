@@ -162,8 +162,8 @@ def normalize(
     )
 
     # --- Location (prefer per-event coordinates from scraper, fall back to source config) ---
-    location_name = " ".join((raw.raw_location or source.location.name).split())
-    address = " ".join((raw.raw_address or source.location.address).split())
+    location_name = " ".join((raw.raw_location or source.location.name or "").split())
+    address = " ".join((raw.raw_address or source.location.address or "").split())
     # Per-event city (e.g., Localist geo.city) or source default
     raw_city = raw.raw_data.get("geo_city") if raw.raw_data else None
     city = raw_city or source.location.city

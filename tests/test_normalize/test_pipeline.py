@@ -256,3 +256,45 @@ def test_meilisearch_platform_maps_to_tourism_badge():
     """meilisearch platform maps to pipeline_tourism source badge."""
     from event_engine.normalize.pipeline import PLATFORM_SOURCE_MAP
     assert PLATFORM_SOURCE_MAP["meilisearch"] == "pipeline_tourism"
+
+
+def test_normalize_handles_none_address_in_tourism_source():
+    """normalize() does not crash when source.location.address is None (tourism configs)."""
+    from decimal import Decimal
+    from event_engine.models.source_config import LocationConfig
+
+    source = SourceConfig(
+        id="visitraleigh-events",
+        name="Visit Raleigh Events",
+        platform="simpleview_rest",
+        trust_level="new",
+        content_policy="commercial",
+        enabled=True,
+        timezone="America/New_York",
+        base_url="https://www.visitraleigh.com",
+        location_id="",
+        location=LocationConfig(
+            name="Raleigh",
+            city="Raleigh",
+            latitude=Decimal("35.7796"),
+            longitude=Decimal("-78.6382"),
+            # address intentionally omitted — tourism sources have no default address
+        ),
+        request_delay_ms=0,
+        default_cost_type="free",
+        ai_classification="required",
+        category_overrides=["community"],
+    )
+    raw = RawEvent(
+        source_id="visitraleigh-events",
+        external_id="holiday-festival-2026",
+        title="Raleigh Kids Holiday Festival",
+        raw_start="December 20, 2026 10:00 am",
+        raw_location="Moore Square",
+        raw_address="",  # scraper found no address — empty string + None source address = crash pre-fix
+        raw_categories=["Family Fun"],
+        raw_cost_text="Free",
+    )
+    result = normalize(raw, source)
+    assert result is not None
+    assert result.address == ""  # gracefully empty, not a crash
