@@ -1,5 +1,6 @@
 """SimplyviewRestScraper — adapter for Simpleview CMS REST API (v1 and v2)."""
 
+import asyncio
 import json
 from collections.abc import AsyncIterator
 from datetime import date, timedelta
@@ -11,6 +12,7 @@ from event_engine.scrapers.base import BaseScraper
 from event_engine.scrapers.registry import register
 
 _LIMIT = 50
+_LIMIT_V2 = 10  # v2 API has a 200KB response size cap; large docs exceed it at 50/page
 _WINDOWS = 3
 _WINDOW_DAYS = 30
 
@@ -33,6 +35,55 @@ class SimplyviewRestScraper(BaseScraper):
 
     platform = "simpleview_rest"
 
+    @property
+    def _use_curl(self) -> bool:
+        """True if this source requires curl subprocess to bypass WAF TLS fingerprinting."""
+        return self.source.selectors.get("use_curl", "").lower() == "true"
+
+    @property
+    def _page_limit(self) -> int:
+        """Effective page size for the configured REST version."""
+        return _LIMIT_V2 if self.source.selectors.get("rest_version", "v1") == "v2" else _LIMIT
+
+    async def _curl_fetch_json(self, url: str) -> dict:
+        """Fetch a URL using curl subprocess to bypass TLS-fingerprinting WAFs.
+
+        Some Simpleview v2 sites (e.g., Wilmington) use Cloudflare/Akamai WAFs that
+        block Python httpx based on TLS ClientHello fingerprint. curl uses the OS
+        native TLS stack (browser-like fingerprint) and passes the block.
+
+        url is passed as a positional arg to create_subprocess_exec — never
+        interpolated into a shell string, so there is no shell injection risk.
+        """
+        delay_s = self.source.request_delay_ms / 1000.0
+        if delay_s > 0:
+            await asyncio.sleep(delay_s)
+
+        cmd = [
+            "curl", "-s", "-L", "--compressed", "--max-time", "30",
+            "-w", "\n%{http_code}",
+            "-H", "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            "-H", "Accept: application/json, */*",
+            "-H", "Accept-Language: en-US,en;q=0.9",
+            url,
+        ]
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, _ = await proc.communicate()
+        output = stdout.decode("utf-8", errors="replace")
+        lines = output.rsplit("\n", 1)
+        body = lines[0] if len(lines) == 2 else output
+        status_str = lines[1].strip() if len(lines) == 2 else "0"
+        status = int(status_str) if status_str.isdigit() else 0
+
+        if status != 200:
+            raise RuntimeError(f"curl HTTP {status} for {url}")
+
+        return json.loads(body)  # type: ignore[no-any-return]
+
     async def scrape(self) -> AsyncIterator[RawEvent]:
         """Fetch the API token then scrape events across 3 rolling date windows."""
         token = await self._fetch_token()
@@ -49,7 +100,11 @@ class SimplyviewRestScraper(BaseScraper):
                 self.log.info("fetching_window", url=url, window=window, skip=skip)
 
                 try:
-                    data = await self.fetch_json(url)
+                    data = (
+                        await self._curl_fetch_json(url)
+                        if self._use_curl
+                        else await self.fetch_json(url)
+                    )
                 except Exception as exc:
                     self.log.warning(
                         "window_fetch_failed", window=window, skip=skip, error=str(exc)
@@ -58,7 +113,9 @@ class SimplyviewRestScraper(BaseScraper):
 
                 assert isinstance(data, dict)
                 docs = data.get("docs", [])
-                total = data.get("total", 0)
+                # v2 API returns total=None; fall back to infinity so we paginate
+                # until we receive a partial page (the natural EOF signal).
+                total: int | float = data.get("total") or float("inf")
 
                 for doc in docs:
                     event_id = str(doc.get("_id", ""))
@@ -71,7 +128,7 @@ class SimplyviewRestScraper(BaseScraper):
                 # Break when partial page (last page) OR skip has consumed all available docs.
                 # skip >= total (not >) because after incrementing by len(docs) == _LIMIT,
                 # skip lands exactly on total for a full last page.
-                if len(docs) < _LIMIT or skip >= total:
+                if len(docs) < self._page_limit or skip >= total:
                     break
 
     async def _fetch_token(self) -> str:
@@ -112,8 +169,8 @@ class SimplyviewRestScraper(BaseScraper):
         ``is_future()`` check discard past events.
         """
         base = f"{self.source.base_url}/includes/rest_v2/plugins_events_events_by_date/find/"
-        payload = {"options": {"limit": _LIMIT, "skip": skip}}
-        encoded = quote(json.dumps(payload))
+        payload = {"options": {"limit": _LIMIT_V2, "skip": skip}}
+        encoded = quote(json.dumps(payload, separators=(",", ":")))
         return f"{base}?token={token}&json={encoded}"
 
     def _parse_doc(self, doc: dict[str, Any]) -> RawEvent:

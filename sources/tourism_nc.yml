@@ -35,7 +35,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: false  # Temporarily disabled — rate-limited after initial load testing. Re-enable next scheduled run.
+    enabled: true
     timezone: "America/New_York"
     base_url: "https://www.wilmingtonandbeaches.com"
     location_id: ""
@@ -49,6 +49,7 @@ sources:
     ai_classification: "required"
     selectors:
       rest_version: "v2"
+      use_curl: "true"  # wilmingtonandbeaches.com uses a WAF that TLS-fingerprints Python httpx
     category_overrides:
       - "community"
 
