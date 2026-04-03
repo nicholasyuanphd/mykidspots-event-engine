@@ -1,5 +1,7 @@
 # NC Tourism CVB Sources
-# Platform: simpleview_rest (VisitRaleigh, Wilmington) | meilisearch (Charlotte)
+# Platform: simpleview_rest (VisitRaleigh, Wilmington, Boone, OBX, Greenville, Fayetteville)
+#           meilisearch (Charlotte)
+#           civicplus (Jacksonville CVB)
 # Content policy: commercial — descriptions always dropped (third-party copyright)
 # AI classification: required — CVB events are mixed family/adult; classifier filters
 # Trust level: new — events enter as pending for curator review until source is validated
@@ -71,6 +73,114 @@ sources:
       search_url: "https://search.charlottesgotalot.com"
       index: "cluster_events"
       api_key: "GKEuAXwR4*em@MJ7"
+    category_overrides:
+      - "community"
+
+  - id: "exploreboone-events"
+    name: "Explore Boone Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.exploreboone.com"
+    location_id: ""
+    location:
+      name: "Boone"
+      city: "Boone"
+      latitude: 36.2168
+      longitude: -81.6746
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
+
+  - id: "outerbanks-events"
+    name: "Outer Banks Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.outerbanks.org"
+    location_id: ""
+    location:
+      name: "Outer Banks"
+      city: "Nags Head"
+      latitude: 35.9382
+      longitude: -75.6249
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
+
+  - id: "visitgreenville-events"
+    name: "Visit Greenville NC Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.visitgreenvillenc.com"
+    location_id: ""
+    location:
+      name: "Greenville"
+      city: "Greenville"
+      latitude: 35.6127
+      longitude: -77.3664
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
+
+  - id: "fayetteville-events"
+    name: "Distinctly Fayetteville Events"
+    platform: "simpleview_rest"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.distinctlyfayettevillenc.com"
+    location_id: ""
+    location:
+      name: "Fayetteville"
+      city: "Fayetteville"
+      latitude: 35.0527
+      longitude: -78.8784
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    selectors:
+      rest_version: "v1"
+    category_overrides:
+      - "community"
+
+  - id: "visitjacksonvillenc-events"
+    name: "Visit Jacksonville NC Events"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "commercial"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.visitjacksonvillenc.com/calendar.aspx"
+    location_id: "14"  # CivicPlus CID=14 for the main tourism calendar
+    location:
+      name: "Jacksonville"
+      city: "Jacksonville"
+      latitude: 34.7540
+      longitude: -77.4302
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
     category_overrides:
       - "community"
 
