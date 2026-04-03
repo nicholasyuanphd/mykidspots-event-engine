@@ -33,7 +33,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # Temporarily disabled — rate-limited after initial load testing. Re-enable next scheduled run.
     timezone: "America/New_York"
     base_url: "https://www.wilmingtonandbeaches.com"
     location_id: ""

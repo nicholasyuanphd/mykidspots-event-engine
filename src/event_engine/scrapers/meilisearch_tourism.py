@@ -133,7 +133,7 @@ class MeilisearchTourismScraper(BaseScraper):
             source_id=self.source.id,
             external_id=str(hit.get("id", "")),
             title=hit.get("title", ""),
-            description=hit.get("description", ""),
+            description=hit.get("description") or "",
             raw_start=raw_start,
             raw_end=raw_end,
             raw_location=raw_location,

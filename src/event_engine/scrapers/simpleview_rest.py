@@ -103,12 +103,16 @@ class SimplyviewRestScraper(BaseScraper):
         )
 
     def _build_v2_url(self, start_str: str, end_str: str, token: str, skip: int) -> str:
-        """Build a v2 REST API URL with JSON-encoded query params."""
+        """Build a v2 REST API URL with JSON-encoded query params.
+
+        NOTE: The v2 ``plugins_events_events_by_date`` collection stores dates as
+        MongoDB ISODate objects. String-based ``$gte``/``$lte`` comparisons silently
+        return zero results because BSON type ordering puts strings after Date types.
+        We fetch all pages without a date filter and let the normalization pipeline's
+        ``is_future()`` check discard past events.
+        """
         base = f"{self.source.base_url}/includes/rest_v2/plugins_events_events_by_date/find/"
-        payload = {
-            "filter": {"date": {"$gte": start_str, "$lte": end_str}},
-            "options": {"limit": _LIMIT, "skip": skip},
-        }
+        payload = {"options": {"limit": _LIMIT, "skip": skip}}
         encoded = quote(json.dumps(payload))
         return f"{base}?token={token}&json={encoded}"
 
