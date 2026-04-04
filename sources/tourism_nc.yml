@@ -27,6 +27,9 @@ sources:
     ai_classification: "required"
     selectors:
       rest_version: "v1"
+      # Skip categories that are clearly adult-only on the Visit Raleigh CVB calendar.
+      # catName values are case-insensitive matched in the scraper.
+      excluded_categories: "nightlife,bars + breweries,bars & breweries,comedy,restaurants"
     category_overrides:
       - "community"
 
@@ -118,6 +121,9 @@ sources:
     ai_classification: "required"
     selectors:
       rest_version: "v1"
+      # Outer Banks CVB mixes restaurant promos and nightlife into the event calendar.
+      # These categories are clearly adult-only and should be excluded before AI filtering.
+      excluded_categories: "nightlife,bars + breweries,bars & breweries,restaurants,food & drink,dining"
     category_overrides:
       - "community"
 

@@ -185,3 +185,48 @@ class TestSimplyviewRestScraper:
         scraper = _make_scraper(RALEIGH_CONFIG, [SAMPLE_V1_RESPONSE])
         events = await scraper.scrape_all()
         assert "Family Fun" in events[0].raw_categories or "Festivals" in events[0].raw_categories
+
+    @pytest.mark.asyncio
+    async def test_excluded_categories_skips_matching_events(self) -> None:
+        """Events whose categories intersect excluded_categories are dropped before yielding."""
+        config = _make_config("v1", "visit-raleigh", "https://www.visitraleigh.com")
+        config = config.model_copy(update={"selectors": {"rest_version": "v1", "excluded_categories": "nightlife,restaurants"}})
+        response = {
+            "docs": [
+                {
+                    "_id": "night1",
+                    "title": "Bar Crawl Downtown",
+                    "categories": [{"catName": "Nightlife"}],
+                },
+                {
+                    "_id": "fam1",
+                    "title": "Kids Science Fair",
+                    "categories": [{"catName": "Family Fun"}],
+                },
+            ],
+            "total": 2,
+        }
+        scraper = _make_scraper(config, [response])
+        events = await scraper.scrape_all()
+        assert len(events) == 1
+        assert events[0].title == "Kids Science Fair"
+
+    @pytest.mark.asyncio
+    async def test_excluded_categories_case_insensitive(self) -> None:
+        """Category matching is case-insensitive."""
+        config = _make_config("v1", "visit-raleigh", "https://www.visitraleigh.com")
+        config = config.model_copy(update={"selectors": {"rest_version": "v1", "excluded_categories": "Nightlife"}})
+        response = {
+            "docs": [{"_id": "n1", "title": "Late Night Bar", "categories": [{"catName": "nightlife"}]}],
+            "total": 1,
+        }
+        scraper = _make_scraper(config, [response])
+        events = await scraper.scrape_all()
+        assert len(events) == 0
+
+    @pytest.mark.asyncio
+    async def test_no_excluded_categories_yields_all(self) -> None:
+        """When excluded_categories is not set, no events are dropped."""
+        scraper = _make_scraper(RALEIGH_CONFIG, [SAMPLE_V1_RESPONSE])
+        events = await scraper.scrape_all()
+        assert len(events) == 1

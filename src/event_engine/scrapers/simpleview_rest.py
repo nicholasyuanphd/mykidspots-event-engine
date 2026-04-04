@@ -84,6 +84,24 @@ class SimplyviewRestScraper(BaseScraper):
 
         return json.loads(body)  # type: ignore[no-any-return]
 
+    @property
+    def _excluded_categories(self) -> frozenset[str]:
+        """Lowercase category names to skip, parsed from comma-separated selector."""
+        raw = self.source.selectors.get("excluded_categories", "")
+        return frozenset(c.strip().lower() for c in raw.split(",") if c.strip())
+
+    def _is_excluded(self, doc: dict) -> bool:
+        """Return True if any of the doc's categories are in the exclusion list."""
+        excluded = self._excluded_categories
+        if not excluded:
+            return False
+        doc_cats = {
+            c.get("catName", "").lower()
+            for c in doc.get("categories", [])
+            if isinstance(c, dict)
+        }
+        return bool(doc_cats & excluded)
+
     async def scrape(self) -> AsyncIterator[RawEvent]:
         """Fetch the API token then scrape events across 3 rolling date windows."""
         token = await self._fetch_token()
@@ -120,6 +138,13 @@ class SimplyviewRestScraper(BaseScraper):
                 for doc in docs:
                     event_id = str(doc.get("_id", ""))
                     if not event_id or event_id in seen_ids:
+                        continue
+                    if self._is_excluded(doc):
+                        self.log.debug(
+                            "skipping_excluded_category",
+                            event_id=event_id,
+                            title=doc.get("title", ""),
+                        )
                         continue
                     seen_ids.add(event_id)
                     yield self._parse_doc(doc)
