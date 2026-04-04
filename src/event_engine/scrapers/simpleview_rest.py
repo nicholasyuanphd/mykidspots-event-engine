@@ -204,9 +204,17 @@ class SimplyviewRestScraper(BaseScraper):
             if isinstance(c, dict) and "catName" in c
         ]
 
+        # Use the CVB's own event detail page as source_url so domain-based
+        # queries (audit, dedup) correctly tie events back to this source.
+        # The third-party venue/ticket URL (linkUrl) goes into registration_url
+        # so the UI can still link users to the actual event page.
+        recid = str(doc.get("_id", ""))
+        cvb_url = f"{self.source.base_url}/event/{recid}/" if recid else ""
+        link_url = doc.get("linkUrl", "")
+
         return RawEvent(
             source_id=self.source.id,
-            external_id=str(doc.get("_id", "")),
+            external_id=recid,
             title=doc.get("title", ""),
             description=doc.get("description", ""),
             raw_start=doc.get("startDate", ""),
@@ -214,5 +222,6 @@ class SimplyviewRestScraper(BaseScraper):
             raw_location=doc.get("location", ""),
             raw_address=raw_address,
             raw_categories=categories,
-            source_url=doc.get("linkUrl", ""),
+            source_url=cvb_url or link_url,
+            registration_url=link_url if cvb_url else "",
         )
