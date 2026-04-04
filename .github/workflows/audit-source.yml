@@ -32,4 +32,4 @@ jobs:
       - name: Run graduation audit
         env:
           SOURCE_ID: ${{ inputs.source_id }}
-        run: uv run python -m event_engine --verbose audit-source "$SOURCE_ID"
+        run: uv run python -m event_engine audit-source "$SOURCE_ID"
