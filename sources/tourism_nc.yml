@@ -61,7 +61,9 @@ sources:
     platform: "meilisearch"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED: Meilisearch index is stale — all 354 indexed events have
+    # startDate in 2025. The startDate > today filter returns 0 results as of Apr 2026.
+    # Re-enable when the CVB updates their search index, or find an alternative Charlotte source.
     timezone: "America/New_York"
     base_url: "https://www.charlottesgotalot.com"
     location_id: ""
@@ -107,7 +109,9 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED: outerbanks.org is primarily a dining/tourism guide, not a family
+    # activity calendar. Even with category exclusions, restaurant and bar listings dominate.
+    # Re-enable only if a better kid-focused OBX source is found (e.g. Dare County parks/library).
     timezone: "America/New_York"
     base_url: "https://www.outerbanks.org"
     location_id: ""
