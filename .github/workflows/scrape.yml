@@ -48,4 +48,4 @@ jobs:
           if [ -n "$DRY_RUN_FLAG" ]; then
             ARGS="$ARGS --dry-run"
           fi
-          uv run python -m event_engine $ARGS
+          uv run python -m event_engine run $ARGS
