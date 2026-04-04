@@ -7,7 +7,6 @@ import asyncio
 import logging
 import os
 import sys
-from pathlib import Path
 
 import structlog
 
@@ -70,7 +69,6 @@ async def _cmd_audit_source(args: argparse.Namespace, settings: Settings) -> Non
 
     from event_engine.classify.ai_classifier import AIClassifier
     from event_engine.db.connection import create_pool
-    from event_engine.models import load_sources
     from event_engine.models.source_config import SourceFile
     from event_engine.spot_check.auditor import audit_source
 
