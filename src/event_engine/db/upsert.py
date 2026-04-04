@@ -73,7 +73,8 @@ WHERE events.title != EXCLUDED.title
    OR events.description IS DISTINCT FROM EXCLUDED.description
    OR events.end_datetime IS DISTINCT FROM EXCLUDED.end_datetime
    OR events.location_name IS DISTINCT FROM EXCLUDED.location_name
-   OR events.image_urls IS DISTINCT FROM EXCLUDED.image_urls;
+   OR events.image_urls IS DISTINCT FROM EXCLUDED.image_urls
+   OR events.source_url IS DISTINCT FROM EXCLUDED.source_url;
 """
 
 # SQL to hide stale auto-imported events (disappeared from source)
