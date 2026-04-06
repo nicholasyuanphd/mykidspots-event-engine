@@ -123,6 +123,38 @@ async def _cmd_audit_source(args: argparse.Namespace, settings: Settings) -> Non
         sys.exit(2)
 
 
+async def _cmd_health_check(args: argparse.Namespace, settings: Settings) -> None:
+    """Check for silent failures: sources that returned 0 events this run but have history."""
+    from event_engine.db.connection import create_pool
+    from event_engine.db.import_log import fetch_silent_failures
+
+    log = structlog.get_logger()
+
+    pool = await create_pool(settings.database_url)
+    try:
+        failures = await fetch_silent_failures(
+            pool,
+            since_hours=args.since_hours,
+            min_historical_events=args.min_historical_events,
+        )
+    finally:
+        await pool.close()
+
+    if failures:
+        for f in failures:
+            log.error(
+                "silent_failure_detected",
+                source_id=f["source_id"],
+                source_name=f["source_name"],
+                latest_run=str(f["latest_run"]),
+                peak_events_found=f["peak_events_found"],
+            )
+        print(f"\n⚠️  {len(failures)} silent failure(s) detected — see logs above.", file=sys.stderr)
+        sys.exit(1)
+    else:
+        log.info("health_check_passed", message="No silent failures detected")
+
+
 async def _cmd_spot_check(args: argparse.Namespace, settings: Settings) -> None:
     """Run the weekly random spot-check across all verified sources."""
     from event_engine.classify.ai_classifier import AIClassifier
@@ -174,6 +206,24 @@ def main() -> None:
     # spot-check subcommand
     subparsers.add_parser("spot-check", help="Run weekly random spot-check on verified sources")
 
+    # health-check subcommand
+    health_parser = subparsers.add_parser(
+        "health-check",
+        help="Detect silent failures: sources that returned 0 events but have historical data",
+    )
+    health_parser.add_argument(
+        "--since-hours",
+        type=int,
+        default=2,
+        help="How far back to look for the current run window (default: 2)",
+    )
+    health_parser.add_argument(
+        "--min-historical-events",
+        type=int,
+        default=10,
+        help="Minimum peak historical events to consider a source established (default: 10)",
+    )
+
     args = parser.parse_args()
 
     # Default to 'run' if no subcommand given (backwards compatibility)
@@ -196,6 +246,7 @@ def main() -> None:
         "run": _cmd_run,
         "audit-source": _cmd_audit_source,
         "spot-check": _cmd_spot_check,
+        "health-check": _cmd_health_check,
     }
 
     asyncio.run(dispatch[args.command](args, settings))

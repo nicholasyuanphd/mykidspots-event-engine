@@ -49,3 +49,10 @@ jobs:
             ARGS="$ARGS --dry-run"
           fi
           uv run python -m event_engine run $ARGS
+
+      - name: Health Check (silent failure detection)
+        # Only run on scheduled scrapes (not dry-runs or filtered runs)
+        if: ${{ inputs.dry_run != true && inputs.source_filter == '' }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: uv run python -m event_engine health-check --since-hours 3
