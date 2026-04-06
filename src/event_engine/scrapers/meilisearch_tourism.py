@@ -65,7 +65,11 @@ class MeilisearchTourismScraper(BaseScraper):
         seen_ids: set[str] = set()
         offset = 0
 
-        self._current_headers = {"Authorization": f"Bearer {api_key}"}
+        self._current_headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Origin": self.source.base_url,
+            "Referer": f"{self.source.base_url}/events/",
+        }
 
         while True:
             self._current_body = {
