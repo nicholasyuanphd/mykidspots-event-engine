@@ -1,0 +1,78 @@
+# New Bern / Craven-Pamlico Regional Library System
+# Platform: ical (DPCalendar Joomla component — public iCal feeds)
+# Feed URL pattern: mycprl.org/index.php?option=com_dpcalendar&task=ical.download&id=<calendar_id>
+#
+# Calendar IDs discovered:
+#   8  = Cove City branch (78 events in 2026)
+#   10 = New Bern branch (278 events in 2026) — richest source
+#   11 = Havelock branch (96 events in 2026)
+#   14 = Regional Events (6 events in 2026 — mostly closures/admin)
+#
+# NOTE: Mod Security blocks requests without a browser User-Agent.
+#       The iCal scraper must send a real User-Agent header.
+#
+# Kid-relevant events include: Preschool Storysteps, Books & Babies Lapsit
+# Storytime, Time Out for Toddlers, BOOK-A-TIVITIES, Kidz Story Stretchers,
+# STEAM Club, Reading Dragons, Story Blocks, Saturday Morning Movies,
+# Book/Tech Mobile visits, Teen Scene, and more.
+
+sources:
+  - id: "new-bern-library"
+    name: "New Bern-Craven County Public Library"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"  # Public library — government funded
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://mycprl.org/index.php?option=com_dpcalendar&task=ical.download&id=10"
+    location:
+      name: "New Bern-Craven County Public Library"
+      address: "400 Johnson Street, New Bern, NC 28560"
+      city: "New Bern"
+      latitude: 35.1085
+      longitude: -77.0441
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"
+
+  - id: "havelock-library"
+    name: "Havelock-Craven County Public Library"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://mycprl.org/index.php?option=com_dpcalendar&task=ical.download&id=11"
+    location:
+      name: "Havelock Public Library"
+      address: "301 Cunningham Blvd, Havelock, NC 28532"
+      city: "Havelock"
+      latitude: 34.8791
+      longitude: -76.9013
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"
+
+  - id: "cove-city-library"
+    name: "Cove City Community Library"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://mycprl.org/index.php?option=com_dpcalendar&task=ical.download&id=8"
+    location:
+      name: "Cove City Community Library"
+      address: "105 S Main St, Cove City, NC 28523"
+      city: "Cove City"
+      latitude: 35.1626
+      longitude: -77.3084
+    request_delay_ms: 2000
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"

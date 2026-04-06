@@ -1,0 +1,31 @@
+# Durham County Library System — 7 branches
+# Platform: LibCal (Springshare)
+# Calendar ID 14288 = system-wide calendar (all branches)
+#
+# NOTE: LibCal returns all-branch events from a single calendar endpoint.
+# Branch-level filtering via ?loc= requires per-branch location IDs from the
+# LibCal admin console (not publicly discoverable). Using a single source
+# for the full system until branch IDs are obtained.
+# All events are free, kid/family focused.
+
+sources:
+  - id: "durham-county-library"
+    name: "Durham County Library"
+    platform: "libcal"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://durhamcountylibrary.libcal.com"
+    location_id: "14288"
+    location:
+      name: "Durham County Library"
+      address: "300 N. Roxboro St., Durham, NC 27701"
+      city: "Durham"
+      latitude: 35.9949
+      longitude: -78.8966
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"

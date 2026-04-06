@@ -1,0 +1,110 @@
+# Triad Area CivicPlus Towns — Durham, Winston-Salem, High Point
+# Platform: civicplus (CivicEngage — same HTML list-view as Wake County towns)
+# All are government sources (public domain descriptions)
+# trust_level: "new" — requires AI classification + curator review
+
+sources:
+  - id: "durham-city-calendar"
+    name: "City of Durham"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.durhamnc.gov/calendar.aspx"
+    location_id: "14"
+    location:
+      name: "City of Durham"
+      address: "101 City Hall Plaza, Durham, NC 27701"
+      city: "Durham"
+      latitude: 35.9940
+      longitude: -78.8986
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "community"
+
+  - id: "durham-parks-calendar"
+    name: "Durham Parks & Recreation Special Events"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.durhamnc.gov/calendar.aspx"
+    location_id: "47"
+    location:
+      name: "Durham Parks & Recreation"
+      address: "101 City Hall Plaza, Durham, NC 27701"
+      city: "Durham"
+      latitude: 35.9940
+      longitude: -78.8986
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "outdoor"
+
+  - id: "winston-salem-parks-calendar"
+    name: "City of Winston-Salem Recreation & Parks"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.cityofws.org/calendar.aspx"
+    location_id: "34"
+    location:
+      name: "City of Winston-Salem"
+      address: "101 N Main St, Winston-Salem, NC 27101"
+      city: "Winston-Salem"
+      latitude: 36.0999
+      longitude: -80.2442
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "outdoor"
+
+  - id: "high-point-library-calendar"
+    name: "High Point Public Library"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.highpointnc.gov/calendar.aspx"
+    location_id: "34"
+    location:
+      name: "High Point Public Library"
+      address: "901 N Main St, High Point, NC 27262"
+      city: "High Point"
+      latitude: 35.9607
+      longitude: -80.0053
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"
+
+  - id: "high-point-museum-calendar"
+    name: "High Point Museum"
+    platform: "civicplus"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.highpointnc.gov/calendar.aspx"
+    location_id: "28"
+    location:
+      name: "High Point Museum"
+      address: "1859 E Lexington Ave, High Point, NC 27262"
+      city: "High Point"
+      latitude: 35.9571
+      longitude: -79.9908
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "museum"

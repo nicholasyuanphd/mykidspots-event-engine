@@ -1,0 +1,31 @@
+# New Hanover County Public Library (Wilmington area) — 4 branches
+# Platform: LibCal (Springshare) at custom domain libcal.nhcgov.com
+# Calendar ID 2522 = system-wide calendar (all branches)
+#
+# NOTE: LibCal returns all-branch events from a single calendar endpoint.
+# Branch-level filtering via ?loc= requires per-branch location IDs from the
+# LibCal admin console (not publicly discoverable). Using a single source
+# for the full system until branch IDs are obtained.
+# All events are free, kid/family focused.
+
+sources:
+  - id: "wilmington-nhc-library"
+    name: "New Hanover County Public Library"
+    platform: "libcal"
+    trust_level: "new"
+    content_policy: "government"
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://libcal.nhcgov.com"
+    location_id: "2522"
+    location:
+      name: "New Hanover County Main Library"
+      address: "230 Grace St, Suite A, Wilmington, NC 28401"
+      city: "Wilmington"
+      latitude: 34.2358
+      longitude: -77.9470
+    request_delay_ms: 1500
+    default_cost_type: "free"
+    ai_classification: "required"
+    category_overrides:
+      - "library"
