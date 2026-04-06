@@ -1,0 +1,29 @@
+# Greensboro Museums & Major Venues
+# Separate from greensboro_libraries.yml (government) — these are nonprofits
+#
+# Wave 1 research (2026-04-05):
+# - Miriam P. Brenner Children's Museum: confirmed iCal feed at /events/?ical=1
+#   (rebranded from Greensboro Children's Museum; gcmuseum.com domain dead/hijacked — use mbcmuseum.com)
+# - Greensboro Science Center: uses Acme Ticketing (custom) — no public feed found
+
+sources:
+  - id: "greensboro-brenner-childrens-museum"
+    name: "Miriam P. Brenner Children's Museum"
+    platform: "ical"
+    trust_level: "new"
+    content_policy: "nonprofit"  # 501(c)(3) — drop descriptions, facts only
+    enabled: true
+    timezone: "America/New_York"
+    base_url: "https://www.mbcmuseum.com/events/?ical=1"
+    location:
+      name: "Miriam P. Brenner Children's Museum"
+      address: "220 N Church St, Greensboro, NC 27401"
+      city: "Greensboro"
+      latitude: 36.0730
+      longitude: -79.7916
+    request_delay_ms: 2000
+    default_cost_type: "varies"
+    ai_classification: "required"  # Nonprofit calendar mixes member events, paid programs, free drop-ins
+    category_overrides:
+      - "museum"
+      - "indoor-play"

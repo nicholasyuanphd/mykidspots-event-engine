@@ -61,9 +61,7 @@ sources:
     platform: "meilisearch"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: false  # DISABLED: Meilisearch index is stale — all 354 indexed events have
-    # startDate in 2025. The startDate > today filter returns 0 results as of Apr 2026.
-    # Re-enable when the CVB updates their search index, or find an alternative Charlotte source.
+    enabled: true
     timezone: "America/New_York"
     base_url: "https://www.charlottesgotalot.com"
     location_id: ""
