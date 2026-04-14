@@ -6,6 +6,12 @@
 # AI classification: required — CVB events are mixed family/adult; classifier filters
 # Trust level: new — events enter as pending for curator review until source is validated
 # Asheville: DEFERRED — Cloudflare bot protection blocks all automated access
+#
+# POLICY CHANGE 2026-04-13: All CVB/tourism sources disabled.
+# For-profit events now enter ONLY via the Provider path (signed agreement + $9/month).
+# CVB scrapers lack a Provider Agreement — no contractual accuracy representations,
+# no indemnification, ToS breach risk. Decision: docs/decisions/2026-04-11-commercial-event-policy.md
+# To re-enable a source: the venue must sign a Provider Agreement first.
 
 sources:
   - id: "visitraleigh-events"
@@ -13,7 +19,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.visitraleigh.com"
     location_id: ""
@@ -38,7 +44,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.wilmingtonandbeaches.com"
     location_id: ""
@@ -61,7 +67,7 @@ sources:
     platform: "meilisearch"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.charlottesgotalot.com"
     location_id: ""
@@ -85,7 +91,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.exploreboone.com"
     location_id: ""
@@ -134,7 +140,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.visitgreenvillenc.com"
     location_id: ""
@@ -156,7 +162,7 @@ sources:
     platform: "simpleview_rest"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.distinctlyfayettevillenc.com"
     location_id: ""
@@ -178,7 +184,7 @@ sources:
     platform: "civicplus"
     trust_level: "new"
     content_policy: "commercial"
-    enabled: true
+    enabled: false  # DISABLED 2026-04-13: commercial source, no Provider Agreement. See policy comment above.
     timezone: "America/New_York"
     base_url: "https://www.visitjacksonvillenc.com/calendar.aspx"
     location_id: "14"  # CivicPlus CID=14 for the main tourism calendar
