@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 import time
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING
@@ -28,6 +29,18 @@ if TYPE_CHECKING:
 logger = structlog.get_logger()
 
 TOURISM_PLATFORMS = {"simpleview_rest", "meilisearch"}
+
+DEFAULT_CONTACT = "https://github.com/nicholasyuanphd/mykidspots-event-engine"
+
+
+def build_user_agent(contact: str | None = None) -> str:
+    """Identify the scraper to the sites it reads, with a way to reach whoever runs it.
+
+    Set EVENT_ENGINE_CONTACT to your own site or email when you run the engine.
+    """
+    if contact is None:
+        contact = os.environ.get("EVENT_ENGINE_CONTACT", "")
+    return f"MyKidSpots-EventEngine/0.1 (+{contact.strip() or DEFAULT_CONTACT})"
 
 
 async def run(
@@ -105,7 +118,7 @@ async def run(
     async with httpx.AsyncClient(
         timeout=httpx.Timeout(30.0, connect=10.0),
         follow_redirects=True,
-        headers={"User-Agent": "MyKidSpots-EventEngine/0.1 (contact@yapplify.com)"},
+        headers={"User-Agent": build_user_agent()},
     ) as client:
         tasks = [
             _scrape_source(source, client, pool, semaphore, cb, dry_run, classifier)
