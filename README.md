@@ -2,6 +2,8 @@
 
 Event ingestion pipeline for MyKidSpots. Scrapes kid-friendly events from libraries, parks, museums, and city tourism CVBs across North Carolina.
 
+It feeds the [MyKidSpots app](https://github.com/nicholasyuanphd/mykidspots), an open-source site that helps parents find local kid activities. Point it at your own sources and database to run it for your town.
+
 ## Architecture
 
 ```
@@ -213,3 +215,14 @@ Do **not** build Playwright-based scrapers for MVP — they are fragile and high
 | `commercial` | Third-party copyright | Yes — description always set to `None` |
 
 Tourism CVBs always use `commercial` — event descriptions are aggregated from venues and contain third-party copyright. Only title, date, location, and source URL are retained.
+
+## Running it for your own site
+
+Set `EVENT_ENGINE_CONTACT` to your site's URL or a contact email. It is sent in the scraper's
+`User-Agent` header so the sites you read can reach you. Read each site's terms and `robots.txt`
+before adding it as a source, and keep request rates low.
+
+## License
+
+[MIT](LICENSE) © 2026 Nicholas Yuan. Provided as-is, with no warranty. You are responsible for how
+you run it and for following the terms of the sites it reads.

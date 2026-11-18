@@ -2,6 +2,8 @@
 name = "mykidspots-event-engine"
 version = "0.1.0"
 description = "Automated event scraping engine for MyKidSpots"
+license = "MIT"
+authors = [{ name = "Nicholas Yuan" }]
 requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.27",
