@@ -2,6 +2,7 @@
 
 import re
 from collections.abc import AsyncIterator
+from typing import Any
 
 from bs4 import BeautifulSoup
 
@@ -46,27 +47,27 @@ class BiblioCommonsScraper(BaseScraper):
             if event:
                 yield event
 
-    def _parse_item(self, item: object) -> RawEvent | None:
+    def _parse_item(self, item: Any) -> RawEvent | None:
         """Parse a single RSS <item> into a RawEvent."""
-        title_el = item.find("title")  # type: ignore[union-attr]
+        title_el = item.find("title")
         if not title_el:
             return None
         title = title_el.get_text(strip=True)
 
         # Skip cancelled events
-        cancelled_el = item.find("is_cancelled")  # type: ignore[union-attr]
+        cancelled_el = item.find("is_cancelled")
         if cancelled_el and cancelled_el.get_text(strip=True).lower() == "true":
             return None
 
         # Link as external ID and source URL
-        link_el = item.find("link")  # type: ignore[union-attr]
+        link_el = item.find("link")
         link = link_el.get_text(strip=True) if link_el else ""
 
         # Extract event ID from URL or use link as fallback
         external_id = link.split("/")[-1] if link else title
 
         # Description (may contain HTML)
-        desc_el = item.find("description")  # type: ignore[union-attr]
+        desc_el = item.find("description")
         description = ""
         if desc_el:
             # BiblioCommons wraps description in CDATA with HTML
@@ -78,17 +79,17 @@ class BiblioCommonsScraper(BaseScraper):
         raw_start = ""
         raw_end = ""
 
-        bc_start = item.find("start_date")  # type: ignore[union-attr]
+        bc_start = item.find("start_date")
         if bc_start:
             raw_start = bc_start.get_text(strip=True)
 
-        bc_end = item.find("end_date")  # type: ignore[union-attr]
+        bc_end = item.find("end_date")
         if bc_end:
             raw_end = bc_end.get_text(strip=True)
 
         # Fallback: pubDate (RFC 822) or description Date:/Time: patterns
         if not raw_start:
-            pub_date_el = item.find("pubDate")  # type: ignore[union-attr]
+            pub_date_el = item.find("pubDate")
             raw_start = pub_date_el.get_text(strip=True) if pub_date_el else ""
 
             date_match = re.search(r"Date:\s*(.+?)(?:\n|$)", description)
@@ -101,18 +102,18 @@ class BiblioCommonsScraper(BaseScraper):
         # --- Location: extract from bc:location ---
         raw_location = ""
         raw_address = ""
-        location_el = item.find("location")  # type: ignore[union-attr]
+        location_el = item.find("location")
         if location_el:
-            name_el = location_el.find("name")  # type: ignore[union-attr]
+            name_el = location_el.find("name")
             if name_el:
                 raw_location = name_el.get_text(strip=True)
 
             # Build address from bc:location fields
-            number = location_el.find("number")  # type: ignore[union-attr]
-            street = location_el.find("street")  # type: ignore[union-attr]
-            city = location_el.find("city")  # type: ignore[union-attr]
-            state = location_el.find("state")  # type: ignore[union-attr]
-            zip_el = location_el.find("zip")  # type: ignore[union-attr]
+            number = location_el.find("number")
+            street = location_el.find("street")
+            city = location_el.find("city")
+            state = location_el.find("state")
+            zip_el = location_el.find("zip")
 
             addr_parts = []
             if number:
@@ -129,16 +130,16 @@ class BiblioCommonsScraper(BaseScraper):
 
         # Categories from RSS category tags
         raw_categories = []
-        for cat in item.find_all("category"):  # type: ignore[union-attr]
+        for cat in item.find_all("category"):
             cat_text = cat.get_text(strip=True)
             if cat_text:
                 raw_categories.append(cat_text)
 
         # Build raw_data with location coordinates for potential future use
-        raw_data: dict = {"rss_title": title, "rss_link": link}
+        raw_data: dict[str, Any] = {"rss_title": title, "rss_link": link}
         if location_el:
-            lat_el = location_el.find("latitude")  # type: ignore[union-attr]
-            lng_el = location_el.find("longitude")  # type: ignore[union-attr]
+            lat_el = location_el.find("latitude")
+            lng_el = location_el.find("longitude")
             if lat_el:
                 raw_data["latitude"] = lat_el.get_text(strip=True)
             if lng_el:

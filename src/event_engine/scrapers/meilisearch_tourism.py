@@ -45,6 +45,7 @@ class MeilisearchTourismScraper(BaseScraper):
         delay_s = self.source.request_delay_ms / 1000.0
         if delay_s > 0:
             import asyncio
+
             await asyncio.sleep(delay_s)
         response = await self.client.post(
             url,
@@ -108,12 +109,8 @@ class MeilisearchTourismScraper(BaseScraper):
         # Convert Unix second timestamps to ISO datetime strings
         start_ts = hit.get("startDate")
         end_ts = hit.get("endDate")
-        raw_start = (
-            datetime.fromtimestamp(start_ts, tz=UTC).isoformat() if start_ts else ""
-        )
-        raw_end = (
-            datetime.fromtimestamp(end_ts, tz=UTC).isoformat() if end_ts else ""
-        )
+        raw_start = datetime.fromtimestamp(start_ts, tz=UTC).isoformat() if start_ts else ""
+        raw_end = datetime.fromtimestamp(end_ts, tz=UTC).isoformat() if end_ts else ""
 
         # Build source URL from base_url + uri
         uri = hit.get("uri", "")

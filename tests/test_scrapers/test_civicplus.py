@@ -147,7 +147,9 @@ class TestCivicPlusScraper:
     @pytest.mark.asyncio
     async def test_fetch_description_returns_none_when_no_selector_matches(self) -> None:
         """fetch_description returns None when no known selector is found."""
-        detail_html = """<html><body><p>Some generic text without known selectors.</p></body></html>"""
+        detail_html = (
+            """<html><body><p>Some generic text without known selectors.</p></body></html>"""
+        )
         scraper = _make_scraper(HOLLY_SPRINGS_CONFIG, detail_html)
         result = await scraper.fetch_description(
             "https://www.hollyspringsnc.gov/Calendar.aspx?EID=101"

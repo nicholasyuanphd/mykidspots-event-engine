@@ -1,12 +1,13 @@
 """Tests for the Meilisearch tourism scraper (Charlotte's Got A Lot)."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
+
 import httpx
+import pytest
 
 from event_engine.models import SourceConfig
 from event_engine.models.source_config import LocationConfig
 from event_engine.scrapers.meilisearch_tourism import MeilisearchTourismScraper
-
 
 CHARLOTTE_CONFIG = SourceConfig(
     id="charlottesgotalot-events",
@@ -37,8 +38,8 @@ CHARLOTTE_CONFIG = SourceConfig(
 SAMPLE_HIT = {
     "id": "charlotte-event-001",
     "title": "Charlotte Family Festival",
-    "startDate": 1775707200,   # 2026-04-09T00:00:00 UTC
-    "endDate": 1775750400,     # 2026-04-09T12:00:00 UTC
+    "startDate": 1775707200,  # 2026-04-09T00:00:00 UTC
+    "endDate": 1775750400,  # 2026-04-09T12:00:00 UTC
     "description": "Annual family festival in Charlotte.",
     "fullAddress": "100 E Trade St, Charlotte, NC 28202",
     "city": "Charlotte",

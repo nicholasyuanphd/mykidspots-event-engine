@@ -3,6 +3,7 @@
 import asyncio
 from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
+from typing import Any
 
 import httpx
 import structlog
@@ -63,7 +64,7 @@ class BaseScraper(ABC):
         response.raise_for_status()
         return response
 
-    async def fetch_json(self, url: str, **kwargs: object) -> dict | list:
+    async def fetch_json(self, url: str, **kwargs: object) -> dict[str, Any] | list[Any]:
         """Fetch a URL and parse JSON response."""
         response = await self.fetch(url, **kwargs)
         return response.json()  # type: ignore[no-any-return]
@@ -77,7 +78,7 @@ class BaseScraper(ABC):
         """
         ...  # pragma: no cover
         # This yield is needed to make the type checker happy about AsyncIterator
-        if False:  # type: ignore[unreachable]  # noqa: SIM108
+        if False:  # noqa: SIM108
             yield RawEvent(source_id="", external_id="", title="", raw_start="")
 
     async def scrape_all(self) -> list[RawEvent]:

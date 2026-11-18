@@ -1,6 +1,9 @@
 """Tests for DB hygiene scan."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
 from event_engine.db.hygiene import run_hygiene_scan
 
 

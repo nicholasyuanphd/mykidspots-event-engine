@@ -2,6 +2,7 @@
 
 from collections.abc import AsyncIterator
 from datetime import datetime
+from typing import Any
 
 from icalendar import Calendar
 
@@ -40,18 +41,18 @@ class ICalScraper(BaseScraper):
 
         self.log.info("ical_events_parsed", count=event_count)
 
-    def _parse_vevent(self, vevent: object) -> RawEvent | None:
+    def _parse_vevent(self, vevent: Any) -> RawEvent | None:
         """Parse a VEVENT component into a RawEvent."""
         # UID is the standard iCal unique identifier
-        uid = str(vevent.get("UID", ""))  # type: ignore[union-attr]
-        summary = str(vevent.get("SUMMARY", ""))  # type: ignore[union-attr]
+        uid = str(vevent.get("UID", ""))
+        summary = str(vevent.get("SUMMARY", ""))
 
         if not uid or not summary:
             return None
 
         # Start/end times
-        dtstart = vevent.get("DTSTART")  # type: ignore[union-attr]
-        dtend = vevent.get("DTEND")  # type: ignore[union-attr]
+        dtstart = vevent.get("DTSTART")
+        dtend = vevent.get("DTEND")
 
         raw_start = ""
         if dtstart:
@@ -64,25 +65,25 @@ class ICalScraper(BaseScraper):
             raw_end = dt.isoformat() if isinstance(dt, datetime) else str(dt)
 
         # Description
-        description = str(vevent.get("DESCRIPTION", "") or "")  # type: ignore[union-attr]
+        description = str(vevent.get("DESCRIPTION", "") or "")
 
         # Location
-        raw_location = str(vevent.get("LOCATION", "") or "")  # type: ignore[union-attr]
+        raw_location = str(vevent.get("LOCATION", "") or "")
 
         # URL
-        source_url = str(vevent.get("URL", "") or "")  # type: ignore[union-attr]
+        source_url = str(vevent.get("URL", "") or "")
 
         # Categories
         raw_categories = []
-        categories = vevent.get("CATEGORIES")  # type: ignore[union-attr]
+        categories = vevent.get("CATEGORIES")
         if categories:
             cats = categories.to_ical().decode("utf-8", errors="replace")
             raw_categories = [c.strip() for c in cats.split(",") if c.strip()]
 
         # Recurrence
-        is_recurring = bool(vevent.get("RRULE"))  # type: ignore[union-attr]
+        is_recurring = bool(vevent.get("RRULE"))
         recurrence_text = ""
-        rrule = vevent.get("RRULE")  # type: ignore[union-attr]
+        rrule = vevent.get("RRULE")
         if rrule:
             recurrence_text = rrule.to_ical().decode("utf-8", errors="replace")
 

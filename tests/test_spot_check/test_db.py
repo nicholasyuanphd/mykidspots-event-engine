@@ -1,13 +1,14 @@
 """Tests for spot_check DB helpers."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
+
 from event_engine.spot_check.db import (
-    fetch_random_pending_events,
-    fetch_random_active_events,
-    upsert_trust_override,
     bulk_activate_pending_events,
+    fetch_random_pending_events,
     fetch_verified_cvb_sources,
+    upsert_trust_override,
 )
 
 
@@ -16,7 +17,11 @@ async def test_fetch_random_pending_events_queries_by_domain():
     """fetch_random_pending_events queries events by domain and status=pending."""
     conn = AsyncMock()
     conn.fetch.return_value = [
-        {"id": "abc", "title": "Kids Day", "source_url": "https://www.visitraleigh.com/events/kids-day"}
+        {
+            "id": "abc",
+            "title": "Kids Day",
+            "source_url": "https://www.visitraleigh.com/events/kids-day",
+        }
     ]
     mock_pool = MagicMock()
     mock_pool.acquire.return_value.__aenter__ = AsyncMock(return_value=conn)

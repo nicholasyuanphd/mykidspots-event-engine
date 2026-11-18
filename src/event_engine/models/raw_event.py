@@ -1,5 +1,7 @@
 """RawEvent — pre-normalization event data from scrapers."""
 
+from typing import Any
+
 from pydantic import BaseModel
 
 
@@ -58,5 +60,5 @@ class RawEvent(BaseModel):
     recurrence_text: str = ""
     """Raw recurrence description (e.g., 'Every Tuesday', 'Weekly')."""
 
-    raw_data: dict = {}  # noqa: RUF012
+    raw_data: dict[str, Any] = {}  # noqa: RUF012
     """Full source payload preserved for debugging."""

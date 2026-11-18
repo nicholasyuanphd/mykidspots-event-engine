@@ -1,4 +1,5 @@
 """Tests for AI event classifier."""
+
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -20,7 +21,7 @@ async def test_classify_batch_returns_one_result_per_event():
     titles = ["Kids Storytime", "Board of Commissioners Meeting", "Family Fun Day"]
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="yes\nno\nyes")]
+    mock_response.content = [MagicMock(type="text", text="yes\nno\nyes")]
 
     with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
         mock_create.return_value = mock_response
@@ -36,7 +37,7 @@ async def test_classify_batch_parses_yes_no_maybe():
     titles = ["Toddler Yoga", "Zoning Variance Meeting", "Community BBQ"]
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="yes\nno\nmaybe")]
+    mock_response.content = [MagicMock(type="text", text="yes\nno\nmaybe")]
 
     with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
         mock_create.return_value = mock_response
@@ -45,6 +46,25 @@ async def test_classify_batch_parses_yes_no_maybe():
     assert results[0] == ClassificationResult.YES
     assert results[1] == ClassificationResult.NO
     assert results[2] == ClassificationResult.MAYBE
+
+
+@pytest.mark.asyncio
+async def test_classify_batch_reads_only_text_blocks():
+    """A non-text block (e.g. thinking) before the answer is skipped, not crashed on."""
+    classifier = AIClassifier(api_key="test-key")
+    titles = ["Toddler Yoga", "Zoning Variance Meeting"]
+
+    mock_response = MagicMock()
+    mock_response.content = [
+        MagicMock(type="thinking", spec=["type", "thinking"]),
+        MagicMock(type="text", text="yes\nno"),
+    ]
+
+    with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
+        mock_create.return_value = mock_response
+        results = await classifier.classify_batch(titles)
+
+    assert results == [ClassificationResult.YES, ClassificationResult.NO]
 
 
 @pytest.mark.asyncio
@@ -80,7 +100,7 @@ async def test_classify_batch_accepts_custom_system_prompt():
     custom_prompt = "Custom prompt for testing."
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="yes")]
+    mock_response.content = [MagicMock(type="text", text="yes")]
 
     with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
         mock_create.return_value = mock_response
@@ -95,11 +115,12 @@ async def test_classify_batch_accepts_custom_system_prompt():
 async def test_classify_batch_uses_default_prompt_when_none():
     """classify_batch uses SYSTEM_PROMPT when system_prompt is None."""
     from event_engine.classify.ai_classifier import SYSTEM_PROMPT
+
     classifier = AIClassifier(api_key="test-key")
     titles = ["Kids Storytime"]
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="yes")]
+    mock_response.content = [MagicMock(type="text", text="yes")]
 
     with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
         mock_create.return_value = mock_response
@@ -113,11 +134,12 @@ async def test_classify_batch_uses_default_prompt_when_none():
 async def test_classify_batch_uses_tourism_prompt_when_passed():
     """classify_batch correctly forwards TOURISM_SYSTEM_PROMPT to the API."""
     from event_engine.classify.ai_classifier import TOURISM_SYSTEM_PROMPT
+
     classifier = AIClassifier(api_key="test-key")
     titles = ["Spring Festival Downtown"]
 
     mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="yes")]
+    mock_response.content = [MagicMock(type="text", text="yes")]
 
     with patch.object(classifier._client.messages, "create", new_callable=AsyncMock) as mock_create:
         mock_create.return_value = mock_response

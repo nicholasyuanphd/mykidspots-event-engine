@@ -33,6 +33,7 @@ Requires: playwright[chromium] optional dependency.
 import asyncio
 import re
 from collections.abc import AsyncIterator
+from typing import Any
 from urllib.parse import urlencode
 
 from event_engine.models import RawEvent
@@ -123,9 +124,7 @@ class WebTracScraper(BaseScraper):
                         )
 
                         try:
-                            resp = await page.goto(
-                                url, wait_until="networkidle", timeout=30000
-                            )
+                            resp = await page.goto(url, wait_until="networkidle", timeout=30000)
                         except Exception as exc:
                             self.log.warning(
                                 "webtrac_page_load_failed",
@@ -165,9 +164,7 @@ class WebTracScraper(BaseScraper):
                         )
 
                         if not total_text:
-                            self.log.debug(
-                                "webtrac_no_results", category=category, page=page_num
-                            )
+                            self.log.debug("webtrac_no_results", category=category, page=page_num)
                             break
 
                         total_match = re.search(r"of\s+(\d+)", total_text)
@@ -253,14 +250,14 @@ class WebTracScraper(BaseScraper):
 
         return f"{base}?{urlencode(params)}"
 
-    async def _extract_page_activities(self, page: object) -> list[dict]:
+    async def _extract_page_activities(self, page: Any) -> list[dict[str, Any]]:
         """Extract activity data from the current search results page.
 
         Returns a list of dicts with keys: fmid, activity_number, description,
         dates, times, days, location, ages, cost, detail_url, group_title,
         group_description.
         """
-        return await page.evaluate(  # type: ignore[union-attr]
+        return await page.evaluate(  # type: ignore[no-any-return]
             """() => {
             const results = [];
 
@@ -328,7 +325,7 @@ class WebTracScraper(BaseScraper):
         }"""
         )
 
-    def _to_raw_event(self, activity: dict) -> RawEvent | None:
+    def _to_raw_event(self, activity: dict[str, Any]) -> RawEvent | None:
         """Convert an extracted activity dict to a RawEvent."""
         fmid = activity.get("fmid", "")
         description = activity.get("description", "")

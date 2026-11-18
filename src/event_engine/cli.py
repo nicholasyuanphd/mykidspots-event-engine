@@ -16,9 +16,7 @@ from event_engine.config import Settings
 def _configure_logging(verbose: bool) -> None:
     log_level = "DEBUG" if verbose else "INFO"
     structlog.configure(
-        wrapper_class=structlog.make_filtering_bound_logger(
-            logging.getLevelName(log_level)
-        ),
+        wrapper_class=structlog.make_filtering_bound_logger(logging.getLevelName(log_level)),
         processors=[
             structlog.processors.add_log_level,
             structlog.processors.TimeStamper(fmt="iso"),
@@ -201,7 +199,9 @@ def main() -> None:
 
     # audit-source subcommand
     audit_parser = subparsers.add_parser("audit-source", help="Run graduation audit for a source")
-    audit_parser.add_argument("source_id", type=str, help="Source ID to audit (e.g. visitraleigh-events)")
+    audit_parser.add_argument(
+        "source_id", type=str, help="Source ID to audit (e.g. visitraleigh-events)"
+    )
 
     # spot-check subcommand
     subparsers.add_parser("spot-check", help="Run weekly random spot-check on verified sources")
@@ -236,7 +236,7 @@ def main() -> None:
     logger = structlog.get_logger()
 
     try:
-        settings = Settings()  # type: ignore[call-arg]
+        settings = Settings()
     except Exception as e:
         logger.error("config_error", error=str(e))
         print(f"Error: {e}", file=sys.stderr)

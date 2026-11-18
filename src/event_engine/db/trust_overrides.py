@@ -13,12 +13,14 @@ from typing import TYPE_CHECKING
 import structlog
 
 if TYPE_CHECKING:
+    import asyncpg
+
     from event_engine.models.source_config import TrustLevel
 
 logger = structlog.get_logger()
 
 
-async def fetch_trust_overrides(pool) -> dict[str, TrustLevel]:
+async def fetch_trust_overrides(pool: asyncpg.Pool) -> dict[str, TrustLevel]:
     """Query source_trust_overrides and return a mapping of source ID → trust level.
 
     Args:
@@ -32,9 +34,7 @@ async def fetch_trust_overrides(pool) -> dict[str, TrustLevel]:
     """
     try:
         async with pool.acquire() as conn:
-            rows = await conn.fetch(
-                "SELECT source, trust_level FROM source_trust_overrides"
-            )
+            rows = await conn.fetch("SELECT source, trust_level FROM source_trust_overrides")
         overrides: dict[str, TrustLevel] = {}
         for row in rows:
             source_id: str = row["source"]

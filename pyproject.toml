@@ -23,13 +23,6 @@ dependencies = [
 
 [project.optional-dependencies]
 playwright = ["playwright>=1.49"]
-dev = [
-    "pytest>=8.0",
-    "pytest-asyncio>=0.24",
-    "ruff>=0.8",
-    "mypy>=1.13",
-    "respx>=0.22",
-]
 
 [project.scripts]
 event-engine = "event_engine.cli:main"
@@ -37,6 +30,17 @@ event-engine = "event_engine.cli:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "respx>=0.22",
+    "types-pyyaml>=6.0,<6.0.12.20261001",
+    "types-python-dateutil>=2.9,<2.9.0.20261001",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/event_engine"]
@@ -54,11 +58,17 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "TCH"]
 
+[tool.ruff.lint.per-file-ignores]
+# Column-aligned SQL is easier to read than wrapped SQL
+"src/event_engine/db/upsert.py" = ["E501"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
+mypy_path = "src"
+explicit_package_bases = true
 
 [[tool.mypy.overrides]]
-module = ["asyncpg.*", "bs4.*", "lxml.*", "icalendar.*"]
+module = ["asyncpg.*", "bs4.*", "lxml.*", "icalendar.*", "playwright.*"]
 ignore_missing_imports = true

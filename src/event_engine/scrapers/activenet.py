@@ -15,6 +15,7 @@ API details (reverse-engineered from the SPA JS bundle):
 import json
 import re
 from collections.abc import AsyncIterator
+from typing import Any
 
 import httpx
 import structlog
@@ -58,7 +59,7 @@ class ActiveNetScraper(BaseScraper):
         self._csrf_token: str = ""
         self._session_cookies: httpx.Cookies = httpx.Cookies()
         # Cache center details to avoid redundant detail calls
-        self._center_cache: dict[int, dict] = {}
+        self._center_cache: dict[int, dict[str, Any]] = {}
 
     async def _init_session(self) -> None:
         """Load the SPA page to obtain session cookies and a CSRF token.
@@ -114,13 +115,15 @@ class ActiveNetScraper(BaseScraper):
             "X-CSRF-TOKEN": self._csrf_token,
             "X-Requested-With": "XMLHttpRequest",
             "Referer": f"{self.source.base_url.rstrip('/')}/activity/search",
-            "page_info": json.dumps({
-                "page_number": page_number,
-                "total_records_per_page": ACTIVENET_PAGE_SIZE,
-            }),
+            "page_info": json.dumps(
+                {
+                    "page_number": page_number,
+                    "total_records_per_page": ACTIVENET_PAGE_SIZE,
+                }
+            ),
         }
 
-    async def _fetch_activities_page(self, page: int) -> dict:
+    async def _fetch_activities_page(self, page: int) -> dict[str, Any]:
         """Fetch a single page of activities from the list endpoint."""
         base = self.source.base_url.rstrip("/")
         url = f"{base}/rest/activities/list"
@@ -129,6 +132,7 @@ class ActiveNetScraper(BaseScraper):
         delay_s = self.source.request_delay_ms / 1000.0
         if delay_s > 0:
             import asyncio
+
             await asyncio.sleep(delay_s)
 
         response = await self.client.post(
@@ -140,7 +144,7 @@ class ActiveNetScraper(BaseScraper):
         response.raise_for_status()
         return response.json()  # type: ignore[no-any-return]
 
-    async def _fetch_activity_detail(self, activity_id: int) -> dict | None:
+    async def _fetch_activity_detail(self, activity_id: int) -> dict[str, Any] | None:
         """Fetch detailed info for one activity (center address, coordinates, etc.)."""
         base = self.source.base_url.rstrip("/")
         url = f"{base}/rest/activity/detail/{activity_id}"
@@ -148,6 +152,7 @@ class ActiveNetScraper(BaseScraper):
         delay_s = self.source.request_delay_ms / 1000.0
         if delay_s > 0:
             import asyncio
+
             await asyncio.sleep(delay_s)
 
         try:
@@ -228,7 +233,9 @@ class ActiveNetScraper(BaseScraper):
             detail_fetches=detail_fetched,
         )
 
-    def _parse_activity(self, item: dict, detail: dict | None = None) -> RawEvent | None:
+    def _parse_activity(
+        self, item: dict[str, Any], detail: dict[str, Any] | None = None
+    ) -> RawEvent | None:
         """Parse an activity item (+ optional detail) into a RawEvent."""
         activity_id = item.get("id")
         name = (item.get("name") or "").strip()

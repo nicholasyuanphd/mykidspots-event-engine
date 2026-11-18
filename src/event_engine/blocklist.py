@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from typing import Any
 
 import structlog
 
@@ -10,10 +11,11 @@ log = structlog.get_logger()
 DEFAULT_BLOCKLIST_PATH = Path(__file__).parent.parent.parent / "sources" / "blocklist.json"
 
 
-def _load(path: Path) -> dict:
+def _load(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {"blocked_titles": [], "blocked_patterns": []}
-    return json.loads(path.read_text())
+    data: dict[str, Any] = json.loads(path.read_text())
+    return data
 
 
 def is_blocked(title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH) -> bool:
@@ -48,9 +50,7 @@ def is_civic_noise(title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH) ->
     return False
 
 
-def add_to_blocklist(
-    title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH
-) -> None:
+def add_to_blocklist(title: str, blocklist_path: Path = DEFAULT_BLOCKLIST_PATH) -> None:
     """Add an exact title to the blocklist. Called when curator rejects an event."""
     data = _load(blocklist_path)
     if title not in data["blocked_titles"]:

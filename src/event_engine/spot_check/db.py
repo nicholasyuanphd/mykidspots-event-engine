@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, Any
+
 import structlog
+
+if TYPE_CHECKING:
+    import asyncpg
 
 logger = structlog.get_logger()
 
 
-async def fetch_random_pending_events(pool, domain: str, limit: int = 10) -> list[dict]:
+async def fetch_random_pending_events(
+    pool: asyncpg.Pool, domain: str, limit: int = 10
+) -> list[dict[str, Any]]:
     """Fetch random pending events whose source_url contains the given domain."""
     sql = """
         SELECT id, title, source_url
@@ -22,7 +29,9 @@ async def fetch_random_pending_events(pool, domain: str, limit: int = 10) -> lis
     return [dict(r) for r in rows]
 
 
-async def fetch_random_active_events(pool, domain: str, limit: int = 5) -> list[dict]:
+async def fetch_random_active_events(
+    pool: asyncpg.Pool, domain: str, limit: int = 5
+) -> list[dict[str, Any]]:
     """Fetch random active events whose source_url contains the given domain."""
     sql = """
         SELECT id, title, source_url
@@ -37,7 +46,7 @@ async def fetch_random_active_events(pool, domain: str, limit: int = 5) -> list[
     return [dict(r) for r in rows]
 
 
-async def upsert_trust_override(pool, source_id: str, trust_level: str) -> None:
+async def upsert_trust_override(pool: asyncpg.Pool, source_id: str, trust_level: str) -> None:
     """Write or update a trust override for a source."""
     sql = """
         INSERT INTO source_trust_overrides (source, trust_level)
@@ -49,7 +58,7 @@ async def upsert_trust_override(pool, source_id: str, trust_level: str) -> None:
     logger.info("trust_override_written", source=source_id, trust_level=trust_level)
 
 
-async def bulk_activate_pending_events(pool, domain: str) -> int:
+async def bulk_activate_pending_events(pool: asyncpg.Pool, domain: str) -> int:
     """Set status='active' on all pending events for a domain. Returns count updated."""
     sql = """
         UPDATE events
@@ -64,7 +73,7 @@ async def bulk_activate_pending_events(pool, domain: str) -> int:
     return count
 
 
-async def fetch_verified_cvb_sources(pool) -> list[str]:
+async def fetch_verified_cvb_sources(pool: asyncpg.Pool) -> list[str]:
     """Return source IDs with trust_level='verified' in source_trust_overrides."""
     sql = "SELECT source FROM source_trust_overrides WHERE trust_level = 'verified'"
     async with pool.acquire() as conn:

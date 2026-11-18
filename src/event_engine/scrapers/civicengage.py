@@ -109,9 +109,7 @@ class CivicEngageScraper(BaseScraper):
         stdout, stderr = await proc.communicate()
 
         if proc.returncode != 0:
-            raise RuntimeError(
-                f"curl failed (exit {proc.returncode}): {stderr.decode()[:200]}"
-            )
+            raise RuntimeError(f"curl failed (exit {proc.returncode}): {stderr.decode()[:200]}")
 
         output = stdout.decode("utf-8", errors="replace")
         # Last line is the HTTP status code
@@ -196,9 +194,7 @@ class CivicEngageScraper(BaseScraper):
         """
         return f"{self.source.base_url}/-curm-{month}/-cury-{year}"
 
-    def _extract_event_links(
-        self, soup: BeautifulSoup
-    ) -> list[tuple[str, str]]:
+    def _extract_event_links(self, soup: BeautifulSoup) -> list[tuple[str, str]]:
         """Extract (event_id, full_url) pairs from the calendar grid.
 
         If source.location_id is set (grid ID), only extracts events
@@ -230,17 +226,12 @@ class CivicEngageScraper(BaseScraper):
             if "backlist=" in href or "curdate=" in href:
                 continue
 
-            full_url = (
-                f"{origin}/Home/Components/Calendar/Event"
-                f"/{event_id}/{link_grid_id}"
-            )
+            full_url = f"{origin}/Home/Components/Calendar/Event/{event_id}/{link_grid_id}"
             results.append((event_id, full_url))
 
         return results
 
-    async def _fetch_event_detail(
-        self, event_id: str, detail_url: str
-    ) -> RawEvent | None:
+    async def _fetch_event_detail(self, event_id: str, detail_url: str) -> RawEvent | None:
         """Fetch and parse a single event detail page.
 
         CivicEngage detail pages use schema.org/data-vocabulary.org markup
@@ -274,24 +265,18 @@ class CivicEngageScraper(BaseScraper):
 
         if start_time and isinstance(start_time, Tag):
             # Prefer datetime attribute (ISO format), fall back to text
-            raw_start = str(start_time.get("datetime", "")) or start_time.get_text(
-                strip=True
-            )
+            raw_start = str(start_time.get("datetime", "")) or start_time.get_text(strip=True)
 
         if end_time and isinstance(end_time, Tag):
-            raw_end = str(end_time.get("datetime", "")) or end_time.get_text(
-                strip=True
-            )
+            raw_end = str(end_time.get("datetime", "")) or end_time.get_text(strip=True)
 
         # If no itemprop times, fall back to the date label text
         if not raw_start:
-            date_label = event_div.find(
+            date_label = event_div.find(  # type: ignore[call-overload]
                 "span", class_="detail-list-label", string=re.compile(r"Date")
             )
             if date_label:
-                date_value = date_label.find_next_sibling(
-                    "span", class_="detail-list-value"
-                )
+                date_value = date_label.find_next_sibling("span", class_="detail-list-value")
                 if date_value:
                     raw_start = date_value.get_text(strip=True)
 
@@ -330,15 +315,13 @@ class CivicEngageScraper(BaseScraper):
 
         # Introduction/summary (sometimes separate from description)
         intro = ""
-        intro_label = event_div.find(
+        intro_label = event_div.find(  # type: ignore[call-overload]
             "span",
             class_="detail-list-label",
             string=re.compile(r"Introduction"),
         )
         if intro_label:
-            intro_value = intro_label.find_next_sibling(
-                "span", class_="detail-list-value"
-            )
+            intro_value = intro_label.find_next_sibling("span", class_="detail-list-value")
             if intro_value:
                 intro = intro_value.get_text(strip=True)
 
@@ -348,15 +331,13 @@ class CivicEngageScraper(BaseScraper):
 
         # Cost: custom field labeled "Cost"
         raw_cost = ""
-        cost_label = event_div.find(
+        cost_label = event_div.find(  # type: ignore[call-overload]
             "span",
             class_="custom_field_label",
             string=re.compile(r"Cost", re.I),
         )
         if cost_label:
-            cost_value = cost_label.find_next_sibling(
-                "span", class_="custom_field_field"
-            )
+            cost_value = cost_label.find_next_sibling("span", class_="custom_field_field")
             if cost_value:
                 raw_cost = cost_value.get_text(strip=True)
 

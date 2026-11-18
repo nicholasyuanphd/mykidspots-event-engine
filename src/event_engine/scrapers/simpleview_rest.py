@@ -45,7 +45,7 @@ class SimplyviewRestScraper(BaseScraper):
         """Effective page size for the configured REST version."""
         return _LIMIT_V2 if self.source.selectors.get("rest_version", "v1") == "v2" else _LIMIT
 
-    async def _curl_fetch_json(self, url: str) -> dict:
+    async def _curl_fetch_json(self, url: str) -> dict[str, Any]:
         """Fetch a URL using curl subprocess to bypass TLS-fingerprinting WAFs.
 
         Some Simpleview v2 sites (e.g., Wilmington) use Cloudflare/Akamai WAFs that
@@ -60,11 +60,23 @@ class SimplyviewRestScraper(BaseScraper):
             await asyncio.sleep(delay_s)
 
         cmd = [
-            "curl", "-s", "-L", "--compressed", "--max-time", "30",
-            "-w", "\n%{http_code}",
-            "-H", "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-            "-H", "Accept: application/json, */*",
-            "-H", "Accept-Language: en-US,en;q=0.9",
+            "curl",
+            "-s",
+            "-L",
+            "--compressed",
+            "--max-time",
+            "30",
+            "-w",
+            "\n%{http_code}",
+            "-H",
+            (
+                "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+            ),
+            "-H",
+            "Accept: application/json, */*",
+            "-H",
+            "Accept-Language: en-US,en;q=0.9",
             url,
         ]
         proc = await asyncio.create_subprocess_exec(
@@ -90,15 +102,13 @@ class SimplyviewRestScraper(BaseScraper):
         raw = self.source.selectors.get("excluded_categories", "")
         return frozenset(c.strip().lower() for c in raw.split(",") if c.strip())
 
-    def _is_excluded(self, doc: dict) -> bool:
+    def _is_excluded(self, doc: dict[str, Any]) -> bool:
         """Return True if any of the doc's categories are in the exclusion list."""
         excluded = self._excluded_categories
         if not excluded:
             return False
         doc_cats = {
-            c.get("catName", "").lower()
-            for c in doc.get("categories", [])
-            if isinstance(c, dict)
+            c.get("catName", "").lower() for c in doc.get("categories", []) if isinstance(c, dict)
         }
         return bool(doc_cats & excluded)
 

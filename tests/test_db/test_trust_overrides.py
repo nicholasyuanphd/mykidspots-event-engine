@@ -1,6 +1,8 @@
 """Tests for fetch_trust_overrides — DB curator override integration."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 from event_engine.db.trust_overrides import fetch_trust_overrides
 
@@ -24,10 +26,12 @@ class TestFetchTrustOverrides:
     @pytest.mark.asyncio
     async def test_returns_overrides_from_db(self):
         """When the table has rows, the dict is populated correctly."""
-        pool = _make_pool([
-            _row("wake-oberlin-library", "verified"),
-            _row("wake-fuquay-varina-town", "new"),
-        ])
+        pool = _make_pool(
+            [
+                _row("wake-oberlin-library", "verified"),
+                _row("wake-fuquay-varina-town", "new"),
+            ]
+        )
 
         result = await fetch_trust_overrides(pool)
 
@@ -61,10 +65,12 @@ class TestFetchTrustOverrides:
     @pytest.mark.asyncio
     async def test_unknown_trust_level_is_skipped(self):
         """Rows with unrecognised trust_level values are silently dropped."""
-        pool = _make_pool([
-            _row("wake-oberlin-library", "verified"),
-            _row("bad-source", "superuser"),  # not a valid TrustLevel
-        ])
+        pool = _make_pool(
+            [
+                _row("wake-oberlin-library", "verified"),
+                _row("bad-source", "superuser"),  # not a valid TrustLevel
+            ]
+        )
 
         result = await fetch_trust_overrides(pool)
 
@@ -90,7 +96,8 @@ class TestTrustOverrideAppliedInOrchestrator:
 
     def _make_source(self, source_id: str, trust_level: str):
         """Build a minimal SourceConfig-like object for testing override logic."""
-        from event_engine.models.source_config import SourceConfig, LocationConfig
+        from event_engine.models.source_config import LocationConfig, SourceConfig
+
         return SourceConfig(
             id=source_id,
             name=source_id,

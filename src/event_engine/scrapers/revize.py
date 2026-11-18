@@ -10,6 +10,7 @@ requests. Sources that cannot be reached should have enabled=false in YAML.
 
 from collections.abc import AsyncIterator
 from datetime import date, timedelta
+from typing import Any
 
 from event_engine.models import RawEvent
 from event_engine.scrapers.base import BaseScraper
@@ -67,7 +68,7 @@ class RevizeScraper(BaseScraper):
             seen_ids.add(raw_event.external_id)
             yield raw_event
 
-    def _parse_event(self, data: dict) -> RawEvent | None:
+    def _parse_event(self, data: dict[str, Any]) -> RawEvent | None:
         """Parse a Revize FullCalendar JSON event into a RawEvent.
 
         Revize event objects typically have:

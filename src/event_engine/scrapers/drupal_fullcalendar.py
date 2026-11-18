@@ -13,6 +13,7 @@ import json
 import re
 from collections.abc import AsyncIterator
 from datetime import date, timedelta
+from typing import Any
 
 from event_engine.models import RawEvent
 from event_engine.scrapers.base import BaseScraper
@@ -51,7 +52,7 @@ class DrupalFullCalendarScraper(BaseScraper):
             seen_ids.add(raw_event.external_id)
             yield raw_event
 
-    async def _fetch_inline_events(self) -> list[dict]:
+    async def _fetch_inline_events(self) -> list[dict[str, Any]]:
         """Extract events from drupalSettings JSON embedded in the calendar page HTML."""
         self.log.info("fetching_inline_calendar", url=self.source.base_url)
         response = await self.fetch(self.source.base_url)
@@ -94,7 +95,7 @@ class DrupalFullCalendarScraper(BaseScraper):
         self.log.info("inline_events_found", count=len(events))
         return events  # type: ignore[no-any-return]
 
-    async def _fetch_feed_events(self) -> list[dict]:
+    async def _fetch_feed_events(self) -> list[dict[str, Any]]:
         """Fetch events from a vc3-fullcalendar JSON feed endpoint."""
         feed_path = self.source.selectors.get("feed_url", "/vc3-fullcalendar-events-feed")
         extra_params = self.source.selectors.get("feed_params", "")
@@ -117,9 +118,9 @@ class DrupalFullCalendarScraper(BaseScraper):
             return []
 
         self.log.info("feed_events_found", count=len(data))
-        return data  # type: ignore[return-value]
+        return data
 
-    def _parse_event(self, data: dict) -> RawEvent | None:
+    def _parse_event(self, data: dict[str, Any]) -> RawEvent | None:
         """Parse a FullCalendar JSON event object into a RawEvent."""
         title = (data.get("title") or "").strip()
         if not title:

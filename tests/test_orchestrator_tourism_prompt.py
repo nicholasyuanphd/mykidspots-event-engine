@@ -1,9 +1,9 @@
 """Tests that tourism sources use the tourism system prompt in the orchestrator."""
+
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import httpx
-import pytest
 
 from event_engine.classify.ai_classifier import TOURISM_SYSTEM_PROMPT
 from event_engine.models import SourceConfig
@@ -55,8 +55,13 @@ async def _run_scrape_source(source: SourceConfig, mock_classifier: MagicMock) -
         patch("event_engine.orchestrator.normalize", return_value=mock_normalized_event),
     ):
         await _scrape_source(
-            source, mock_client, None, semaphore, cb,
-            dry_run=True, classifier=mock_classifier,
+            source,
+            mock_client,
+            None,
+            semaphore,
+            cb,
+            dry_run=True,
+            classifier=mock_classifier,
         )
 
 
