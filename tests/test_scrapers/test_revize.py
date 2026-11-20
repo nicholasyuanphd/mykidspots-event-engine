@@ -64,7 +64,10 @@ class TestRevizeScraper:
         board = next((e for e in events if "Board" in e.title), None)
         assert board is not None
         assert board.external_id == "101"
-        assert board.source_url == "https://townofwendellnc.gov/government/agendas___minutes.php?id=101"
+        assert (
+            board.source_url
+            == "https://townofwendellnc.gov/government/agendas___minutes.php?id=101"
+        )
         assert board.description == "Regular monthly board meeting"
         assert "2026-03-10" in board.raw_start
 

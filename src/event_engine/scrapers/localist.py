@@ -10,6 +10,7 @@ Endpoint: {base_url}/api/2/events?days=90&pp=100&page=N
 
 import re
 from collections.abc import AsyncIterator
+from typing import Any
 from urllib.parse import urlencode
 
 from event_engine.models import RawEvent
@@ -94,7 +95,7 @@ class LocalistScraper(BaseScraper):
 
         self.log.info("localist_scrape_complete", total_events=event_count, pages=page)
 
-    def _parse_event(self, item: dict) -> RawEvent | None:
+    def _parse_event(self, item: dict[str, Any]) -> RawEvent | None:
         """Parse a single Localist event from the API response."""
         event_id = str(item.get("id", ""))
         title = (item.get("title") or "").strip()
@@ -194,7 +195,7 @@ class LocalistScraper(BaseScraper):
                 recurrence_text = f"{first_date} to {last_date}"
 
         # --- Raw data: store geo for per-event coordinates ---
-        raw_data: dict = {}
+        raw_data: dict[str, Any] = {}
         if geo_lat:
             raw_data["latitude"] = geo_lat
         if geo_lng:

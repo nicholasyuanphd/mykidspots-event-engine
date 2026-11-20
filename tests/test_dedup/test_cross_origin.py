@@ -1,6 +1,9 @@
 """Tests for cross-origin duplicate detection."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
+
 from event_engine.dedup.cross_origin import find_cross_origin_duplicate
 
 
@@ -12,11 +15,13 @@ class TestCrossOriginDuplicate:
         mock_conn = AsyncMock()
         mock_pool.acquire.return_value.__aenter__ = AsyncMock(return_value=mock_conn)
         mock_pool.acquire.return_value.__aexit__ = AsyncMock(return_value=None)
-        mock_conn.fetchrow = AsyncMock(return_value={
-            "id": "abc-123",
-            "title": "Family Storytime",
-            "source": "manual",
-        })
+        mock_conn.fetchrow = AsyncMock(
+            return_value={
+                "id": "abc-123",
+                "title": "Family Storytime",
+                "source": "manual",
+            }
+        )
 
         result = await find_cross_origin_duplicate(
             pool=mock_pool,

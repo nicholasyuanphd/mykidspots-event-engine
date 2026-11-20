@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import structlog
 
@@ -18,7 +18,7 @@ async def fetch_silent_failures(
     *,
     since_hours: int = 2,
     min_historical_events: int = 10,
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     """Find sources that returned 0 events this run but were previously productive.
 
     A "silent failure" is a source that:

@@ -4,19 +4,23 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 import structlog
 
 from event_engine.classify.ai_classifier import (
+    TOURISM_SYSTEM_PROMPT,
     AIClassifier,
     ClassificationResult,
-    TOURISM_SYSTEM_PROMPT,
 )
 from event_engine.spot_check.db import (
+    bulk_activate_pending_events,
     fetch_random_pending_events,
     upsert_trust_override,
-    bulk_activate_pending_events,
 )
+
+if TYPE_CHECKING:
+    import asyncpg
 
 logger = structlog.get_logger()
 
@@ -27,6 +31,7 @@ _PASS_THRESHOLD = 0.8  # >=80% must pass to graduate
 @dataclass
 class AuditResult:
     """Result of a graduation audit for one source."""
+
     source_id: str
     total: int
     passed: int
@@ -36,7 +41,7 @@ class AuditResult:
 
 
 async def audit_source(
-    pool,
+    pool: asyncpg.Pool,
     classifier: AIClassifier,
     source_id: str,
     domain: str,
@@ -65,7 +70,7 @@ async def audit_source(
         verdicts=[v.value for v in verdicts],
     )
 
-    for event, verdict in zip(events, verdicts):
+    for event, verdict in zip(events, verdicts, strict=False):
         log.info(
             "audit_event_result",
             title=event["title"],

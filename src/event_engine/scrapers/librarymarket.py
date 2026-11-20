@@ -92,7 +92,7 @@ class LibraryMarketScraper(BaseScraper):
             href = href[0]
         href = str(href)
 
-        # Extract external ID from URL slug (e.g., /event/origami-bloom-21844 -> origami-bloom-21844)
+        # External ID from the URL slug: /event/origami-bloom-21844 -> origami-bloom-21844
         external_id = self._extract_slug_id(href)
         if not external_id:
             return None
@@ -121,9 +121,9 @@ class LibraryMarketScraper(BaseScraper):
         description = self._extract_description(article)
 
         # Check if cancelled
-        if "moderation-state--cancelled" in (article.get("class", []) or []):
+        if "moderation-state--cancelled" in (article.get("class") or []):
             return None
-        article_classes = article.get("class", [])
+        article_classes = article.get("class")
         if isinstance(article_classes, list) and "moderation-state--cancelled" in article_classes:
             return None
 
@@ -236,9 +236,7 @@ class LibraryMarketScraper(BaseScraper):
           <span class="lc-date-icon__item--day">28</span>
           <span class="lc-date-icon__item--year">2026</span>
         """
-        icon = article.select_one(
-            ".lc-event__event-details--upcoming .lc-date-icon"
-        )
+        icon = article.select_one(".lc-event__event-details--upcoming .lc-date-icon")
         if not icon:
             return ""
 
@@ -251,9 +249,9 @@ class LibraryMarketScraper(BaseScraper):
             day = day_el.get_text(strip=True)
             year = year_el.get_text(strip=True)
             # day might be multi-day like "25 - 28", take the first
-            day = re.match(r"\d+", day)
-            if day:
-                return f"{month} {day.group(0)}, {year}"
+            day_match = re.match(r"\d+", day)
+            if day_match:
+                return f"{month} {day_match.group(0)}, {year}"
 
         return ""
 

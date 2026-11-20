@@ -112,9 +112,10 @@ class WakeGovScraper(BaseScraper):
         img_el = article.select_one(".eventbrite-card-image img")
         image_url = ""
         if img_el:
-            image_url = img_el.get("src", "")
-            if isinstance(image_url, list):
-                image_url = image_url[0] if image_url else ""
+            src = img_el.get("src")
+            image_url = src if isinstance(src, str) else ""
+            if isinstance(src, list):
+                image_url = str(src[0]) if src else ""
 
         # Source URL
         source_url = f"https://www.wake.gov{about}"

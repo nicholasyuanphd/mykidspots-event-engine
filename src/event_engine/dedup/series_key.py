@@ -24,9 +24,5 @@ def compute_series_key(
     """
     if not time_of_day:
         return None
-    normalized = (
-        f"{title.strip().lower()}|"
-        f"{location_name.strip().lower()}|"
-        f"{time_of_day}"
-    )
+    normalized = f"{title.strip().lower()}|{location_name.strip().lower()}|{time_of_day}"
     return hashlib.sha256(normalized.encode()).hexdigest()[:16]

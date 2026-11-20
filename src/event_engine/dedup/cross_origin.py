@@ -1,6 +1,7 @@
 """Cross-origin duplicate detection — checks ALL sources, not just pipeline."""
 
 from datetime import date
+from typing import Any
 
 import asyncpg
 import structlog
@@ -25,7 +26,7 @@ async def find_cross_origin_duplicate(
     start_date: date,
     location_name: str,
     exclude_source: str,
-) -> dict | None:
+) -> dict[str, Any] | None:
     """Check if an event with same title+date+location exists from a different source.
 
     Returns the existing event row if found, None if safe to insert.

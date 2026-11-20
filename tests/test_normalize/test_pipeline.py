@@ -139,9 +139,7 @@ class TestNormalize:
         assert result is not None
         assert result.description is None
 
-    def test_image_urls_always_empty(
-        self, sample_source: SourceConfig
-    ) -> None:
+    def test_image_urls_always_empty(self, sample_source: SourceConfig) -> None:
         """Images are never passed through — copyright risk regardless of source type."""
         raw = RawEvent(
             source_id="wake-oberlin-library",
@@ -249,18 +247,21 @@ class TestNormalize:
 def test_simpleview_rest_platform_maps_to_tourism_badge():
     """simpleview_rest platform maps to pipeline_tourism source badge."""
     from event_engine.normalize.pipeline import PLATFORM_SOURCE_MAP
+
     assert PLATFORM_SOURCE_MAP["simpleview_rest"] == "pipeline_tourism"
 
 
 def test_meilisearch_platform_maps_to_tourism_badge():
     """meilisearch platform maps to pipeline_tourism source badge."""
     from event_engine.normalize.pipeline import PLATFORM_SOURCE_MAP
+
     assert PLATFORM_SOURCE_MAP["meilisearch"] == "pipeline_tourism"
 
 
 def test_normalize_handles_none_address_in_tourism_source():
     """normalize() does not crash when source.location.address is None (tourism configs)."""
     from decimal import Decimal
+
     from event_engine.models.source_config import LocationConfig
 
     source = SourceConfig(
@@ -291,7 +292,7 @@ def test_normalize_handles_none_address_in_tourism_source():
         title="Raleigh Kids Holiday Festival",
         raw_start="December 20, 2026 10:00 am",
         raw_location="Moore Square",
-        raw_address="",  # scraper found no address — empty string + None source address = crash pre-fix
+        raw_address="",  # no address + None source address used to crash
         raw_categories=["Family Fun"],
         raw_cost_text="Free",
     )

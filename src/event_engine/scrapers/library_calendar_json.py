@@ -15,7 +15,8 @@ types, branch, and description — all structured as native JSON fields.
 
 import re
 from collections.abc import AsyncIterator
-from datetime import date, datetime, timezone
+from datetime import date
+from typing import Any
 
 from event_engine.models import RawEvent
 from event_engine.scrapers.base import BaseScraper
@@ -29,7 +30,7 @@ def _strip_html(text: str) -> str:
     return re.sub(r"<[^>]+>", " ", text).strip()
 
 
-def _extract_dict_values(d: dict | list | None) -> list[str]:
+def _extract_dict_values(d: dict[str, Any] | list[Any] | None) -> list[str]:
     """Extract values from a {id: label} dict, ignoring keys."""
     if not d or not isinstance(d, dict):
         return []
@@ -68,7 +69,9 @@ class LibraryCalendarJsonScraper(BaseScraper):
         url = f"{base}/events/feed/json?current_date={today}"
         branch_filter = self.source.selectors.get("branch_filter", "").strip().lower()
 
-        self.log.info("fetching_library_calendar_json", url=url, branch_filter=branch_filter or "all")
+        self.log.info(
+            "fetching_library_calendar_json", url=url, branch_filter=branch_filter or "all"
+        )
 
         try:
             data = await self.fetch_json(url)
@@ -98,7 +101,7 @@ class LibraryCalendarJsonScraper(BaseScraper):
             seen_ids.add(event.external_id)
             yield event
 
-    def _parse_event(self, item: dict) -> RawEvent | None:
+    def _parse_event(self, item: dict[str, Any]) -> RawEvent | None:
         """Parse a single JSON event into a RawEvent."""
         # Skip cancelled events
         if item.get("moderation_state") == "cancelled":
@@ -124,12 +127,11 @@ class LibraryCalendarJsonScraper(BaseScraper):
         raw_start = item.get("start_date") or ""
         raw_end = item.get("end_date") or ""
 
-        # Skip all-day / midnight-only events (no meaningful time)
-        if raw_start.endswith("00:00:00") and raw_end.endswith("00:00:00"):
-            # Multi-day spans with 00:00 start are usually all-day admin entries
-            # Only skip if it's a single-day zero-duration event
-            if raw_start == raw_end:
-                return None
+        # Skip all-day / midnight-only events (no meaningful time).
+        # Multi-day spans with 00:00 start are usually all-day admin entries;
+        # only skip a single-day zero-duration event.
+        if raw_start.endswith("00:00:00") and raw_end.endswith("00:00:00") and raw_start == raw_end:
+            return None
 
         # Source URL
         source_url = item.get("url") or ""

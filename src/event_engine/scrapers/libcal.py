@@ -5,6 +5,7 @@ via a JSON API at /{subdomain}.libcal.com/ajax/calendar/{calendar_id}.
 """
 
 from collections.abc import AsyncIterator
+from typing import Any
 from urllib.parse import urlencode
 
 from event_engine.models import RawEvent
@@ -46,7 +47,7 @@ class LibCalScraper(BaseScraper):
             if event:
                 yield event
 
-    def _parse_event(self, item: dict) -> RawEvent | None:
+    def _parse_event(self, item: dict[str, Any]) -> RawEvent | None:
         """Parse a single LibCal event from the JSON response."""
         # LibCal event IDs are numeric
         event_id = str(item.get("id", ""))

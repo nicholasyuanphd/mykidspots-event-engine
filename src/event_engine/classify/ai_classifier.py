@@ -7,6 +7,7 @@ Cost at current pricing (Claude Haiku 4.5):
   ~$0.000075 per event unbatched → ~$0.000010 per event batched
   At 300K events/month: ~$3/month
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -101,11 +102,11 @@ class AIClassifier:
                 messages=[{"role": "user", "content": numbered}],
             )
 
-            raw = response.content[0].text.strip()
+            raw = "".join(b.text for b in response.content if b.type == "text").strip()
             lines = [line.strip().lower() for line in raw.splitlines() if line.strip()]
 
             results: list[ClassificationResult] = []
-            for line in lines[:len(titles)]:
+            for line in lines[: len(titles)]:
                 # Extract first word in case model adds brief explanation
                 word = line.split()[0] if line.split() else "maybe"
                 if word == "yes":

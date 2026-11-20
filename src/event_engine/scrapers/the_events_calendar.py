@@ -11,6 +11,7 @@ geolocation, categories, and recurring event support.
 import re
 from collections.abc import AsyncIterator
 from datetime import date
+from typing import Any
 from urllib.parse import urlencode
 
 from event_engine.models import RawEvent
@@ -95,7 +96,7 @@ class TheEventsCalendarScraper(BaseScraper):
 
         self.log.info("tec_scrape_complete", total_events=event_count, pages=page)
 
-    def _parse_event(self, item: dict) -> RawEvent | None:
+    def _parse_event(self, item: dict[str, Any]) -> RawEvent | None:
         """Parse a single TEC event from the API response."""
         event_id = str(item.get("id", ""))
         title = item.get("title", "").strip()

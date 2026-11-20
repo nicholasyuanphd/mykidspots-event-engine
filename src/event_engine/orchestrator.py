@@ -26,6 +26,8 @@ from event_engine.scrapers.registry import discover_scrapers, get_scraper
 if TYPE_CHECKING:
     import asyncpg
 
+    from event_engine.models import NormalizedEvent
+
 logger = structlog.get_logger()
 
 TOURISM_PLATFORMS = {"simpleview_rest", "meilisearch"}
@@ -103,9 +105,7 @@ async def run(
 
     # Set up AI classifier (if API key is available)
     classifier: AIClassifier | None = (
-        AIClassifier(api_key=anthropic_api_key)
-        if anthropic_api_key
-        else None
+        AIClassifier(api_key=anthropic_api_key) if anthropic_api_key else None
     )
     if not classifier:
         logger.warning("no_anthropic_key_ai_classification_disabled")
@@ -200,9 +200,7 @@ async def _scrape_source(
 
             # AI classification step (for sources that need it)
             ai_verdicts: list[str | None] = [None] * len(raw_events)
-            tourism_prompt = (
-                TOURISM_SYSTEM_PROMPT if source.platform in TOURISM_PLATFORMS else None
-            )
+            tourism_prompt = TOURISM_SYSTEM_PROMPT if source.platform in TOURISM_PLATFORMS else None
             if classifier and source.ai_classification in ("required", "optional"):
                 titles = [e.title for e in raw_events]
                 results_ai = await classifier.classify_all(titles, system_prompt=tourism_prompt)
@@ -238,11 +236,11 @@ async def _scrape_source(
                     log.info("maybe_events_refined", count=len(maybe_indices))
 
             # Normalize with AI verdicts
-            normalized = []
+            normalized: list[NormalizedEvent] = []
             for raw, verdict in zip(raw_events, ai_verdicts, strict=True):
-                event = normalize(raw, source, ai_verdict=verdict)
-                if event:
-                    normalized.append(event)
+                normalized_event = normalize(raw, source, ai_verdict=verdict)
+                if normalized_event:
+                    normalized.append(normalized_event)
             result.events_normalized = len(normalized)
             skipped = len(raw_events) - len(normalized)
             log.info("events_normalized", count=len(normalized), skipped=skipped)

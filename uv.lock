@@ -473,15 +473,19 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+playwright = [
+    { name = "playwright" },
+]
+
+[package.dev-dependencies]
 dev = [
     { name = "mypy" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "respx" },
     { name = "ruff" },
-]
-playwright = [
-    { name = "playwright" },
+    { name = "types-python-dateutil" },
+    { name = "types-pyyaml" },
 ]
 
 [package.metadata]
@@ -492,21 +496,27 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.27" },
     { name = "icalendar", specifier = ">=6.0" },
     { name = "lxml", specifier = ">=5.0" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.13" },
     { name = "playwright", marker = "extra == 'playwright'", specifier = ">=1.49" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-settings", specifier = ">=2.7" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.24" },
     { name = "python-dateutil", specifier = ">=2.9" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "respx", marker = "extra == 'dev'", specifier = ">=0.22" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8" },
     { name = "sentry-sdk", specifier = ">=2.0" },
     { name = "structlog", specifier = ">=24.4" },
     { name = "tenacity", specifier = ">=9.0" },
 ]
-provides-extras = ["playwright", "dev"]
+provides-extras = ["playwright"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.13" },
+    { name = "pytest", specifier = ">=8.0" },
+    { name = "pytest-asyncio", specifier = ">=0.24" },
+    { name = "respx", specifier = ">=0.22" },
+    { name = "ruff", specifier = ">=0.8" },
+    { name = "types-python-dateutil", specifier = ">=2.9,<2.9.0.20261001" },
+    { name = "types-pyyaml", specifier = ">=6.0,<6.0.12.20261001" },
+]
 
 [[package]]
 name = "mypy"
@@ -906,6 +916,24 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/47/c6/ee486fd809e357697ee8a44d3d69222b344920433d3b6666ccd9b374630c/tenacity-9.1.4.tar.gz", hash = "sha256:adb31d4c263f2bd041081ab33b498309a57c77f9acf2db65aadf0898179cf93a", size = 49413, upload-time = "2026-02-07T10:45:33.841Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/c1/eb8f9debc45d3b7918a32ab756658a0904732f75e555402972246b0b8e71/tenacity-9.1.4-py3-none-any.whl", hash = "sha256:6095a360c919085f28c6527de529e76a06ad89b23659fa881ae0649b867a9d55", size = 28926, upload-time = "2026-02-07T10:45:32.24Z" },
+]
+
+[[package]]
+name = "types-python-dateutil"
+version = "2.9.0.20260807"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/c8/4e/b3fa538f9cb38dfece0d6ccf6d3d0d925bdedb144fb9c8129dfc007cd003/types_python_dateutil-2.9.0.20260807.tar.gz", hash = "sha256:e0b8a90d464c8684c66b7b8e4556d9074afdddcc56ca45323f0987134f9e7034", size = 17618, upload-time = "2026-08-07T04:17:13.491Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e4/5e/3715867caea2f4cea56ccb04c851cde23ed063449c3b004c7a047f20dd48/types_python_dateutil-2.9.0.20260807-py3-none-any.whl", hash = "sha256:54aa3707350ed7a9cc0776fd2f6739679d6967d11b40150985e81edcb86df4db", size = 18486, upload-time = "2026-08-07T04:17:12.504Z" },
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.20260906"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/90/6e/abec85b9013db5b934b0280a6dd104904d84f7bcbaab2e2f3def87ac7463/types_pyyaml-6.0.12.20260906.tar.gz", hash = "sha256:f59c1cc05010b833d2d72287bbaa72610106b28d42d89a907313117faba85212", size = 18649, upload-time = "2026-09-06T06:35:35.362Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/15/c0/fc0644b7ddcfb969e95845837143cb5173ddd6e06ee4ba5fc493cd9329b7/types_pyyaml-6.0.12.20260906-py3-none-any.whl", hash = "sha256:bca893ff0d51df5c9053137d5d0e6ccd36e939a196356f1d5c16372422f5137b", size = 21282, upload-time = "2026-09-06T06:35:34.372Z" },
 ]
 
 [[package]]

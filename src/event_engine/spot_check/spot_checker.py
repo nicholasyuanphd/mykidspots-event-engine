@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 import structlog
 
 from event_engine.classify.ai_classifier import (
+    TOURISM_SYSTEM_PROMPT,
     AIClassifier,
     ClassificationResult,
-    TOURISM_SYSTEM_PROMPT,
 )
 from event_engine.models import load_sources
 from event_engine.spot_check.db import (
@@ -19,6 +19,11 @@ from event_engine.spot_check.db import (
     fetch_verified_cvb_sources,
     upsert_trust_override,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    import asyncpg
 
 logger = structlog.get_logger()
 
@@ -29,9 +34,10 @@ _FAIL_THRESHOLD = 0.4  # >=40% failing -> downgrade
 @dataclass
 class SpotCheckResult:
     """Aggregate result of a weekly spot-check run."""
+
     sources_checked: int = 0
     sources_downgraded: int = 0
-    source_results: dict[str, dict] = field(default_factory=dict)
+    source_results: dict[str, dict[str, Any]] = field(default_factory=dict[str, Any])
 
 
 def _domain_for_source(source_id: str, sources_dir: Path | None) -> str | None:
@@ -52,7 +58,7 @@ def _domain_for_source(source_id: str, sources_dir: Path | None) -> str | None:
 
 
 async def run_spot_check(
-    pool,
+    pool: asyncpg.Pool,
     classifier: AIClassifier,
     sources_dir: Path | None,
 ) -> SpotCheckResult:
@@ -86,7 +92,7 @@ async def run_spot_check(
         total = len(verdicts)
         fail_rate = failed / total if total > 0 else 0.0
 
-        for event, verdict in zip(events, verdicts):
+        for event, verdict in zip(events, verdicts, strict=False):
             log.info(
                 "spot_check_event_result",
                 title=event["title"],
@@ -106,7 +112,10 @@ async def run_spot_check(
                 "source_downgraded",
                 fail_rate=round(fail_rate, 2),
                 threshold=_FAIL_THRESHOLD,
-                note="Future ingestion runs will land events as pending. Existing active events unchanged.",
+                note=(
+                    "Future ingestion runs will land events as pending. "
+                    "Existing active events unchanged."
+                ),
             )
             await upsert_trust_override(pool, source_id, "new")
             result.sources_downgraded += 1

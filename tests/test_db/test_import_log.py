@@ -1,7 +1,9 @@
 """Tests for import_log silent failure detection."""
-import pytest
+
 from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 from event_engine.db.import_log import fetch_silent_failures
 
@@ -52,8 +54,18 @@ class TestFetchSilentFailures:
         """Multiple failures are returned in descending peak_events_found order."""
         now = datetime.now(UTC)
         rows = [
-            {"source_id": "source-a", "source_name": "A", "latest_run": now, "peak_events_found": 300},
-            {"source_id": "source-b", "source_name": "B", "latest_run": now, "peak_events_found": 50},
+            {
+                "source_id": "source-a",
+                "source_name": "A",
+                "latest_run": now,
+                "peak_events_found": 300,
+            },
+            {
+                "source_id": "source-b",
+                "source_name": "B",
+                "latest_run": now,
+                "peak_events_found": 50,
+            },
         ]
         pool = _make_pool(rows)
 

@@ -1,13 +1,16 @@
 """Tests for the Simpleview REST scraper (v1 and v2 variants)."""
-import pytest
+
 from unittest.mock import AsyncMock, MagicMock
+
 import httpx
+import pytest
 
 from event_engine.models import SourceConfig
 from event_engine.models.source_config import LocationConfig
 from event_engine.scrapers.simpleview_rest import SimplyviewRestScraper
 
 # --- Shared configs ---
+
 
 def _make_config(rest_version: str, source_id: str, base_url: str) -> SourceConfig:
     return SourceConfig(
@@ -30,6 +33,7 @@ def _make_config(rest_version: str, source_id: str, base_url: str) -> SourceConf
         request_delay_ms=0,
         selectors={"rest_version": rest_version},
     )
+
 
 RALEIGH_CONFIG = _make_config("v1", "visit-raleigh", "https://www.visitraleigh.com")
 WILMINGTON_CONFIG = _make_config("v2", "wilmington-beaches", "https://www.wilmingtonandbeaches.com")
@@ -190,7 +194,11 @@ class TestSimplyviewRestScraper:
     async def test_excluded_categories_skips_matching_events(self) -> None:
         """Events whose categories intersect excluded_categories are dropped before yielding."""
         config = _make_config("v1", "visit-raleigh", "https://www.visitraleigh.com")
-        config = config.model_copy(update={"selectors": {"rest_version": "v1", "excluded_categories": "nightlife,restaurants"}})
+        config = config.model_copy(
+            update={
+                "selectors": {"rest_version": "v1", "excluded_categories": "nightlife,restaurants"}
+            }
+        )
         response = {
             "docs": [
                 {
@@ -215,9 +223,13 @@ class TestSimplyviewRestScraper:
     async def test_excluded_categories_case_insensitive(self) -> None:
         """Category matching is case-insensitive."""
         config = _make_config("v1", "visit-raleigh", "https://www.visitraleigh.com")
-        config = config.model_copy(update={"selectors": {"rest_version": "v1", "excluded_categories": "Nightlife"}})
+        config = config.model_copy(
+            update={"selectors": {"rest_version": "v1", "excluded_categories": "Nightlife"}}
+        )
         response = {
-            "docs": [{"_id": "n1", "title": "Late Night Bar", "categories": [{"catName": "nightlife"}]}],
+            "docs": [
+                {"_id": "n1", "title": "Late Night Bar", "categories": [{"catName": "nightlife"}]}
+            ],
             "total": 1,
         }
         scraper = _make_scraper(config, [response])
